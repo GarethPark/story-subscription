@@ -11,6 +11,7 @@ export default function Home() {
       <Navbar
         logo="YourApp"
         links={[
+          { href: '/stories', label: 'Stories' },
           { href: '#features', label: 'Features' },
           { href: '#pricing', label: 'Pricing' },
         ]}
