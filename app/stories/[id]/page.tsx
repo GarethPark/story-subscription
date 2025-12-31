@@ -9,11 +9,12 @@ import Image from 'next/image'
 export default async function StoryPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   const story = await prisma.story.findUnique({
     where: {
-      id: params.id,
+      id: id,
       published: true,
     },
   })

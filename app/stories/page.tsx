@@ -7,18 +7,20 @@ import Image from 'next/image'
 export default async function StoriesPage({
   searchParams,
 }: {
-  searchParams: { genre?: string; search?: string }
+  searchParams: Promise<{ genre?: string; search?: string }>
 }) {
+  const { genre, search } = await searchParams
+
   // Fetch published stories
   const stories = await prisma.story.findMany({
     where: {
       published: true,
-      ...(searchParams.genre && { genre: searchParams.genre }),
-      ...(searchParams.search && {
+      ...(genre && { genre: genre }),
+      ...(search && {
         OR: [
-          { title: { contains: searchParams.search, mode: 'insensitive' } },
-          { summary: { contains: searchParams.search, mode: 'insensitive' } },
-          { author: { contains: searchParams.search, mode: 'insensitive' } },
+          { title: { contains: search, mode: 'insensitive' } },
+          { summary: { contains: search, mode: 'insensitive' } },
+          { author: { contains: search, mode: 'insensitive' } },
         ],
       }),
     },
@@ -63,10 +65,10 @@ export default async function StoriesPage({
                     type="text"
                     name="search"
                     placeholder="Search stories..."
-                    defaultValue={searchParams.search}
+                    defaultValue={search}
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900"
                   />
-                  <input type="hidden" name="genre" value={searchParams.genre} />
+                  <input type="hidden" name="genre" value={genre} />
                   <Button type="submit" className="w-full mt-2">
                     Search
                   </Button>
@@ -80,24 +82,24 @@ export default async function StoriesPage({
                   <Link
                     href="/stories"
                     className={`block px-3 py-2 rounded-md text-sm transition-colors ${
-                      !searchParams.genre
+                      !genre
                         ? 'bg-slate-900 text-white'
                         : 'hover:bg-slate-100'
                     }`}
                   >
                     All Stories
                   </Link>
-                  {genres.map((genre) => (
+                  {genres.map((g) => (
                     <Link
-                      key={genre}
-                      href={`/stories?genre=${genre}`}
+                      key={g}
+                      href={`/stories?genre=${g}`}
                       className={`block px-3 py-2 rounded-md text-sm transition-colors ${
-                        searchParams.genre === genre
+                        genre === g
                           ? 'bg-slate-900 text-white'
                           : 'hover:bg-slate-100'
                       }`}
                     >
-                      {genre}
+                      {g}
                     </Link>
                   ))}
                 </div>
