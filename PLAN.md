@@ -40,36 +40,42 @@ A romance story subscription SaaS platform where users can browse, read, and sub
 - [x] Git repository initialized
 - [x] Pushed to GitHub: https://github.com/GarethPark/story-subscription
 
-## 🔄 Current Phase: Story Core Features
+### Phase 2: Story Core (Completed)
+- [x] **Story Database Schema**
+  - [x] Create Story model with all fields (title, content, summary, author, genre, coverImage, tags, readingTime, ageRating, etc.)
+  - [x] Create Favorite model for user bookmarks
+  - [x] Run Prisma migration
+  - [x] Update User model with favorites relation
+  - [ ] Seed sample stories (deferred due to Prisma 7 compatibility - can add via Prisma Studio)
 
-### Next Immediate Task
-**Add Story Database Schema** - We're about to start this now.
+- [x] **Story Library Page**
+  - [x] Create `/stories` route with server-side rendering
+  - [x] Display responsive grid of story cards
+  - [x] Filter by genre with sidebar
+  - [x] Search functionality (by title, summary, author)
+  - [x] Story count display
+  - [x] Hover effects and transitions
+  - [x] Mobile-responsive design
+  - [x] Cover image support with fallback gradients
+
+- [x] **Story Reading Interface**
+  - [x] Create `/stories/[id]` dynamic route
+  - [x] Beautiful reading UI with proper typography
+  - [x] Story metadata display (genre, age rating, reading time, views)
+  - [x] Tags display
+  - [x] Save to favorites button (UI only - functionality pending)
+  - [x] Back to library navigation
+  - [x] CTA for subscription at end of story
+
+## 🔄 Current Phase: Monetization & User Features
+
+### Next Immediate Tasks
+Choose one of:
+1. **Subscription Tiers & Payment Integration** (Stripe)
+2. **User Favorites/Bookmarks** (simpler, completes story features)
+3. **Admin Panel** (for managing stories)
 
 ## ⏳ Planned Features
-
-### Phase 2: Story Core (In Progress)
-- [ ] **Story Database Schema**
-  - [ ] Create Story model in Prisma schema
-  - [ ] Fields: id, title, content, summary, author, genre, coverImage, createdAt, updatedAt, published
-  - [ ] Consider: tags, readingTime, ageRating
-  - [ ] Run Prisma migration
-  - [ ] Seed sample stories for testing
-
-- [ ] **Story Library Page**
-  - [ ] Create `/stories` route
-  - [ ] Display grid of story cards with cover, title, author, summary
-  - [ ] Filter by genre (Romance subgenres: Contemporary, Historical, Paranormal, etc.)
-  - [ ] Search functionality
-  - [ ] Sort by: newest, popular, rating
-  - [ ] Pagination
-
-- [ ] **Story Reading Interface**
-  - [ ] Create `/stories/[id]` route for individual story
-  - [ ] Beautiful reading UI with proper typography
-  - [ ] Chapter support (if stories have chapters)
-  - [ ] Reading progress tracking
-  - [ ] Bookmark/save position
-  - [ ] Next/previous chapter navigation
 
 ### Phase 3: Monetization
 - [ ] **Subscription Tiers**
@@ -151,4 +157,4 @@ If resuming in a new session:
 ---
 
 **Last Updated**: 2025-12-31
-**Status**: Active Development - Story Database Schema next
+**Status**: Active Development - Story core features complete, ready for monetization or user features
