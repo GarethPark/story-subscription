@@ -1,25 +1,166 @@
-# SaaS Starter Template
+# Story Subscription Platform
 
-A modern, production-ready SaaS starter template built with Next.js 14, TypeScript, Tailwind CSS, and Prisma.
+A modern romance story subscription platform built with Next.js 16, TypeScript, Tailwind CSS, and Prisma. Users can browse, read, and subscribe to access premium romance stories.
 
 ## Features
 
-- Authentication System - Complete signup/login/logout with JWT sessions
-- Landing Page Components - Hero, Features, Pricing, Navbar, Footer
-- User Dashboard - Protected dashboard with user info
-- Database - SQLite with Prisma ORM (easily switch to PostgreSQL)
-- TypeScript - Full type safety
-- Tailwind CSS - Modern, responsive styling
-- Reusable Components - UI components ready to customize
+### Core Features
+- **Authentication System** - Complete signup/login/logout with JWT sessions
+- **Story Library** - Browse and search romance stories with filters
+- **Story Reader** - Beautiful reading interface with metadata and tags
+- **Genre Filtering** - Filter stories by Contemporary, Historical, Paranormal, etc.
+- **Search** - Search stories by title, author, or summary
+- **User Dashboard** - Protected dashboard with user information
+- **Responsive Design** - Mobile-first, works on all devices
 
-## Tech Stack
+### Landing Page
+- Hero section with CTA
+- Features showcase
+- Pricing tiers (placeholder)
+- Professional navbar and footer
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: SQLite (Prisma ORM)
-- **Authentication**: JWT with HTTP-only cookies
-- **UI Components**: Custom components
+### Database
+- Story model with title, content, author, genre, tags, cover images
+- User favorites/bookmarks support (database ready)
+- SQLite for development (easily switch to PostgreSQL for production)
+
+## Architecture & Libraries
+
+### Framework & Core
+- **Next.js 16.1.1** - React framework with App Router for server-side rendering and routing
+  - App Router for file-based routing
+  - Server Components by default for optimal performance
+  - Server Actions for form handling
+  - Image optimization with next/image
+- **React 19.2.3** - UI library with latest features
+- **TypeScript 5** - Type safety across the entire codebase
+
+### Styling
+- **Tailwind CSS v4** - Utility-first CSS framework
+  - Custom configuration with design tokens
+  - Mobile-first responsive design
+  - Dark mode support ready
+- **class-variance-authority** - Type-safe component variants
+- **clsx & tailwind-merge** - Conditional className utilities
+
+### Database & ORM
+- **Prisma 5.22.0** - Type-safe database ORM
+  - Declarative schema modeling
+  - Auto-generated TypeScript types
+  - Migration system for schema changes
+  - Prisma Studio for database GUI
+- **SQLite** - Development database (file:./dev.db)
+  - Zero configuration
+  - Easy to switch to PostgreSQL for production
+
+### Authentication & Security
+- **JWT (jsonwebtoken)** - Stateless authentication tokens
+- **bcryptjs** - Password hashing with salt rounds
+- **HTTP-only cookies** - Secure token storage
+- **Next.js middleware** - Route protection
+
+### UI Components
+- **Custom component library** - Reusable React components
+  - Button, Input, Card components
+  - Consistent design system
+  - Type-safe props with TypeScript
+- **Lucide React** - Modern icon library
+  - Tree-shakeable icons
+  - Consistent styling
+
+### Development Tools
+- **ESLint** - Code linting with Next.js config
+- **tsx** - TypeScript execution for scripts
+- **Git** - Version control
+
+## Project Architecture
+
+```
+story-subscription/
+├── app/                          # Next.js App Router
+│   ├── api/                     # API Routes
+│   │   └── auth/               # Authentication endpoints
+│   │       ├── login/          # POST /api/auth/login
+│   │       ├── logout/         # POST /api/auth/logout
+│   │       ├── signup/         # POST /api/auth/signup
+│   │       └── me/            # GET /api/auth/me
+│   ├── stories/                # Story pages
+│   │   ├── [id]/              # Dynamic story reader
+│   │   └── page.tsx           # Story library
+│   ├── dashboard/              # Protected dashboard
+│   ├── login/                  # Login page
+│   ├── signup/                 # Signup page
+│   ├── layout.tsx              # Root layout
+│   ├── page.tsx                # Landing page
+│   └── globals.css             # Global styles
+│
+├── components/                  # React Components
+│   ├── auth/                   # Authentication forms
+│   │   ├── login-form.tsx
+│   │   └── signup-form.tsx
+│   ├── landing/                # Landing page sections
+│   │   ├── navbar.tsx
+│   │   ├── hero.tsx
+│   │   ├── features.tsx
+│   │   ├── pricing.tsx
+│   │   └── footer.tsx
+│   └── ui/                     # Reusable UI components
+│       ├── button.tsx
+│       ├── input.tsx
+│       └── card.tsx
+│
+├── lib/                         # Utility functions
+│   ├── auth/                   # Authentication logic
+│   │   ├── password.ts        # bcrypt utilities
+│   │   └── session.ts         # JWT utilities
+│   ├── db.ts                   # Prisma client singleton
+│   └── utils.ts                # Helper functions
+│
+├── prisma/                      # Database
+│   ├── schema.prisma           # Database schema
+│   └── migrations/             # Migration history
+│
+├── .env                        # Environment variables (gitignored)
+├── .env.example                # Environment template
+├── next.config.ts              # Next.js configuration
+├── tailwind.config.ts          # Tailwind configuration
+├── tsconfig.json               # TypeScript configuration
+└── PLAN.md                     # Project roadmap
+```
+
+### Data Flow
+
+1. **Client Request** → Next.js App Router
+2. **Server Component** → Fetches data from Prisma
+3. **Prisma ORM** → Queries SQLite database
+4. **Response** → Rendered HTML sent to client
+5. **Hydration** → Interactive React components
+
+### Authentication Flow
+
+1. User submits credentials → Login form
+2. Server validates → bcrypt password check
+3. JWT created → Signed token
+4. Cookie set → HTTP-only, secure
+5. Subsequent requests → JWT verified via middleware
+6. Protected routes → Redirect if unauthorized
+
+### Database Schema
+
+**User Model**
+- Authentication and profile data
+- Relations to favorites
+
+**Story Model**
+- Title, content, summary, author
+- Genre, tags, reading time, age rating
+- Cover image URL
+- Published status and featured flag
+- View count tracking
+
+**Favorite Model**
+- User-story relationship
+- Bookmark functionality
 
 ## Getting Started
 
