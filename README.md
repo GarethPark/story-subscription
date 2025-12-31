@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SaaS Starter Template
+
+A modern, production-ready SaaS starter template built with Next.js 14, TypeScript, Tailwind CSS, and Prisma.
+
+## Features
+
+- Authentication System - Complete signup/login/logout with JWT sessions
+- Landing Page Components - Hero, Features, Pricing, Navbar, Footer
+- User Dashboard - Protected dashboard with user info
+- Database - SQLite with Prisma ORM (easily switch to PostgreSQL)
+- TypeScript - Full type safety
+- Tailwind CSS - Modern, responsive styling
+- Reusable Components - UI components ready to customize
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: SQLite (Prisma ORM)
+- **Authentication**: JWT with HTTP-only cookies
+- **UI Components**: Custom components
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Set Up Environment Variables
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and update JWT_SECRET with a secure random string:
+
+```bash
+# Generate a secure secret
+openssl rand -base64 32
+```
+
+### 3. Set Up Database
+
+Run the Prisma migration to create your database:
+
+```bash
+npx prisma migrate dev
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see your app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+├── app/                   # Next.js 14 App Router
+│   ├── api/auth/         # Authentication endpoints
+│   ├── dashboard/        # Protected dashboard
+│   ├── login/           # Login page
+│   ├── signup/          # Signup page
+│   └── page.tsx         # Landing page
+├── components/           # React components
+│   ├── auth/            # Authentication forms
+│   ├── landing/         # Landing sections
+│   └── ui/              # UI components
+├── lib/                  # Utilities
+│   ├── auth/            # Auth logic
+│   └── db.ts            # Prisma client
+└── prisma/              # Database
+    └── schema.prisma    # Models
+```
 
-## Learn More
+## Customizing for Your Project
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Update Branding
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Edit `app/page.tsx` - Landing page content
+- Edit `components/landing/navbar.tsx` - Logo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Extend Database
 
-## Deploy on Vercel
+Edit `prisma/schema.prisma` then run:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx prisma migrate dev --name your_change
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Add Pages
+
+Create `app/your-page/page.tsx` for new routes
+
+## Deployment (Vercel)
+
+1. Push to GitHub
+2. Import in Vercel
+3. Add environment variables
+4. Switch to PostgreSQL for production
+
+## Security
+
+- Passwords hashed with bcrypt
+- HTTP-only cookies
+- JWT with expiration
+- **Change JWT_SECRET in production**
+- **Use PostgreSQL in production**
+- **Enable HTTPS in production**
+
+## Scripts
+
+- `npm run dev` - Development server
+- `npm run build` - Production build
+- `npm start` - Production server
+- `npx prisma studio` - Database GUI
+
+## License
+
+MIT - Free to use for your projects!
