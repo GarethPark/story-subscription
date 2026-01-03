@@ -1,0 +1,250 @@
+'use client'
+
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import { Loader2, Sparkles } from 'lucide-react'
+
+const GENRES = ['Contemporary', 'Historical', 'Paranormal', 'Fantasy', 'Suspense'] as const
+const HEAT_LEVELS = ['Sweet', 'Warm', 'Hot', 'Scorching'] as const
+
+const TROPES_BY_GENRE = {
+  Contemporary: ['enemies to lovers', 'second chance', 'fake relationship', 'boss/employee', 'friends to lovers', 'forced proximity'],
+  Historical: ['arranged marriage', 'forbidden love', 'secret identity', 'class difference', 'marriage of convenience', 'redemption'],
+  Paranormal: ['fated mates', 'vampire romance', 'shifter romance', 'witch/warlock', 'forbidden supernatural love', 'chosen one'],
+  Fantasy: ['destined lovers', 'magic bond', 'rival kingdoms', 'quest romance', 'dragon shifter', 'royal romance'],
+  Suspense: ['protector romance', 'witness protection', 'undercover', 'romantic suspense', 'bodyguard', 'detective romance'],
+}
+
+export function StoryGenerationForm() {
+  const router = useRouter()
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [progress, setProgress] = useState('')
+  const [genre, setGenre] = useState<typeof GENRES[number]>('Contemporary')
+  const [heatLevel, setHeatLevel] = useState<typeof HEAT_LEVELS[number]>('Warm')
+  const [selectedTropes, setSelectedTropes] = useState<string[]>([])
+  const [wordCount, setWordCount] = useState(3500)
+  const [generateCover, setGenerateCover] = useState(true)
+
+  const availableTropes = TROPES_BY_GENRE[genre]
+
+  const toggleTrope = (trope: string) => {
+    setSelectedTropes(prev =>
+      prev.includes(trope)
+        ? prev.filter(t => t !== trope)
+        : [...prev, trope]
+    )
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (selectedTropes.length === 0) {
+      alert('Please select at least one trope')
+      return
+    }
+
+    setIsGenerating(true)
+    setProgress('Initializing AI story generation...')
+
+    try {
+      const response = await fetch('/api/admin/generate-story', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          genre,
+          heatLevel,
+          tropes: selectedTropes,
+          wordCount,
+          generateCover,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to generate story')
+      }
+
+      const data = await response.json()
+
+      setProgress('Story generated successfully!')
+
+      // Redirect to review page
+      router.push(`/admin/review/${data.storyId}`)
+    } catch (error) {
+      console.error('Generation error:', error)
+      alert(error instanceof Error ? error.message : 'Failed to generate story')
+      setIsGenerating(false)
+      setProgress('')
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold mb-4">Story Configuration</h2>
+
+        {/* Genre Selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">Genre</label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {GENRES.map((g) => (
+              <button
+                key={g}
+                type="button"
+                onClick={() => {
+                  setGenre(g)
+                  setSelectedTropes([]) // Reset tropes when genre changes
+                }}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  genre === g
+                    ? 'bg-slate-900 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                {g}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Heat Level Selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">Heat Level</label>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {HEAT_LEVELS.map((h) => (
+              <button
+                key={h}
+                type="button"
+                onClick={() => setHeatLevel(h)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  heatLevel === h
+                    ? 'bg-rose-500 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                {h}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 mt-2">
+            {heatLevel === 'Sweet' && 'Emotional connection, innocent touches, fade to black'}
+            {heatLevel === 'Warm' && 'Sensual tension, passionate kissing, tasteful romance'}
+            {heatLevel === 'Hot' && 'Explicit romantic scenes, detailed intimacy'}
+            {heatLevel === 'Scorching' && 'Very explicit, detailed intimate scenes'}
+          </p>
+        </div>
+
+        {/* Tropes Selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">
+            Tropes (Select 1-3)
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {availableTropes.map((trope) => (
+              <button
+                key={trope}
+                type="button"
+                onClick={() => toggleTrope(trope)}
+                className={`px-3 py-2 rounded-md text-sm transition-colors text-left ${
+                  selectedTropes.includes(trope)
+                    ? 'bg-purple-100 text-purple-900 border-2 border-purple-500'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-2 border-transparent'
+                }`}
+              >
+                {trope}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 mt-2">
+            Selected: {selectedTropes.length > 0 ? selectedTropes.join(', ') : 'None'}
+          </p>
+        </div>
+
+        {/* Word Count */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">
+            Target Word Count: {wordCount.toLocaleString()}
+          </label>
+          <input
+            type="range"
+            min="2000"
+            max="8000"
+            step="500"
+            value={wordCount}
+            onChange={(e) => setWordCount(Number(e.target.value))}
+            className="w-full"
+          />
+          <div className="flex justify-between text-xs text-slate-500 mt-1">
+            <span>2,000</span>
+            <span>8,000</span>
+          </div>
+        </div>
+
+        {/* Cover Image Option */}
+        <div className="mb-6">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={generateCover}
+              onChange={(e) => setGenerateCover(e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm font-medium">
+              Generate AI cover image with DALL-E (requires OpenAI API key)
+            </span>
+          </label>
+          <p className="text-xs text-slate-500 mt-1 ml-6">
+            Uncheck to use a gradient fallback
+          </p>
+        </div>
+      </div>
+
+      {/* Progress Display */}
+      {isGenerating && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <Loader2 className="h-5 w-5 text-blue-600 animate-spin" />
+            <div>
+              <p className="text-sm font-medium text-blue-900">{progress}</p>
+              <p className="text-xs text-blue-600 mt-1">
+                This may take 30-60 seconds. Please wait...
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Submit Button */}
+      <div className="flex gap-4">
+        <Button
+          type="submit"
+          disabled={isGenerating || selectedTropes.length === 0}
+          className="flex-1"
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Generating Story...
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-4 w-4 mr-2" />
+              Generate Story
+            </>
+          )}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          disabled={isGenerating}
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
+  )
+}

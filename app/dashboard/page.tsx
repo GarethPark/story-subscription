@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { Heart, BookOpen } from 'lucide-react'
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()
@@ -14,15 +16,25 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="border-b bg-white">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-600">{user.email}</span>
-            <form action="/api/auth/logout" method="POST">
-              <Button type="submit" variant="outline" size="sm">
-                Logout
-              </Button>
-            </form>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Dashboard</h1>
+            <div className="flex items-center gap-4">
+              <nav className="hidden md:flex items-center gap-4 mr-4">
+                <Link href="/stories" className="text-sm text-slate-600 hover:text-slate-900">
+                  Stories
+                </Link>
+                <Link href="/library" className="text-sm text-slate-600 hover:text-slate-900">
+                  My Library
+                </Link>
+              </nav>
+              <span className="text-sm text-slate-600">{user.email}</span>
+              <form action="/api/auth/logout" method="POST">
+                <Button type="submit" variant="outline" size="sm">
+                  Logout
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
       </header>
@@ -65,14 +77,22 @@ export default async function DashboardPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Get Started</CardTitle>
-              <CardDescription>Next steps</CardDescription>
+              <CardTitle>Quick Actions</CardTitle>
+              <CardDescription>Explore and save stories</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-600 mb-4">
-                Customize your dashboard and add your app-specific features.
-              </p>
-              <Button className="w-full">Take Action</Button>
+            <CardContent className="space-y-2">
+              <Button className="w-full" asChild>
+                <Link href="/stories">
+                  <BookOpen className="h-4 w-4 mr-2" />
+                  Browse Stories
+                </Link>
+              </Button>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/library">
+                  <Heart className="h-4 w-4 mr-2" />
+                  My Library
+                </Link>
+              </Button>
             </CardContent>
           </Card>
         </div>

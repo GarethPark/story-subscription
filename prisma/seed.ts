@@ -1,7 +1,29 @@
 import { prisma } from '../lib/db'
+import { hashPassword } from '../lib/auth/password'
 
 async function main() {
   console.log('Starting seed...')
+
+  // Create test user account
+  console.log('Creating test user account...')
+  const hashedPassword = await hashPassword('test123')
+
+  const testUser = await prisma.user.upsert({
+    where: { email: 'test@test.com' },
+    update: {
+      isAdmin: true, // Ensure test user is always admin
+    },
+    create: {
+      email: 'test@test.com',
+      password: hashedPassword,
+      name: 'Test User',
+      isAdmin: true,
+    },
+  })
+
+  console.log(`✅ Test user created: test@test.com / test123`)
+  console.log(`   User ID: ${testUser.id}`)
+  console.log(`   Admin: ${testUser.isAdmin}\n`)
 
   // Create sample romance stories
   const stories = [

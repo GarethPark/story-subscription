@@ -145,6 +145,16 @@ Choose one of:
 - Database: SQLite file at `dev.db` (gitignored)
 - Environment variables in `.env` (gitignored, template in `.env.example`)
 
+### Test Account
+**Email**: test@test.com
+**Password**: test123
+**Admin**: Yes
+This account is created automatically when you run the seed script.
+
+### Testing
+Run tests with: `npm test`
+See TESTING.md for full testing guide.
+
 ## How to Continue This Project
 
 If resuming in a new session:

@@ -3,8 +3,10 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Heart, ArrowLeft, Clock, Tag } from 'lucide-react'
+import { ArrowLeft, Clock, Tag } from 'lucide-react'
 import Image from 'next/image'
+import { getCurrentUser } from '@/lib/auth/session'
+import { FavoriteButton } from '@/components/story/favorite-button'
 
 export default async function StoryPage({
   params,
@@ -12,15 +14,32 @@ export default async function StoryPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const story = await prisma.story.findUnique({
-    where: {
-      id: id,
-      published: true,
-    },
-  })
+  const [story, user] = await Promise.all([
+    prisma.story.findUnique({
+      where: {
+        id: id,
+        published: true,
+      },
+    }),
+    getCurrentUser(),
+  ])
 
   if (!story) {
     notFound()
+  }
+
+  // Check if user has favorited this story
+  let isFavorited = false
+  if (user) {
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        userId_storyId: {
+          userId: user.id,
+          storyId: story.id,
+        },
+      },
+    })
+    isFavorited = !!favorite
   }
 
   return (
@@ -99,10 +118,11 @@ export default async function StoryPage({
           <Card className="p-8 md:p-12">
             {/* Action buttons */}
             <div className="flex justify-between items-center mb-8 pb-6 border-b">
-              <Button variant="outline" size="sm">
-                <Heart className="h-4 w-4 mr-2" />
-                Save to Favorites
-              </Button>
+              <FavoriteButton
+                storyId={story.id}
+                initialIsFavorited={isFavorited}
+                isAuthenticated={!!user}
+              />
               <div className="text-sm text-slate-500">
                 Published {new Date(story.createdAt).toLocaleDateString()}
               </div>

@@ -18,9 +18,9 @@ export default async function StoriesPage({
       ...(genre && { genre: genre }),
       ...(search && {
         OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { summary: { contains: search, mode: 'insensitive' } },
-          { author: { contains: search, mode: 'insensitive' } },
+          { title: { contains: search } },
+          { summary: { contains: search } },
+          { author: { contains: search } },
         ],
       }),
     },
