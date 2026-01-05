@@ -93,6 +93,7 @@ export async function getCurrentUser() {
       email: true,
       name: true,
       isAdmin: true,
+      credits: true,
       createdAt: true
     }
   })
