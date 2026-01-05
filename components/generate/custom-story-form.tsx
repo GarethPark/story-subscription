@@ -247,7 +247,7 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
                 value={protagonistName}
                 onChange={(e) => setProtagonistName(e.target.value)}
                 placeholder="e.g., Zara, Marcus, Elara"
-                className="w-full px-3 py-2 border border-rose-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full px-3 py-2 border border-rose-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500"
               />
             </div>
             <div>
@@ -260,7 +260,7 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
                 value={loveInterestName}
                 onChange={(e) => setLoveInterestName(e.target.value)}
                 placeholder="e.g., Phoenix, Isabella, Kai"
-                className="w-full px-3 py-2 border border-rose-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full px-3 py-2 border border-rose-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500"
               />
             </div>
           </div>
@@ -278,7 +278,7 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
             value={customScenario}
             onChange={(e) => setCustomScenario(e.target.value)}
             placeholder="Describe any specific plot points, settings, or scenarios you'd like in your story... e.g., 'Set in a cozy bookstore in Seattle during Christmas' or 'They meet during a blackout in New York City'"
-            className="w-full px-3 py-2 border border-purple-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2 border border-purple-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             rows={3}
             maxLength={500}
           />

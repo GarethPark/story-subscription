@@ -185,15 +185,53 @@ STORY:
 
   const responseText = message.content[0].type === 'text' ? message.content[0].text : ''
 
-  // Parse the response
+  // Parse the response with more flexible patterns
   const titleMatch = responseText.match(/TITLE:\s*(.+?)(?:\n|$)/i)
   const authorMatch = responseText.match(/AUTHOR:\s*(.+?)(?:\n|$)/i)
   const summaryMatch = responseText.match(/SUMMARY:\s*(.+?)(?:\n\n|TAGS:|STORY:)/is)
   const tagsMatch = responseText.match(/TAGS:\s*(.+?)(?:\n|$)/i)
-  const storyMatch = responseText.match(/STORY:\s*\n([\s\S]+)$/i)
+  const storyMatch = responseText.match(/STORY:\s*\n?([\s\S]+)$/i)
 
+  // More detailed error logging
   if (!titleMatch || !authorMatch || !summaryMatch || !storyMatch) {
-    throw new Error('Failed to parse story response from Claude')
+    console.error('Failed to parse Claude response. Missing fields:', {
+      hasTitle: !!titleMatch,
+      hasAuthor: !!authorMatch,
+      hasSummary: !!summaryMatch,
+      hasStory: !!storyMatch,
+      responseLength: responseText.length,
+      responsePreview: responseText.substring(0, 500)
+    })
+
+    // Try to salvage what we can
+    const salvageTitle = titleMatch?.[1]?.trim() || 'Untitled Romance'
+    const salvageAuthor = authorMatch?.[1]?.trim() || 'AI Generated'
+    const salvageSummary = summaryMatch?.[1]?.trim() || 'A captivating romance story'
+
+    // If we at least have story content, use it
+    if (storyMatch) {
+      return {
+        title: salvageTitle,
+        author: salvageAuthor,
+        summary: salvageSummary,
+        tags: tagsMatch?.[1]?.trim() || tropesText,
+        content: storyMatch[1].trim(),
+      }
+    }
+
+    // If we have no story content at all, check if the response is just plain text
+    if (responseText.length > 500 && !responseText.includes('TITLE:')) {
+      // Claude returned the story without formatting - use it anyway
+      return {
+        title: 'Untitled Romance',
+        author: 'AI Generated',
+        summary: 'A romance story generated for you',
+        tags: tropesText,
+        content: responseText,
+      }
+    }
+
+    throw new Error('Failed to parse story response from Claude - no valid content found')
   }
 
   return {
