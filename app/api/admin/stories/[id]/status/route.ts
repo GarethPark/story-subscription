@@ -4,7 +4,7 @@ import { prisma } from '@/lib/db'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser()
@@ -13,8 +13,10 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const { id } = await params
+
     const story = await prisma.story.findUnique({
-      where: { id: params.id },
+      where: { id },
       select: {
         id: true,
         title: true,

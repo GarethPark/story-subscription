@@ -13,12 +13,14 @@ interface StoryConfig {
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+
     // Get the story config from database
     const story = await prisma.story.findUnique({
-      where: { id: params.id },
+      where: { id },
     })
 
     if (!story) {
@@ -27,7 +29,7 @@ export async function POST(
 
     // Update status to GENERATING
     await prisma.story.update({
-      where: { id: params.id },
+      where: { id },
       data: { generationStatus: 'GENERATING' },
     })
 
@@ -64,7 +66,7 @@ export async function POST(
 
     // Update story with generated content
     await prisma.story.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: storyData.title,
         author: storyData.author,
@@ -83,9 +85,11 @@ export async function POST(
   } catch (error) {
     console.error('Generation error:', error)
 
+    const { id } = await params
+
     // Update story with error status
     await prisma.story.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         generationStatus: 'FAILED',
         generationError: error instanceof Error ? error.message : 'Unknown error',
