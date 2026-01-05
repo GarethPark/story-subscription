@@ -40,28 +40,38 @@ model Session {
 
 // Romance stories
 model Story {
-  id           String   @id @default(cuid())
-  title        String
-  summary      String   // Short description for preview
-  content      String   // Full story text
-  coverImage   String?  // URL to cover image
-  author       String   // Author name
-  genre        String   // Romance subgenre (Contemporary, Historical, Paranormal, etc.)
-  tags         String?  // Comma-separated tags
-  readingTime  Int?     // Estimated reading time in minutes
-  ageRating    String   @default("PG-13") // PG, PG-13, R, etc.
-  published    Boolean  @default(false) // Draft vs published
-  featured     Boolean  @default(false) // Featured on homepage
-  viewCount    Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                String           @id @default(cuid())
+  title             String           @default("Generating...")
+  summary           String           @default("Story is being generated")
+  content           String           @default("")
+  coverImage        String?
+  author            String           @default("AI Generated")
+  genre             String
+  tags              String?
+  readingTime       Int?
+  ageRating         String           @default("PG-13")
+  published         Boolean          @default(false)
+  featured          Boolean          @default(false)
+  viewCount         Int              @default(0)
+  generationStatus  GenerationStatus @default(PENDING)
+  generationError   String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 
   // Relations
-  favorites    Favorite[]
+  favorites         Favorite[]
 
   @@index([genre])
   @@index([published])
   @@index([featured])
+  @@index([generationStatus])
+}
+
+enum GenerationStatus {
+  PENDING
+  GENERATING
+  COMPLETED
+  FAILED
 }
 
 // User favorites/bookmarks

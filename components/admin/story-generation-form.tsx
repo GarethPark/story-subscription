@@ -36,6 +36,28 @@ export function StoryGenerationForm() {
     )
   }
 
+  const checkStatus = async (storyId: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/admin/stories/${storyId}/status`)
+      const data = await response.json()
+
+      if (data.generationStatus === 'COMPLETED') {
+        setProgress('Story generated successfully!')
+        return true
+      } else if (data.generationStatus === 'FAILED') {
+        throw new Error(data.generationError || 'Generation failed')
+      } else if (data.generationStatus === 'GENERATING') {
+        setProgress('Generating story... This takes 1-2 minutes for longer stories.')
+      } else {
+        setProgress('Starting generation...')
+      }
+
+      return false
+    } catch (error) {
+      throw error
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -45,9 +67,10 @@ export function StoryGenerationForm() {
     }
 
     setIsGenerating(true)
-    setProgress('Initializing AI story generation...')
+    setProgress('Starting story generation...')
 
     try {
+      // Start generation
       const response = await fetch('/api/admin/generate-story', {
         method: 'POST',
         headers: {
@@ -68,14 +91,40 @@ export function StoryGenerationForm() {
       }
 
       const data = await response.json()
+      const storyId = data.storyId
 
-      setProgress('Story generated successfully!')
+      setProgress('Generation started! Waiting for completion...')
 
-      // Redirect to review page
-      router.push(`/admin/review/${data.storyId}`)
+      // Poll for status every 3 seconds
+      const pollInterval = setInterval(async () => {
+        try {
+          const isComplete = await checkStatus(storyId)
+          if (isComplete) {
+            clearInterval(pollInterval)
+            // Wait a moment before redirect to show success message
+            setTimeout(() => {
+              router.push(`/admin/review/${storyId}`)
+            }, 1000)
+          }
+        } catch (error) {
+          clearInterval(pollInterval)
+          console.error('Status check error:', error)
+          alert(error instanceof Error ? error.message : 'Generation failed')
+          setIsGenerating(false)
+          setProgress('')
+        }
+      }, 3000)
+
+      // Safety timeout after 3 minutes
+      setTimeout(() => {
+        clearInterval(pollInterval)
+        setProgress('Generation is taking longer than expected. Check the admin panel for the story status.')
+        setIsGenerating(false)
+      }, 180000)
+
     } catch (error) {
       console.error('Generation error:', error)
-      alert(error instanceof Error ? error.message : 'Failed to generate story')
+      alert(error instanceof Error ? error.message : 'Failed to start generation')
       setIsGenerating(false)
       setProgress('')
     }
@@ -210,7 +259,9 @@ export function StoryGenerationForm() {
             <div>
               <p className="text-sm font-medium text-blue-900">{progress}</p>
               <p className="text-xs text-blue-600 mt-1">
-                This may take 30-60 seconds. Please wait...
+                {wordCount > 4000
+                  ? 'Longer stories take 1-2 minutes. You can close this tab and check back later!'
+                  : 'This will take 30-90 seconds. Feel free to wait or check back soon!'}
               </p>
             </div>
           </div>
