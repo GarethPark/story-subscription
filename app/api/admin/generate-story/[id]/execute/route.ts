@@ -126,12 +126,13 @@ Length: Approximately ${wordCount} words
 
 Requirements:
 1. Create compelling, three-dimensional characters with chemistry
-2. Include witty dialogue and emotional depth
-3. Build sexual/romantic tension throughout
-4. Include a satisfying emotional arc and happy ending (HEA)
-5. Make it feel complete - beginning, middle, climactic resolution, and epilogue
-6. Write in third person with close POV
-7. Include vivid sensory details and emotional introspection
+2. Use UNIQUE, CREATIVE character names - avoid common romance names like Emma, Ethan, Sophia, Liam, etc. Choose distinctive names that fit the genre and setting
+3. Include witty dialogue and emotional depth
+4. Build sexual/romantic tension throughout
+5. Include a satisfying emotional arc and happy ending (HEA)
+6. Make it feel complete - beginning, middle, climactic resolution, and epilogue
+7. Write in third person with close POV
+8. Include vivid sensory details and emotional introspection
 
 Please provide the story in this exact format:
 
