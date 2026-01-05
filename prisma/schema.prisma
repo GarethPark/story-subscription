@@ -17,12 +17,14 @@ model User {
   password      String
   name          String?
   isAdmin       Boolean  @default(false)
+  credits       Int      @default(3) // Custom story generation credits
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   // Relations
   sessions      Session[]
   favorites     Favorite[]
+  customStories Story[]  @relation("UserCustomStories")
 }
 
 // Session management for JWT alternative
@@ -55,16 +57,26 @@ model Story {
   viewCount         Int              @default(0)
   generationStatus  GenerationStatus @default(PENDING)
   generationError   String?
+
+  // Custom generation fields
+  isCustom          Boolean          @default(false) // True if user-generated, false if admin curated
+  userId            String?          // User who created this custom story (null for curated stories)
+  characterNames    String?          // JSON string of custom character names {"protagonist": "name", "love_interest": "name"}
+  customScenario    String?          // Optional plot/scenario request from user
+
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
   // Relations
   favorites         Favorite[]
+  creator           User?            @relation("UserCustomStories", fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([genre])
   @@index([published])
   @@index([featured])
   @@index([generationStatus])
+  @@index([userId])
+  @@index([isCustom])
 }
 
 enum GenerationStatus {
