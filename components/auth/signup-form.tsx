@@ -45,28 +45,29 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>Enter your details to get started</CardDescription>
+    <Card className="w-full border-rose-900/50 bg-gray-900/90 backdrop-blur-xl shadow-2xl">
+      <CardHeader className="space-y-3 pb-6">
+        <CardTitle className="text-3xl font-['Playfair_Display'] text-white">Create Your Account</CardTitle>
+        <CardDescription className="text-gray-300 text-base">Start your journey into irresistible romance</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium">
+            <label htmlFor="name" className="text-sm font-medium text-gray-200">
               Name (optional)
             </label>
             <Input
               id="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="Your name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-rose-600"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium">
+            <label htmlFor="email" className="text-sm font-medium text-gray-200">
               Email
             </label>
             <Input
@@ -76,11 +77,12 @@ export function SignupForm() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-rose-600"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium">
+            <label htmlFor="password" className="text-sm font-medium text-gray-200">
               Password
             </label>
             <Input
@@ -91,23 +93,24 @@ export function SignupForm() {
               minLength={8}
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-rose-600"
             />
           </div>
 
           {error && (
-            <div className="text-sm text-red-500 bg-red-50 p-3 rounded-md">
+            <div className="text-sm text-red-200 bg-red-950/50 border border-red-900/50 p-3 rounded-xl">
               {error}
             </div>
           )}
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Creating account...' : 'Sign up'}
+          <Button type="submit" className="w-full h-12 text-base font-bold" disabled={loading}>
+            {loading ? 'Creating your account...' : 'Start Reading'}
           </Button>
         </form>
 
-        <div className="mt-4 text-center text-sm text-slate-600">
+        <div className="mt-6 text-center text-sm text-gray-400">
           Already have an account?{' '}
-          <a href="/login" className="text-slate-900 font-medium hover:underline">
+          <a href="/login" className="text-rose-400 font-semibold hover:text-rose-300 transition-colors">
             Log in
           </a>
         </div>
