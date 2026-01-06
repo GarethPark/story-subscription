@@ -82,25 +82,36 @@ AI-powered romance story platform where users can read curated stories OR create
 
 ## Roadmap
 
-### Phase 1: Custom Generation (CURRENT - Week 1-2)
+### Phase 1: Custom Generation ✅ **COMPLETE**
 **Goal:** Allow users to create personalized stories
 
-**Features to Build:**
+**Features Built:**
 - [x] Admin story generation working (async)
-- [ ] User-facing custom story generation form
-- [ ] Character name customization
-- [ ] Scenario/plot customization (optional text input)
-- [ ] Credit system (simple counter, no payment yet)
-- [ ] "My Stories" page to view custom-generated stories
-- [ ] Separate custom stories from curated library
+- [x] User-facing custom story generation form
+- [x] Character name customization
+- [x] Scenario/plot customization (optional text input)
+- [x] Credit system (simple counter, no payment yet)
+- [x] "My Stories" page to view custom-generated stories
+- [x] Separate custom stories from curated library
+- [x] Fixed 404 issue - users can view their own unpublished stories
 
-**Technical Tasks:**
-- Create `/generate` page for users (not admin-only)
-- Add credits field to User model
-- Create "My Stories" section in dashboard
-- Update Story model to track `isCustom` and `userId`
-- Add credit checking before generation
-- Update UI to show remaining credits
+**Technical Implementation:**
+- [x] Created `/generate` page for users
+- [x] Added credits field to User model
+- [x] Created "My Stories" section in dashboard
+- [x] Updated Story model to track `isCustom` and `userId`
+- [x] Added credit checking before generation
+- [x] Updated UI to show remaining credits
+- [x] Async generation with status polling
+- [x] Enhanced parsing with fallback handling
+- [x] Fixed text visibility issues
+
+**AI Model Used:** Claude Sonnet 4 ($3 per 8,000-word story)
+
+**Future Consideration:** Claude Opus 4 as premium tier option
+- Cost: ~$7 per story (2x Sonnet cost)
+- Use case: Premium users willing to pay 2 credits for ultra-premium quality
+- Implementation: Add "Premium Quality" toggle in generation form
 
 ### Phase 2: Curated Library Growth (Week 3-4)
 **Goal:** Build valuable free content library
