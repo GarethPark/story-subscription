@@ -25,12 +25,12 @@ export function Hero({
         <img
           src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?w=1920&h=1080&fit=crop&q=80"
           alt="Romance"
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-60"
         />
-        {/* Deep, mysterious shadow overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-gray-900/90 to-black/95" />
-        <div className="absolute inset-0 bg-gradient-to-br from-red-950/60 via-black/20 to-purple-950/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+        {/* Deep, mysterious shadow overlay - balanced so image is visible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-gray-900/75 to-black/85" />
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950/40 via-transparent to-purple-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
       </div>
 
       {/* Dangerous, sultry lighting */}
