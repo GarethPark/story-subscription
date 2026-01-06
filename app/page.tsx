@@ -19,8 +19,8 @@ export default function Home() {
 
       <main className="flex-1">
         <Hero
-          title="Your Perfect Romance Story Awaits"
-          subtitle="Discover beautifully crafted AI-powered romance stories, or create your own personalized love story with custom characters, tropes, and scenarios."
+          title="Your Perfect Love Story"
+          subtitle="Discover curated romance stories or create your own with custom characters and your favorite tropes."
           ctaText="Start Reading Free"
           ctaLink="/stories"
           secondaryCtaText="Create Your Story"

@@ -19,45 +19,45 @@ export function Hero({
   secondaryCtaLink
 }: HeroProps) {
   return (
-    <section className="relative w-full py-20 md:py-32 lg:py-40 xl:py-48 overflow-hidden">
+    <section className="relative w-full py-24 md:py-32 lg:py-40 overflow-hidden">
       {/* Elegant gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-amber-50 to-rose-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-50/50 via-white to-amber-50/30" />
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-rose-200/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-violet-200/30 rounded-full blur-3xl" />
+      {/* Subtle decorative elements */}
+      <div className="absolute top-1/4 left-20 w-64 h-64 bg-rose-200/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-20 w-80 h-80 bg-violet-200/15 rounded-full blur-3xl" />
 
       <div className="container px-4 md:px-6 relative z-10">
-        <div className="flex flex-col items-center space-y-8 text-center">
-          <div className="space-y-6 max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-rose-200/50 shadow-sm">
+        <div className="flex flex-col items-center space-y-10 text-center max-w-5xl mx-auto">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full border border-rose-200/50 shadow-sm">
               <Sparkles className="h-4 w-4 text-amber-500" />
-              <span className="text-sm font-medium text-gray-700">AI-Powered Romance Stories</span>
+              <span className="text-sm font-semibold text-gray-700">AI-Powered Romance</span>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl font-['Playfair_Display'] text-gray-900 leading-tight">
+            <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl font-['Playfair_Display'] text-gray-900 leading-[1.1]">
               {title}
             </h1>
 
-            <p className="mx-auto max-w-[800px] text-gray-600 text-lg md:text-xl lg:text-2xl leading-relaxed">
+            <p className="mx-auto max-w-[700px] text-gray-600 text-xl md:text-2xl leading-relaxed font-light">
               {subtitle}
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button asChild size="lg" className="text-base">
+          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <Button asChild size="lg" className="text-base px-8">
               <a href={ctaLink}>{ctaText}</a>
             </Button>
 
             {secondaryCtaText && secondaryCtaLink && (
-              <Button asChild variant="outline" size="lg" className="text-base">
+              <Button asChild variant="secondary" size="lg" className="text-base px-8">
                 <a href={secondaryCtaLink}>{secondaryCtaText}</a>
               </Button>
             )}
           </div>
 
           {/* Trust indicator */}
-          <div className="pt-8 flex items-center gap-2 text-sm text-gray-600">
+          <div className="pt-6 flex flex-col sm:flex-row items-center gap-3 text-sm text-gray-500">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <svg
@@ -69,7 +69,7 @@ export function Hero({
                 </svg>
               ))}
             </div>
-            <span className="font-medium">Loved by romance readers worldwide</span>
+            <span className="font-medium">Loved by readers worldwide</span>
           </div>
         </div>
       </div>
