@@ -14,17 +14,22 @@ export default async function StoryPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const [story, user] = await Promise.all([
-    prisma.story.findUnique({
-      where: {
-        id: id,
-        published: true,
-      },
-    }),
-    getCurrentUser(),
-  ])
+  const user = await getCurrentUser()
+
+  const story = await prisma.story.findUnique({
+    where: { id },
+  })
 
   if (!story) {
+    notFound()
+  }
+
+  // Check access: story must be published OR user owns it OR user is admin
+  const hasAccess = story.published ||
+                    (user && story.userId === user.id) ||
+                    (user?.isAdmin)
+
+  if (!hasAccess) {
     notFound()
   }
 
