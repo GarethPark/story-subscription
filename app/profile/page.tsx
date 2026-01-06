@@ -4,6 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
 import { User, Mail, Shield, CreditCard, BookOpen, Heart, Settings, LogOut, Coins } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Profile',
+  description: 'Manage your Silk account settings, view your credits, and update your preferences.'
+}
 
 export default async function ProfilePage() {
   const user = await getCurrentUser()

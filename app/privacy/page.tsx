@@ -1,6 +1,12 @@
 import { Navbar } from '@/components/landing/navbar'
 import { Footer } from '@/components/landing/footer'
 import { Shield } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'Read our privacy policy to learn how Silk collects, uses, and protects your personal information.'
+}
 
 export default function PrivacyPage() {
   return (

@@ -1,6 +1,12 @@
 import { Navbar } from '@/components/landing/navbar'
 import { Footer } from '@/components/landing/footer'
 import { FileText } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+  description: 'Read our terms of service to understand the rules and guidelines for using Silk.'
+}
 
 export default function TermsPage() {
   return (

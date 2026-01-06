@@ -4,6 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Heart, BookOpen, Sparkles, Star, Menu } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'Your personal romance story dashboard. Generate custom stories, browse your library, and manage your account.'
+}
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()

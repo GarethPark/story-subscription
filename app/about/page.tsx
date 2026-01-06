@@ -2,6 +2,12 @@ import { Navbar } from '@/components/landing/navbar'
 import { Footer } from '@/components/landing/footer'
 import { Heart, Sparkles, Wand2, BookOpen } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: 'Learn about Silk, our mission to deliver irresistible romance stories, and how we use AI to create personalized reading experiences.'
+}
 
 export default function AboutPage() {
   return (

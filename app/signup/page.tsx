@@ -1,6 +1,12 @@
 import { SignupForm } from '@/components/auth/signup-form'
 import { Heart, Sparkles } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sign Up',
+  description: 'Create your free Silk account and start reading curated romance stories. Upgrade anytime to generate personalized stories.'
+}
 
 export default function SignupPage() {
   return (

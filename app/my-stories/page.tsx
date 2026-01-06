@@ -3,6 +3,12 @@ import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { Clock, BookOpen, Sparkles, AlertCircle, Loader2 } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'My Stories',
+  description: 'View and manage your custom-generated romance stories. Track generation status and read your personalized collection.'
+}
 
 export default async function MyStoriesPage() {
   const user = await getCurrentUser()

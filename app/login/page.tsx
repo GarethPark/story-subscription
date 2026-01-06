@@ -1,6 +1,12 @@
 import { LoginForm } from '@/components/auth/login-form'
 import { Heart, BookOpen } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sign In',
+  description: 'Sign in to your Silk account to access your favorite romance stories and continue your reading journey.'
+}
 
 export default function LoginPage() {
   return (

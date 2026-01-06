@@ -3,6 +3,12 @@ import { redirect } from 'next/navigation'
 import { CustomStoryGenerationForm } from '@/components/generate/custom-story-form'
 import { Sparkles, Coins } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Generate Story',
+  description: 'Create your perfect personalized romance story with AI. Customize characters, choose tropes, and generate your dream romance in minutes.'
+}
 
 export default async function GeneratePage() {
   const user = await getCurrentUser()
@@ -25,8 +31,8 @@ export default async function GeneratePage() {
               Create Your Perfect Story
             </h1>
           </div>
-          <p className="text-gray-300 text-lg text-center">
-            Customize every detail of your romance story—from characters to plot twists
+          <p className="text-gray-300 text-lg text-center max-w-3xl mx-auto leading-relaxed">
+            Personalize every detail - from character names to plot twists. Your story, your way.
           </p>
         </div>
 
