@@ -23,7 +23,7 @@ export function Hero({
       {/* Shadowy couple - mysterious and dangerous */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?w=1920&h=1080&fit=crop&q=80"
+          src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80"
           alt="Romance"
           className="w-full h-full object-cover opacity-60"
         />
