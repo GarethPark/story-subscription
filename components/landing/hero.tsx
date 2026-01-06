@@ -23,7 +23,7 @@ export function Hero({
       {/* Intimate couple - Kissing, caressing, passionate */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1920&h=1080&fit=crop&q=80"
+          src="https://imagine-public.x.ai/imagine-public/images/7cafbb27-e8d2-41df-8d59-7d2bce35bab6.jpg?cache=1&dl=1"
           alt="Romance"
           className="w-full h-full object-cover opacity-90"
         />
