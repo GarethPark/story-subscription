@@ -20,17 +20,17 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className="relative w-full min-h-[95vh] flex items-center overflow-hidden bg-black">
-      {/* Shadowy couple - mysterious and dangerous */}
+      {/* Sophisticated couple - James Bond aesthetic */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&h=1080&fit=crop&q=80"
+          src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=1920&h=1080&fit=crop&q=80"
           alt="Romance"
-          className="w-full h-full object-cover opacity-90"
+          className="w-full h-full object-cover opacity-85"
         />
-        {/* Lighter overlay so couple is CLEARLY visible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-br from-red-950/30 via-transparent to-purple-950/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        {/* Dark, mysterious overlays - couple visible in shadows */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950/25 via-transparent to-purple-950/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>
 
       {/* Dangerous, sultry lighting */}
