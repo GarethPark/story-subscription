@@ -23,14 +23,14 @@ export function Hero({
       {/* Intimate couple - Kissing, caressing, passionate */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1545167845-4498e1f1c2c3?w=1920&h=1080&fit=crop&q=80"
+          src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=1920&h=1080&fit=crop&q=80"
           alt="Romance"
-          className="w-full h-full object-cover opacity-70"
+          className="w-full h-full object-cover opacity-85"
         />
-        {/* Dark, mysterious overlays - couple visible in shadows */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-br from-red-950/30 via-transparent to-purple-950/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
+        {/* Much lighter overlays so couple is CLEARLY visible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-purple-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
       </div>
 
       {/* Dangerous, sultry lighting */}
