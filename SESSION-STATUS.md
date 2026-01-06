@@ -1,7 +1,7 @@
 # Session Status - Romance Story Subscription Platform
 
-**Last Updated**: January 6, 2026 - 21:30 UTC
-**Status**: ✅ Phase 1 Complete | 🎨 Phase 2 Complete! (Polish & Design)
+**Last Updated**: January 6, 2026 - 23:45 UTC
+**Status**: ✅ Phase 1 Complete | ✅ Phase 2 Complete | 📋 Phase 3 Strategy Documented
 
 **App Name**: **Silk**
 **Live URL**: https://romance-story-subscription.vercel.app
@@ -11,7 +11,107 @@
 
 ---
 
-## 🎉 Latest Session (Jan 6, 2026 Evening) - PHASE 2 COMPLETE!
+## 🚀 Latest Session (Jan 6, 2026 Late Evening) - PRODUCT STRATEGY DEFINED!
+
+### Major Strategic Decisions Made:
+
+**1. ✅ Fixed Browser Tab Titles & SEO**
+   - Updated root layout metadata from "Create Next App" to "Silk - Irresistible Romance Stories"
+   - All pages now show proper titles: "Page Name | Silk"
+   - Added SEO-friendly descriptions to all major pages
+   - Pages updated: Generate, Login, Signup, Stories, Profile, Dashboard, My Stories, About, Privacy, Terms
+
+**2. ✅ Final Generate Page Polish**
+   - Fixed subtitle text that was appearing squashed
+   - Changed to: "Personalize every detail - from character names to plot twists. Your story, your way."
+   - Added proper spacing with `max-w-3xl mx-auto leading-relaxed`
+
+**3. 🎯 PRODUCT STRATEGY DOCUMENTED** ⭐
+
+   **Created comprehensive `PRODUCT-STRATEGY.md` documenting:**
+
+   **AI Model Strategy - Option 1 (Two-Tier Quality):**
+   - **Free Curated Library**: Claude Opus 4.5 (~$0.75-$1.00/story)
+     - Initial investment: $75-100 for 100 stories (select best 50)
+     - Monthly: $20 for 20 new curated stories
+     - **WHY**: First impression is critical - free stories must WOW users
+
+   - **Custom User Stories**: Claude Sonnet 4 (~$0.15-$0.20/story)
+     - Keep current pricing: $9.99/month for 3 credits
+     - Add-ons: $4.99 per credit
+     - **WHY**: Excellent quality, healthy margins (93% gross margin!)
+
+   **NEW FEATURE: Story Extensions** 🆕
+   - Cost: 0.5 credits per extension
+   - Length: 3,000-4,000 words
+   - Price: $2.50 (0.5 credits)
+   - Profit margin: $2.40 per extension (96%!)
+   - **WHY**: Massive engagement driver, unique feature, incredible margins
+
+   **Database Schema for Extensions:**
+   ```prisma
+   model StoryExtension {
+     id          String   @id @default(cuid())
+     storyId     String
+     story       Story    @relation(fields: [storyId])
+     userId      String
+     user        User     @relation(fields: [userId])
+     content     String   @db.Text
+     wordCount   Int
+     userPrompt  String?  @db.Text
+     order       Int
+     modelUsed   String
+     createdAt   DateTime @default(now())
+   }
+   ```
+
+   **Revenue Model Example (100 paying users):**
+   - Revenue: $1,222.85/month
+   - Costs: $81/month
+   - Gross Profit: $1,141.85
+   - Gross Margin: 93%
+
+   **Implementation Roadmap:**
+   - Week 1: Quality testing, curated library generation
+   - Week 2: Story extension feature development
+   - Week 3: Launch & monitor
+   - Week 4: Iterate based on feedback
+
+**Commits Made:**
+- `b7b1216` - Fix browser tab titles and improve SEO metadata
+- `4004768` - Fix generate page subtitle text squashing
+
+**Key Documents:**
+- ✅ `PRODUCT-STRATEGY.md` - Complete AI strategy, pricing, extensions, roadmap
+- ✅ `BUSINESS-STRATEGY.md` - Original business model (still relevant)
+- ✅ `SESSION-STATUS.md` - This file (updated)
+
+### Why This Strategy Wins:
+
+1. **Quality Hook**: Opus-generated free stories create "wow" moment
+2. **Healthy Margins**: 93% gross margin on subscriptions
+3. **Unique Feature**: Story extensions (no competitor has this)
+4. **Engagement**: Extensions keep users invested and buying credits
+5. **Scalable**: AI costs scale linearly, margins stay high
+6. **Affordable Investment**: $75-100 one-time for premium quality library
+
+### Next Session Priorities:
+
+**Immediate (Tomorrow):**
+1. Run quality test: Generate 10 stories with Opus vs Sonnet
+2. Add StoryExtension to Prisma schema
+3. Draft 25 detailed story prompts for curated library
+4. Begin extension API design
+
+**This Week:**
+1. Generate 50 curated Opus stories ($75-100 budget approved!)
+2. Implement story extension feature
+3. Deploy to production
+4. Monitor metrics
+
+---
+
+## 🎉 Previous Session (Jan 6, 2026 Evening) - PHASE 2 COMPLETE!
 
 ### What We Accomplished Tonight:
 
