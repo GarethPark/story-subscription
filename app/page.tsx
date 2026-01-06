@@ -19,11 +19,11 @@ export default function Home() {
 
       <main className="flex-1">
         <Hero
-          title="Your Perfect Love Story"
-          subtitle="Discover curated romance stories or create your own with custom characters and your favorite tropes."
+          title="Surrender to Desire"
+          subtitle="Indulge in stories where passion ignites, boundaries blur, and every moment leaves you craving more."
           ctaText="Start Reading Free"
           ctaLink="/stories"
-          secondaryCtaText="Create Your Story"
+          secondaryCtaText="Create Your Fantasy"
           secondaryCtaLink="/signup"
         />
 
