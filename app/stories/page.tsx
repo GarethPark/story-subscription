@@ -1,26 +1,29 @@
 import { prisma } from '@/lib/db'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Heart, Flame, Search } from 'lucide-react'
 
 export default async function StoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ genre?: string; search?: string }>
+  searchParams: Promise<{ genre?: string; heatLevel?: string; search?: string }>
 }) {
-  const { genre, search } = await searchParams
+  const { genre, heatLevel, search } = await searchParams
 
   // Fetch published stories
   const stories = await prisma.story.findMany({
     where: {
       published: true,
       ...(genre && { genre: genre }),
+      ...(heatLevel && { heatLevel: heatLevel }),
       ...(search && {
         OR: [
-          { title: { contains: search } },
-          { summary: { contains: search } },
-          { author: { contains: search } },
+          { title: { contains: search, mode: 'insensitive' } },
+          { summary: { contains: search, mode: 'insensitive' } },
+          { author: { contains: search, mode: 'insensitive' } },
         ],
       }),
     },
@@ -29,79 +32,117 @@ export default async function StoriesPage({
     },
   })
 
-  // Get unique genres for filter
+  // Get unique genres and heat levels for filters
   const allStories = await prisma.story.findMany({
     where: { published: true },
-    select: { genre: true },
+    select: { genre: true, heatLevel: true },
   })
-  const genres = [...new Set(allStories.map((s) => s.genre))]
+  const genres = [...new Set(allStories.map((s) => s.genre).filter(Boolean))]
+  const heatLevels = [...new Set(allStories.map((s) => s.heatLevel).filter(Boolean))]
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold mb-2">Story Library</h1>
-          <p className="text-slate-600">
-            Discover captivating romance stories from talented authors
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
+      {/* Dramatic Header */}
+      <div className="relative bg-gradient-to-r from-black via-gray-900 to-black border-b border-rose-900/30">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-purple-950/20" />
+        <div className="container mx-auto px-4 md:px-6 py-16 relative z-10">
+          <div className="flex items-center justify-center mb-4">
+            <Heart className="h-8 w-8 text-rose-500 fill-rose-500 mr-3" />
+          </div>
+          <h1 className="text-5xl md:text-6xl font-black text-center mb-4 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
+            Silk Stories
+          </h1>
+          <p className="text-gray-300 text-center text-lg max-w-2xl mx-auto">
+            Indulge in our curated collection of irresistible romance
           </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-8">
+      <div className="container mx-auto px-4 md:px-6 py-12">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
-          <aside className="w-full md:w-64 flex-shrink-0">
-            <Card className="p-6">
-              <h2 className="font-semibold text-lg mb-4">Filters</h2>
+          <aside className="w-full lg:w-72 flex-shrink-0">
+            <Card className="bg-gray-900/50 border-rose-900/30 backdrop-blur-sm sticky top-4">
+              <div className="p-6">
+                <h2 className="font-bold text-xl mb-6 text-white font-['Playfair_Display']">
+                  Discover
+                </h2>
 
-              {/* Search */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">
-                  Search
-                </label>
-                <form method="get">
-                  <input
-                    type="text"
-                    name="search"
-                    placeholder="Search stories..."
-                    defaultValue={search}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900"
-                  />
-                  <input type="hidden" name="genre" value={genre} />
-                  <Button type="submit" className="w-full mt-2">
-                    Search
-                  </Button>
-                </form>
-              </div>
+                {/* Search */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium mb-2 text-gray-300">
+                    Search Stories
+                  </label>
+                  <form method="get" className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+                    <input
+                      type="text"
+                      name="search"
+                      placeholder="Find your passion..."
+                      defaultValue={search}
+                      className="w-full pl-10 pr-3 py-2.5 bg-gray-800/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600 focus:border-transparent text-white placeholder:text-gray-500"
+                    />
+                    <input type="hidden" name="genre" value={genre || ''} />
+                    <input type="hidden" name="heatLevel" value={heatLevel || ''} />
+                    <Button type="submit" className="w-full mt-3 bg-gradient-to-r from-rose-700 to-violet-700 hover:from-rose-600 hover:to-violet-600">
+                      Search
+                    </Button>
+                  </form>
+                </div>
 
-              {/* Genre Filter */}
-              <div>
-                <h3 className="text-sm font-medium mb-3">Genre</h3>
-                <div className="space-y-2">
-                  <Link
-                    href="/stories"
-                    className={`block px-3 py-2 rounded-md text-sm transition-colors ${
-                      !genre
-                        ? 'bg-slate-900 text-white'
-                        : 'hover:bg-slate-100'
-                    }`}
-                  >
-                    All Stories
-                  </Link>
-                  {genres.map((g) => (
+                {/* Genre Filter */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">
+                    Genre
+                  </h3>
+                  <div className="space-y-1.5">
                     <Link
-                      key={g}
-                      href={`/stories?genre=${g}`}
-                      className={`block px-3 py-2 rounded-md text-sm transition-colors ${
-                        genre === g
-                          ? 'bg-slate-900 text-white'
-                          : 'hover:bg-slate-100'
+                      href="/stories"
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                        !genre && !heatLevel
+                          ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
+                          : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                       }`}
                     >
-                      {g}
+                      All Stories
                     </Link>
-                  ))}
+                    {genres.map((g) => (
+                      <Link
+                        key={g}
+                        href={`/stories?genre=${g}${heatLevel ? `&heatLevel=${heatLevel}` : ''}`}
+                        className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                          genre === g
+                            ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
+                            : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        }`}
+                      >
+                        {g}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Heat Level Filter */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                    <Flame className="h-4 w-4 text-rose-500" />
+                    Heat Level
+                  </h3>
+                  <div className="space-y-1.5">
+                    {heatLevels.map((level) => (
+                      <Link
+                        key={level}
+                        href={`/stories?heatLevel=${level}${genre ? `&genre=${genre}` : ''}`}
+                        className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                          heatLevel === level
+                            ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
+                            : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                        }`}
+                      >
+                        {level}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </Card>
@@ -110,62 +151,83 @@ export default async function StoriesPage({
           {/* Stories Grid */}
           <main className="flex-1">
             {stories.length === 0 ? (
-              <Card className="p-12 text-center">
-                <p className="text-slate-500 text-lg">
-                  No stories found. Check back soon!
+              <Card className="p-16 text-center bg-gray-900/30 border-rose-900/30">
+                <Heart className="h-16 w-16 text-rose-500/30 mx-auto mb-4" />
+                <p className="text-gray-400 text-lg font-medium mb-2">
+                  No stories found
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Try adjusting your filters or check back soon for new releases
                 </p>
               </Card>
             ) : (
               <>
-                <div className="mb-4 text-sm text-slate-600">
-                  {stories.length} {stories.length === 1 ? 'story' : 'stories'}{' '}
-                  found
+                <div className="mb-6 flex items-center justify-between">
+                  <div className="text-sm text-gray-400">
+                    <span className="text-rose-400 font-semibold">{stories.length}</span>{' '}
+                    {stories.length === 1 ? 'story' : 'stories'} available
+                  </div>
+                  {(genre || heatLevel || search) && (
+                    <Link
+                      href="/stories"
+                      className="text-sm text-rose-400 hover:text-rose-300 transition-colors"
+                    >
+                      Clear filters
+                    </Link>
+                  )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {stories.map((story) => (
                     <Link
                       key={story.id}
                       href={`/stories/${story.id}`}
                       className="group"
                     >
-                      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <Card className="overflow-hidden bg-gray-900/50 border-rose-900/30 hover:border-rose-700/50 transition-all duration-300 hover:shadow-2xl hover:shadow-rose-900/20 hover:-translate-y-1">
                         {/* Cover Image */}
                         {story.coverImage ? (
-                          <div className="relative h-64 bg-slate-200">
+                          <div className="relative h-72 bg-gray-800 overflow-hidden">
                             <Image
                               src={story.coverImage}
                               alt={story.title}
                               fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="object-cover group-hover:scale-110 transition-transform duration-500"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                           </div>
                         ) : (
-                          <div className="h-64 bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
-                            <span className="text-white text-4xl font-bold">
+                          <div className="h-72 bg-gradient-to-br from-rose-900 via-violet-900 to-gray-900 flex items-center justify-center relative overflow-hidden">
+                            <div className="absolute inset-0 bg-black/20" />
+                            <span className="text-white text-6xl font-black font-['Playfair_Display'] relative z-10 opacity-50">
                               {story.title.charAt(0)}
                             </span>
                           </div>
                         )}
 
                         {/* Story Info */}
-                        <div className="p-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-xs px-2 py-1 bg-slate-100 rounded-full">
+                        <div className="p-5">
+                          <div className="flex items-center gap-2 mb-3 flex-wrap">
+                            <Badge variant="genre" className="text-xs">
                               {story.genre}
-                            </span>
+                            </Badge>
+                            {story.heatLevel && (
+                              <Badge variant="heat" className="text-xs">
+                                {story.heatLevel}
+                              </Badge>
+                            )}
                             {story.readingTime && (
-                              <span className="text-xs text-slate-500">
-                                {story.readingTime} min read
+                              <span className="text-xs text-gray-500">
+                                {story.readingTime} min
                               </span>
                             )}
                           </div>
-                          <h3 className="font-semibold text-lg mb-1 group-hover:text-slate-600 transition-colors">
+                          <h3 className="font-bold text-xl mb-2 text-white group-hover:text-rose-400 transition-colors font-['Playfair_Display'] line-clamp-2">
                             {story.title}
                           </h3>
-                          <p className="text-sm text-slate-500 mb-2">
+                          <p className="text-sm text-gray-400 mb-3">
                             by {story.author}
                           </p>
-                          <p className="text-sm text-slate-600 line-clamp-3">
+                          <p className="text-sm text-gray-300 line-clamp-3 leading-relaxed">
                             {story.summary}
                           </p>
                         </div>
