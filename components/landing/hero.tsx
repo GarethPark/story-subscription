@@ -23,14 +23,14 @@ export function Hero({
       {/* Sophisticated couple - James Bond aesthetic */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=1920&h=1080&fit=crop&q=80"
+          src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=1920&h=1080&fit=crop&q=80"
           alt="Romance"
-          className="w-full h-full object-cover opacity-85"
+          className="w-full h-full object-cover opacity-80"
         />
         {/* Dark, mysterious overlays - couple visible in shadows */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-br from-red-950/25 via-transparent to-purple-950/25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/45 to-black/65" />
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-purple-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
       </div>
 
       {/* Dangerous, sultry lighting */}
