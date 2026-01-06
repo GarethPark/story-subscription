@@ -3,7 +3,7 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Heart, BookOpen, Sparkles, Star } from 'lucide-react'
+import { Heart, BookOpen, Sparkles, Star, Menu } from 'lucide-react'
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()
@@ -13,27 +13,40 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="border-b bg-white">
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-b from-cream via-white to-cream">
+      {/* Elegant Header */}
+      <header className="border-b border-rose-100/50 bg-white/95 backdrop-blur-lg shadow-sm">
+        <div className="container mx-auto px-4 md:px-6 py-5">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Dashboard</h1>
+            <div>
+              <Link href="/" className="flex items-center space-x-2 group">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-700 to-violet-600 flex items-center justify-center shadow-md">
+                  <Heart className="h-5 w-5 text-white fill-white" />
+                </div>
+                <span className="font-bold text-2xl font-['Playfair_Display'] bg-gradient-to-r from-rose-700 to-violet-600 bg-clip-text text-transparent">
+                  RomanceStory
+                </span>
+              </Link>
+            </div>
             <div className="flex items-center gap-4">
-              <nav className="hidden md:flex items-center gap-4 mr-4">
-                <Link href="/stories" className="text-sm text-slate-600 hover:text-slate-900">
+              <nav className="hidden md:flex items-center gap-6 mr-4">
+                <Link href="/stories" className="text-sm font-semibold text-gray-600 hover:text-rose-700 transition-colors">
                   Browse Stories
                 </Link>
-                <Link href="/my-stories" className="text-sm text-slate-600 hover:text-slate-900">
+                <Link href="/my-stories" className="text-sm font-semibold text-gray-600 hover:text-rose-700 transition-colors">
                   My Stories
                 </Link>
-                <Link href="/library" className="text-sm text-slate-600 hover:text-slate-900">
+                <Link href="/library" className="text-sm font-semibold text-gray-600 hover:text-rose-700 transition-colors">
                   Favorites
                 </Link>
               </nav>
-              <span className="text-sm text-slate-600">{user.email}</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200/50 rounded-full">
+                <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
+                <span className="text-sm font-semibold text-amber-900">{user.credits}</span>
+              </div>
+              <span className="hidden md:block text-sm text-gray-600">{user.email}</span>
               <form action="/api/auth/logout" method="POST">
-                <Button type="submit" variant="outline" size="sm">
+                <Button type="submit" variant="ghost" size="sm">
                   Logout
                 </Button>
               </form>
@@ -43,21 +56,39 @@ export default async function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 md:px-6 py-10">
+        {/* Welcome Hero */}
+        <div className="mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold font-['Playfair_Display'] text-gray-900 mb-3">
+            Welcome back{user.name ? `, ${user.name}` : ''}
+          </h1>
+          <p className="text-lg text-gray-600">
+            Your personal romance library awaits
+          </p>
+        </div>
+
         {/* Create Story CTA */}
-        <div className="bg-gradient-to-r from-rose-500 to-purple-600 rounded-xl p-8 mb-8 text-white">
-          <div className="flex items-center justify-between">
+        <div className="relative bg-gradient-to-br from-rose-700 via-rose-600 to-violet-600 rounded-3xl p-8 md:p-10 mb-10 text-white overflow-hidden shadow-2xl">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-500/20 rounded-full blur-3xl" />
+
+          <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex-1">
-              <h2 className="text-3xl font-bold mb-2">Create Your Perfect Romance</h2>
-              <p className="text-rose-100 mb-4">
-                Personalize every detail - from character names to plot twists
+              <h2 className="text-3xl md:text-4xl font-bold font-['Playfair_Display'] mb-3">
+                Create Your Perfect Romance
+              </h2>
+              <p className="text-rose-100 text-lg mb-4 max-w-2xl">
+                Personalize every detail - from character names to plot twists. Your story, your way.
               </p>
               <div className="flex items-center gap-2 text-sm">
-                <Star className="h-4 w-4 text-yellow-300" />
-                <span className="font-semibold">{user.credits} credits available</span>
+                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                  <Star className="h-4 w-4 text-amber-300 fill-amber-300" />
+                  <span className="font-semibold">{user.credits} credits available</span>
+                </div>
               </div>
             </div>
-            <Button size="lg" className="bg-white text-rose-600 hover:bg-rose-50" asChild>
+            <Button size="lg" className="bg-white text-rose-700 hover:bg-rose-50 shadow-xl" asChild>
               <Link href="/generate">
                 <Sparkles className="h-5 w-5 mr-2" />
                 Generate Story
@@ -67,75 +98,77 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Credits Card */}
-          <Card className="border-rose-200 bg-gradient-to-br from-rose-50 to-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-rose-600" />
-                Your Credits
-              </CardTitle>
-              <CardDescription>Story generation credits</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-4">
-                <div className="text-5xl font-bold text-rose-600 mb-2">{user.credits}</div>
-                <p className="text-sm text-slate-600 mb-4">credits remaining</p>
-                <Button variant="outline" size="sm" className="w-full" asChild>
-                  <Link href="/pricing">Get More Credits</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Quick Actions */}
-          <Card>
+          <Card className="border-rose-100/50 hover:shadow-none">
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>Jump to your favorite sections</CardDescription>
+              <CardTitle className="text-2xl font-['Playfair_Display']">Quick Actions</CardTitle>
+              <CardDescription className="text-base">Jump to your favorite sections</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <Button className="w-full" asChild>
+            <CardContent className="space-y-3">
+              <Button className="w-full justify-start text-base" asChild>
                 <Link href="/my-stories">
-                  <Sparkles className="h-4 w-4 mr-2" />
+                  <Sparkles className="h-5 w-5 mr-3" />
                   My Stories
                 </Link>
               </Button>
-              <Button variant="outline" className="w-full" asChild>
+              <Button variant="outline" className="w-full justify-start text-base" asChild>
                 <Link href="/stories">
-                  <BookOpen className="h-4 w-4 mr-2" />
+                  <BookOpen className="h-5 w-5 mr-3" />
                   Browse Library
                 </Link>
               </Button>
-              <Button variant="outline" className="w-full" asChild>
+              <Button variant="outline" className="w-full justify-start text-base" asChild>
                 <Link href="/library">
-                  <Heart className="h-4 w-4 mr-2" />
+                  <Heart className="h-5 w-5 mr-3" />
                   My Favorites
                 </Link>
               </Button>
             </CardContent>
           </Card>
 
-          {/* Welcome Card */}
-          <Card>
+          {/* Credits Card */}
+          <Card className="border-amber-200/50 bg-gradient-to-br from-amber-50 via-white to-amber-50/50 hover:shadow-none">
             <CardHeader>
-              <CardTitle>Welcome back!</CardTitle>
-              <CardDescription>
-                {user.name ? `Hi ${user.name}` : user.email}
+              <CardTitle className="flex items-center gap-2 text-2xl font-['Playfair_Display']">
+                <Star className="h-6 w-6 text-amber-600 fill-amber-600" />
+                Your Credits
+              </CardTitle>
+              <CardDescription className="text-base">Story generation credits</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-6">
+                <div className="text-6xl font-bold font-['Playfair_Display'] bg-gradient-to-br from-amber-600 to-amber-800 bg-clip-text text-transparent mb-2">
+                  {user.credits}
+                </div>
+                <p className="text-sm text-gray-600 mb-6">credits remaining</p>
+                <Button variant="outline" className="w-full" asChild>
+                  <Link href="/pricing">Get More Credits</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Account Info Card */}
+          <Card className="border-rose-100/50 hover:shadow-none">
+            <CardHeader>
+              <CardTitle className="text-2xl font-['Playfair_Display']">Your Account</CardTitle>
+              <CardDescription className="text-base">
+                {user.email}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-gray-600 mb-6 leading-relaxed">
                 Ready to dive into your next romance adventure? Create a custom story or explore our curated library.
               </p>
-              <div className="flex flex-col gap-2 text-xs text-slate-500">
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                  <span>All systems operational</span>
+              <div className="flex flex-col gap-3 text-sm">
+                <div className="flex items-center gap-3 px-4 py-2 bg-emerald-50 border border-emerald-200/50 rounded-lg">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+                  <span className="text-emerald-800 font-medium">All systems operational</span>
                 </div>
                 {user.isAdmin && (
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-                    <span>Admin access enabled</span>
+                  <div className="flex items-center gap-3 px-4 py-2 bg-violet-50 border border-violet-200/50 rounded-lg">
+                    <div className="h-2 w-2 rounded-full bg-violet-500"></div>
+                    <span className="text-violet-800 font-medium">Admin access enabled</span>
                   </div>
                 )}
               </div>
