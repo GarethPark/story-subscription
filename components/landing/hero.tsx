@@ -20,17 +20,17 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className="relative w-full min-h-[95vh] flex items-center overflow-hidden bg-black">
-      {/* Sophisticated couple - James Bond aesthetic */}
+      {/* Sophisticated couple - Secret affair, forbidden romance */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=80"
+          src="https://images.unsplash.com/photo-1516589091380-5d8e87df6999?w=1920&h=1080&fit=crop&q=80"
           alt="Romance"
-          className="w-full h-full object-cover opacity-75"
+          className="w-full h-full object-cover opacity-70"
         />
         {/* Dark, mysterious overlays - couple visible in shadows */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70" />
-        <div className="absolute inset-0 bg-gradient-to-br from-red-950/25 via-transparent to-purple-950/25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/75" />
+        <div className="absolute inset-0 bg-gradient-to-br from-red-950/30 via-transparent to-purple-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
       </div>
 
       {/* Dangerous, sultry lighting */}
