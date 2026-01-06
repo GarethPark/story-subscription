@@ -15,15 +15,17 @@ export default async function GeneratePage() {
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
       <div className="container max-w-5xl mx-auto px-4 md:px-6">
         {/* Header */}
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-950/30 backdrop-blur-sm rounded-full border border-rose-800/30 mb-4">
-            <Sparkles className="h-4 w-4 text-rose-400" />
-            <span className="text-sm text-rose-200 font-medium">AI Story Generation</span>
+        <div className="mb-10">
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-950/30 backdrop-blur-sm rounded-full border border-rose-800/30 mb-4">
+              <Sparkles className="h-4 w-4 text-rose-400" />
+              <span className="text-sm text-rose-200 font-medium">AI Story Generation</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-black mb-3 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
+              Create Your Perfect Story
+            </h1>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black mb-3 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
-            Create Your Perfect Story
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 text-lg text-center">
             Customize every detail of your romance story—from characters to plot twists
           </p>
         </div>
