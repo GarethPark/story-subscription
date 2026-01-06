@@ -149,14 +149,14 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <div>
-        <h2 className="text-lg font-semibold mb-4">Story Configuration</h2>
+        <h2 className="text-2xl font-bold text-white mb-6 font-['Playfair_Display']">Story Configuration</h2>
 
         {/* Genre Selection */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Genre</label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="mb-8">
+          <label className="block text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">Genre</label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {GENRES.map((g) => (
               <button
                 key={g}
@@ -165,10 +165,10 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
                   setGenre(g)
                   setSelectedTropes([]) // Reset tropes when genre changes
                 }}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-3 rounded-lg text-sm font-bold transition-all ${
                   genre === g
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg scale-105'
+                    : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700'
                 }`}
               >
                 {g}
@@ -178,68 +178,72 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
         </div>
 
         {/* Heat Level Selection */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Heat Level</label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div className="mb-8">
+          <label className="block text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">Heat Level</label>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {HEAT_LEVELS.map((h) => (
               <button
                 key={h}
                 type="button"
                 onClick={() => setHeatLevel(h)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-3 rounded-lg text-sm font-bold transition-all ${
                   heatLevel === h
-                    ? 'bg-rose-500 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-lg scale-105'
+                    : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700'
                 }`}
               >
                 {h}
               </button>
             ))}
           </div>
-          <p className="text-xs text-slate-500 mt-2">
-            {heatLevel === 'Sweet' && 'Emotional connection, innocent touches, fade to black'}
-            {heatLevel === 'Warm' && 'Sensual tension, passionate kissing, tasteful romance'}
-            {heatLevel === 'Hot' && 'Explicit romantic scenes, detailed intimacy'}
-            {heatLevel === 'Scorching' && 'Very explicit, detailed intimate scenes'}
+          <p className="text-xs text-gray-400 mt-3 italic">
+            {heatLevel === 'Sweet' && '❤️ Emotional connection, innocent touches, fade to black'}
+            {heatLevel === 'Warm' && '💕 Sensual tension, passionate kissing, tasteful romance'}
+            {heatLevel === 'Hot' && '🔥 Explicit romantic scenes, detailed intimacy'}
+            {heatLevel === 'Scorching' && '🌶️ Very explicit, detailed intimate scenes'}
           </p>
         </div>
 
         {/* Tropes Selection */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">
+        <div className="mb-8">
+          <label className="block text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">
             Tropes (Select 1-3)
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {availableTropes.map((trope) => (
               <button
                 key={trope}
                 type="button"
                 onClick={() => toggleTrope(trope)}
-                className={`px-3 py-2 rounded-md text-sm transition-colors text-left ${
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all text-left ${
                   selectedTropes.includes(trope)
-                    ? 'bg-purple-100 text-purple-900 border-2 border-purple-500'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-2 border-transparent'
+                    ? 'bg-gradient-to-r from-violet-700 to-purple-700 text-white shadow-lg border-2 border-violet-400 scale-105'
+                    : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700'
                 }`}
               >
                 {trope}
               </button>
             ))}
           </div>
-          <p className="text-xs text-slate-500 mt-2">
-            Selected: {selectedTropes.length > 0 ? selectedTropes.join(', ') : 'None'}
+          <p className="text-xs text-gray-400 mt-3">
+            {selectedTropes.length > 0 ? (
+              <span>✨ Selected: <span className="text-violet-400 font-semibold">{selectedTropes.join(', ')}</span></span>
+            ) : (
+              <span>Please select at least one trope</span>
+            )}
           </p>
         </div>
 
         {/* Character Names - NEW */}
-        <div className="mb-6 bg-rose-50 border border-rose-200 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-rose-900 mb-3 flex items-center gap-2">
-            <Heart className="h-4 w-4" />
+        <div className="mb-8 bg-rose-950/30 border border-rose-700/40 rounded-xl p-6 backdrop-blur-sm">
+          <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+            <Heart className="h-5 w-5 text-rose-400" />
             Customize Character Names (Optional)
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-1">
-                <User className="h-3 w-3" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                <User className="h-4 w-4 text-rose-400" />
                 Protagonist Name
               </label>
               <input
@@ -247,12 +251,12 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
                 value={protagonistName}
                 onChange={(e) => setProtagonistName(e.target.value)}
                 placeholder="e.g., Zara, Marcus, Elara"
-                className="w-full px-3 py-2 border border-rose-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full px-4 py-3 border border-gray-700 bg-gray-800/50 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-1">
-                <Heart className="h-3 w-3" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                <Heart className="h-4 w-4 text-rose-400" />
                 Love Interest Name
               </label>
               <input
@@ -260,37 +264,38 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
                 value={loveInterestName}
                 onChange={(e) => setLoveInterestName(e.target.value)}
                 placeholder="e.g., Phoenix, Isabella, Kai"
-                className="w-full px-3 py-2 border border-rose-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full px-4 py-3 border border-gray-700 bg-gray-800/50 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:border-transparent"
               />
             </div>
           </div>
-          <p className="text-xs text-slate-600 mt-2">
-            Leave blank for AI-generated names
+          <p className="text-xs text-gray-400 mt-3 italic">
+            💡 Leave blank for AI-generated names
           </p>
         </div>
 
         {/* Custom Scenario - NEW */}
-        <div className="mb-6 bg-purple-50 border border-purple-200 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-purple-900 mb-2">
+        <div className="mb-8 bg-violet-950/30 border border-violet-700/40 rounded-xl p-6 backdrop-blur-sm">
+          <h3 className="text-base font-bold text-white mb-3 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-violet-400" />
             Plot Details (Optional)
           </h3>
           <textarea
             value={customScenario}
             onChange={(e) => setCustomScenario(e.target.value)}
             placeholder="Describe any specific plot points, settings, or scenarios you'd like in your story... e.g., 'Set in a cozy bookstore in Seattle during Christmas' or 'They meet during a blackout in New York City'"
-            className="w-full px-3 py-2 border border-purple-300 rounded-md text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-            rows={3}
+            className="w-full px-4 py-3 border border-gray-700 bg-gray-800/50 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
+            rows={4}
             maxLength={500}
           />
-          <p className="text-xs text-slate-600 mt-1">
+          <p className="text-xs text-gray-400 mt-2">
             {customScenario.length}/500 characters
           </p>
         </div>
 
         {/* Word Count */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">
-            Target Word Count: {wordCount.toLocaleString()}
+        <div className="mb-8">
+          <label className="block text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">
+            Target Word Count: <span className="text-rose-400">{wordCount.toLocaleString()}</span>
           </label>
           <input
             type="range"
@@ -299,44 +304,44 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
             step="500"
             value={wordCount}
             onChange={(e) => setWordCount(Number(e.target.value))}
-            className="w-full"
+            className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-rose-600"
           />
-          <div className="flex justify-between text-xs text-slate-500 mt-1">
-            <span>2,000 (quick read)</span>
-            <span>8,000 (full story)</span>
+          <div className="flex justify-between text-xs text-gray-400 mt-2">
+            <span>📖 2,000 (quick read)</span>
+            <span>📚 8,000 (full story)</span>
           </div>
         </div>
 
         {/* Cover Image Option */}
-        <div className="mb-6">
-          <label className="flex items-center gap-2">
+        <div className="mb-8">
+          <label className="flex items-center gap-3 cursor-pointer group">
             <input
               type="checkbox"
               checked={generateCover}
               onChange={(e) => setGenerateCover(e.target.checked)}
-              className="rounded"
+              className="w-5 h-5 rounded bg-gray-800 border-gray-700 text-rose-600 focus:ring-rose-600 focus:ring-offset-gray-900"
             />
-            <span className="text-sm font-medium">
-              Generate AI cover image with DALL-E
+            <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+              Generate AI cover image with DALL-E 3
             </span>
           </label>
-          <p className="text-xs text-slate-500 mt-1 ml-6">
-            Uncheck to use a gradient fallback
+          <p className="text-xs text-gray-500 mt-2 ml-8 italic">
+            {generateCover ? '🎨 AI will create a unique cover for your story' : 'Using gradient fallback'}
           </p>
         </div>
       </div>
 
       {/* Progress Display */}
       {isGenerating && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-center gap-3">
-            <Loader2 className="h-5 w-5 text-blue-600 animate-spin" />
+        <div className="bg-gradient-to-r from-violet-950/50 to-blue-950/50 border border-violet-600/40 rounded-xl p-6 backdrop-blur-sm">
+          <div className="flex items-center gap-4">
+            <Loader2 className="h-8 w-8 text-violet-400 animate-spin flex-shrink-0" />
             <div>
-              <p className="text-sm font-medium text-blue-900">{progress}</p>
-              <p className="text-xs text-blue-600 mt-1">
+              <p className="text-base font-bold text-white mb-1">{progress}</p>
+              <p className="text-xs text-gray-400">
                 {wordCount > 4000
-                  ? 'Longer stories take 1-2 minutes. You can close this tab and check "My Stories" later!'
-                  : 'This will take 30-90 seconds. Feel free to wait or check back soon!'}
+                  ? '⏱️ Longer stories take 1-2 minutes. You can close this tab and check "My Stories" later!'
+                  : '⚡ This will take 30-90 seconds. Feel free to wait or check back soon!'}
               </p>
             </div>
           </div>
@@ -344,20 +349,20 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
       )}
 
       {/* Submit Button */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 pt-4">
         <Button
           type="submit"
           disabled={isGenerating || selectedTropes.length === 0 || userCredits < 1}
-          className="flex-1"
+          className="flex-1 h-14 text-base font-bold bg-gradient-to-r from-rose-700 to-violet-700 hover:from-rose-600 hover:to-violet-600 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isGenerating ? (
             <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Generating Story...
+              <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+              Generating Your Story...
             </>
           ) : (
             <>
-              <Sparkles className="h-4 w-4 mr-2" />
+              <Sparkles className="h-5 w-5 mr-2" />
               Generate My Story (1 credit)
             </>
           )}
@@ -367,6 +372,7 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
           variant="outline"
           onClick={() => router.back()}
           disabled={isGenerating}
+          className="h-14 px-6 bg-gray-800 hover:bg-gray-700 text-white border-gray-700 disabled:opacity-50"
         >
           Cancel
         </Button>
