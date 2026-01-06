@@ -4,21 +4,20 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Flame, Search } from 'lucide-react'
+import { Heart, Search } from 'lucide-react'
 
 export default async function StoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ genre?: string; heatLevel?: string; search?: string }>
+  searchParams: Promise<{ genre?: string; search?: string }>
 }) {
-  const { genre, heatLevel, search } = await searchParams
+  const { genre, search } = await searchParams
 
   // Fetch published stories
   const stories = await prisma.story.findMany({
     where: {
       published: true,
       ...(genre && { genre: genre }),
-      ...(heatLevel && { heatLevel: heatLevel }),
       ...(search && {
         OR: [
           { title: { contains: search, mode: 'insensitive' } },
@@ -32,13 +31,12 @@ export default async function StoriesPage({
     },
   })
 
-  // Get unique genres and heat levels for filters
+  // Get unique genres for filters
   const allStories = await prisma.story.findMany({
     where: { published: true },
-    select: { genre: true, heatLevel: true },
+    select: { genre: true },
   })
   const genres = [...new Set(allStories.map((s) => s.genre).filter(Boolean))]
-  const heatLevels = [...new Set(allStories.map((s) => s.heatLevel).filter(Boolean))]
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
@@ -83,7 +81,6 @@ export default async function StoriesPage({
                       className="w-full pl-10 pr-3 py-2.5 bg-gray-800/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600 focus:border-transparent text-white placeholder:text-gray-500"
                     />
                     <input type="hidden" name="genre" value={genre || ''} />
-                    <input type="hidden" name="heatLevel" value={heatLevel || ''} />
                     <Button type="submit" className="w-full mt-3 bg-gradient-to-r from-rose-700 to-violet-700 hover:from-rose-600 hover:to-violet-600">
                       Search
                     </Button>
@@ -91,7 +88,7 @@ export default async function StoriesPage({
                 </div>
 
                 {/* Genre Filter */}
-                <div className="mb-6">
+                <div>
                   <h3 className="text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">
                     Genre
                   </h3>
@@ -99,7 +96,7 @@ export default async function StoriesPage({
                     <Link
                       href="/stories"
                       className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                        !genre && !heatLevel
+                        !genre
                           ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
                           : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
                       }`}
@@ -109,7 +106,7 @@ export default async function StoriesPage({
                     {genres.map((g) => (
                       <Link
                         key={g}
-                        href={`/stories?genre=${g}${heatLevel ? `&heatLevel=${heatLevel}` : ''}`}
+                        href={`/stories?genre=${g}`}
                         className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                           genre === g
                             ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
@@ -117,29 +114,6 @@ export default async function StoriesPage({
                         }`}
                       >
                         {g}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Heat Level Filter */}
-                <div>
-                  <h3 className="text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                    <Flame className="h-4 w-4 text-rose-500" />
-                    Heat Level
-                  </h3>
-                  <div className="space-y-1.5">
-                    {heatLevels.map((level) => (
-                      <Link
-                        key={level}
-                        href={`/stories?heatLevel=${level}${genre ? `&genre=${genre}` : ''}`}
-                        className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                          heatLevel === level
-                            ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
-                            : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                        }`}
-                      >
-                        {level}
                       </Link>
                     ))}
                   </div>
@@ -167,7 +141,7 @@ export default async function StoriesPage({
                     <span className="text-rose-400 font-semibold">{stories.length}</span>{' '}
                     {stories.length === 1 ? 'story' : 'stories'} available
                   </div>
-                  {(genre || heatLevel || search) && (
+                  {(genre || search) && (
                     <Link
                       href="/stories"
                       className="text-sm text-rose-400 hover:text-rose-300 transition-colors"
@@ -210,11 +184,6 @@ export default async function StoriesPage({
                             <Badge variant="genre" className="text-xs">
                               {story.genre}
                             </Badge>
-                            {story.heatLevel && (
-                              <Badge variant="heat" className="text-xs">
-                                {story.heatLevel}
-                              </Badge>
-                            )}
                             {story.readingTime && (
                               <span className="text-xs text-gray-500">
                                 {story.readingTime} min
