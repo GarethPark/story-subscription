@@ -113,7 +113,49 @@ AI-powered romance story platform where users can read curated stories OR create
 - Use case: Premium users willing to pay 2 credits for ultra-premium quality
 - Implementation: Add "Premium Quality" toggle in generation form
 
-### Phase 2: Curated Library Growth (Week 3-4)
+### Phase 2: Polish & Design ✨ **IN PROGRESS**
+**Goal:** Create elegant, sophisticated UI targeting female romance readers
+
+**Design Philosophy:** "Luxury Romance Library"
+- See DESIGN-SYSTEM.md for complete specifications
+- Sophisticated, aspirational, feminine aesthetic
+- Premium feel without being exclusive
+
+**Tasks:**
+- [ ] Set up design system (Tailwind config, fonts, colors)
+- [ ] Build beautiful landing page
+  - Hero with romantic imagery
+  - Features section
+  - How it works
+  - Testimonials
+  - Pricing preview
+- [ ] Redesign navigation/header
+  - Elegant desktop header
+  - Mobile bottom navigation
+  - Profile dropdown
+- [ ] Improve core pages
+  - Dashboard (personal library feel)
+  - Browse stories (Pinterest-style grid)
+  - Story detail page (beautiful reading experience)
+  - My Stories (elegant gallery)
+- [ ] Add animations & micro-interactions
+  - Smooth transitions
+  - Hover effects
+  - Loading states (shimmer, not spinner)
+  - Success celebrations
+- [ ] Mobile optimization
+  - Touch-friendly
+  - Thumb-zone navigation
+  - Swipe gestures
+
+**Design Assets:**
+- Color Palette: Deep Rose, Rich Purple, Warm Gold, Cream
+- Typography: Playfair Display (headings) + Inter (body)
+- Components: Documented in DESIGN-SYSTEM.md
+
+**Time Estimate:** 2-3 days
+
+### Phase 3: Curated Library Growth (Week 4-5)
 **Goal:** Build valuable free content library
 
 **Tasks:**
@@ -122,8 +164,9 @@ AI-powered romance story platform where users can read curated stories OR create
 - Organize library with filters/search
 - Featured stories section
 - Quality review process
+- Batch generation tool for admins
 
-### Phase 3: Payment Integration (Week 5-6)
+### Phase 4: Payment Integration (Week 5-6)
 **Goal:** Start generating revenue
 
 **Features:**
@@ -133,7 +176,7 @@ AI-powered romance story platform where users can read curated stories OR create
 - Subscription management page
 - Free trial (7 days)
 
-### Phase 4: Enhanced Customization (Month 2-3)
+### Phase 5: Enhanced Customization (Month 2-3)
 **Goal:** Advanced personalization features
 
 **Features:**
@@ -142,8 +185,9 @@ AI-powered romance story platform where users can read curated stories OR create
 - Series generation (continue a story)
 - Story remix (regenerate with different tropes)
 - Save story templates
+- Claude Opus 4 as premium quality option (2 credits)
 
-### Phase 5: Community & Growth (Month 3+)
+### Phase 6: Community & Growth (Month 3+)
 **Goal:** Viral growth and retention
 
 **Features:**
