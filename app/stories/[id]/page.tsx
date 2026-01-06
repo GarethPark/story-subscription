@@ -1,9 +1,9 @@
 import { prisma } from '@/lib/db'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Clock, Tag } from 'lucide-react'
+import { ArrowLeft, Clock, Eye, Heart, BookOpen } from 'lucide-react'
 import Image from 'next/image'
 import { getCurrentUser } from '@/lib/auth/session'
 import { FavoriteButton } from '@/components/story/favorite-button'
@@ -48,47 +48,55 @@ export default async function StoryPage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       {/* Header with cover */}
-      <div className="relative bg-white border-b">
+      <div className="relative bg-gradient-to-r from-black via-gray-900 to-black border-b border-rose-900/30">
         {story.coverImage && (
-          <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 opacity-20">
             <Image
               src={story.coverImage}
               alt={story.title}
               fill
               className="object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
           </div>
         )}
-        <div className="relative container mx-auto px-4 py-8">
+        <div className="relative container mx-auto px-4 md:px-6 py-12">
           <Link
             href="/stories"
-            className="inline-flex items-center text-slate-600 hover:text-slate-900 mb-4"
+            className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors group"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Stories
           </Link>
 
           <div className="max-w-4xl">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-3 py-1 bg-slate-900 text-white text-sm rounded-full">
+            <div className="flex items-center gap-2 mb-4 flex-wrap">
+              <Badge variant="genre">
                 {story.genre}
-              </span>
-              <span className="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-full">
-                {story.ageRating}
-              </span>
+              </Badge>
+              {story.ageRating && (
+                <Badge variant="default" className="bg-gray-700 text-gray-200">
+                  {story.ageRating}
+                </Badge>
+              )}
+              {story.isCustom && (
+                <Badge variant="default" className="bg-violet-700 text-white">
+                  Custom Story
+                </Badge>
+              )}
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-6xl font-black mb-5 text-white font-['Playfair_Display'] leading-tight">
               {story.title}
             </h1>
 
-            <p className="text-xl text-slate-600 mb-4">by {story.author}</p>
+            <p className="text-xl md:text-2xl text-gray-300 mb-4 font-medium">by {story.author}</p>
 
-            <p className="text-lg text-slate-700 mb-6">{story.summary}</p>
+            <p className="text-lg text-gray-400 mb-8 leading-relaxed">{story.summary}</p>
 
-            <div className="flex items-center gap-6 text-sm text-slate-600">
+            <div className="flex items-center gap-6 text-sm text-gray-500">
               {story.readingTime && (
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4" />
@@ -96,17 +104,23 @@ export default async function StoryPage({
                 </div>
               )}
               <div className="flex items-center gap-2">
-                <Tag className="h-4 w-4" />
+                <Eye className="h-4 w-4" />
                 <span>{story.viewCount} views</span>
               </div>
+              {user && (
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  <span>Reader Mode</span>
+                </div>
+              )}
             </div>
 
             {story.tags && (
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-6 flex flex-wrap gap-2">
                 {story.tags.split(',').map((tag) => (
                   <span
                     key={tag.trim()}
-                    className="px-2 py-1 bg-white border border-slate-200 text-xs rounded"
+                    className="px-3 py-1.5 bg-gray-800/50 border border-gray-700 text-gray-300 text-xs rounded-lg hover:bg-gray-700/50 transition-colors"
                   >
                     {tag.trim()}
                   </span>
@@ -118,45 +132,91 @@ export default async function StoryPage({
       </div>
 
       {/* Story Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
-          <Card className="p-8 md:p-12">
-            {/* Action buttons */}
-            <div className="flex justify-between items-center mb-8 pb-6 border-b">
+      <div className="container mx-auto px-4 md:px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          {/* Action bar */}
+          <div className="bg-gray-900/50 border border-rose-900/30 rounded-2xl p-6 mb-8 backdrop-blur-sm">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <FavoriteButton
                 storyId={story.id}
                 initialIsFavorited={isFavorited}
                 isAuthenticated={!!user}
               />
-              <div className="text-sm text-slate-500">
-                Published {new Date(story.createdAt).toLocaleDateString()}
+              <div className="flex items-center gap-3 text-sm text-gray-400">
+                <span className="flex items-center gap-2">
+                  <Heart className="h-4 w-4" />
+                  Published {new Date(story.createdAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </span>
               </div>
             </div>
+          </div>
 
-            {/* Story content */}
-            <div className="prose prose-slate max-w-none">
-              <div className="whitespace-pre-wrap text-lg leading-relaxed">
+          {/* Story content with optimal reading typography */}
+          <div className="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-8 md:p-12 lg:p-16 backdrop-blur-sm">
+            <article className="prose prose-lg prose-invert max-w-none">
+              <div
+                className="whitespace-pre-wrap text-gray-300 leading-loose text-lg md:text-xl"
+                style={{
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  lineHeight: '1.8',
+                  letterSpacing: '0.01em'
+                }}
+              >
                 {story.content}
               </div>
-            </div>
+            </article>
+          </div>
 
-            {/* End of story */}
-            <div className="mt-12 pt-8 border-t text-center">
-              <p className="text-slate-500 mb-6">
-                Thank you for reading "{story.title}"
-              </p>
-              <div className="flex justify-center gap-4">
-                <Button asChild>
-                  <Link href="/stories">Browse More Stories</Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link href="/signup">Subscribe for Full Access</Link>
-                </Button>
-              </div>
+          {/* End of story section */}
+          <div className="mt-12 bg-gradient-to-r from-rose-950/30 to-violet-950/30 border border-rose-900/30 rounded-2xl p-10 text-center backdrop-blur-sm">
+            <div className="flex items-center justify-center mb-4">
+              <Heart className="h-8 w-8 text-rose-400 fill-rose-400" />
             </div>
-          </Card>
-
-          {/* Related stories could go here */}
+            <p className="text-2xl font-bold text-white mb-3 font-['Playfair_Display']">
+              The End
+            </p>
+            <p className="text-gray-400 mb-8 text-lg">
+              Thank you for reading "{story.title}"
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button
+                asChild
+                className="bg-gradient-to-r from-rose-700 to-violet-700 hover:from-rose-600 hover:to-violet-600 shadow-lg"
+              >
+                <Link href="/stories">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  Browse More Stories
+                </Link>
+              </Button>
+              {!user && (
+                <Button
+                  variant="outline"
+                  asChild
+                  className="border-gray-700 bg-gray-800 hover:bg-gray-700 text-white"
+                >
+                  <Link href="/signup">
+                    <Heart className="mr-2 h-5 w-5" />
+                    Create Free Account
+                  </Link>
+                </Button>
+              )}
+              {user && (
+                <Button
+                  variant="outline"
+                  asChild
+                  className="border-gray-700 bg-gray-800 hover:bg-gray-700 text-white"
+                >
+                  <Link href="/generate">
+                    Create Your Own Story
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
