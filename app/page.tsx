@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar
-        logo="RomanceStory"
+        logo="Silk"
         links={[
           { href: '/stories', label: 'Browse Stories' },
           { href: '#features', label: 'Features' },
@@ -121,7 +121,7 @@ export default function Home() {
       </main>
 
       <Footer
-        logo="RomanceStory"
+        logo="Silk"
         description="AI-powered romance stories, perfectly crafted for you"
         sections={[
           {

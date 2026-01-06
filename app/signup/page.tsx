@@ -15,7 +15,7 @@ export default function SignupPage() {
             <Heart className="h-6 w-6 text-white fill-white" />
           </div>
           <span className="font-bold text-3xl font-['Playfair_Display'] bg-gradient-to-r from-rose-500 to-violet-500 bg-clip-text text-transparent">
-            RomanceStory
+            Silk
           </span>
         </Link>
 

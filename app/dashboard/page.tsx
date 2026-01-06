@@ -24,7 +24,7 @@ export default async function DashboardPage() {
                   <Heart className="h-5 w-5 text-white fill-white" />
                 </div>
                 <span className="font-bold text-2xl font-['Playfair_Display'] bg-gradient-to-r from-rose-700 to-violet-600 bg-clip-text text-transparent">
-                  RomanceStory
+                  Silk
                 </span>
               </Link>
             </div>
