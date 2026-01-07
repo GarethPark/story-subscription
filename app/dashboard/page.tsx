@@ -19,9 +19,9 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-cream via-white to-cream">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       {/* Elegant Header */}
-      <header className="border-b border-rose-100/50 bg-white/95 backdrop-blur-lg shadow-sm">
+      <header className="border-b border-rose-900/30 bg-gray-900/95 backdrop-blur-lg shadow-sm">
         <div className="w-full mx-auto px-5 py-5" style={{ maxWidth: '1200px' }}>
           <div className="flex items-center justify-between">
             <div>
@@ -36,13 +36,13 @@ export default async function DashboardPage() {
             </div>
             <div className="flex items-center gap-4">
               <nav className="hidden md:flex items-center gap-6 mr-4">
-                <Link href="/stories" className="text-sm font-semibold text-gray-600 hover:text-rose-700 transition-colors">
+                <Link href="/stories" className="text-sm font-semibold text-gray-300 hover:text-rose-400 transition-colors">
                   Browse Stories
                 </Link>
-                <Link href="/my-stories" className="text-sm font-semibold text-gray-600 hover:text-rose-700 transition-colors">
+                <Link href="/my-stories" className="text-sm font-semibold text-gray-300 hover:text-rose-400 transition-colors">
                   My Stories
                 </Link>
-                <Link href="/library" className="text-sm font-semibold text-gray-600 hover:text-rose-700 transition-colors">
+                <Link href="/library" className="text-sm font-semibold text-gray-300 hover:text-rose-400 transition-colors">
                   Favorites
                 </Link>
               </nav>
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
                 <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
                 <span className="text-sm font-semibold text-amber-900">{user.credits}</span>
               </div>
-              <span className="hidden md:block text-sm text-gray-600">{user.email}</span>
+              <span className="hidden md:block text-sm text-gray-300">{user.email}</span>
               <form action="/api/auth/logout" method="POST">
                 <Button type="submit" variant="ghost" size="sm">
                   Logout
@@ -65,10 +65,10 @@ export default async function DashboardPage() {
       <main className="w-full mx-auto px-5 py-10" style={{ maxWidth: '1200px' }}>
         {/* Welcome Hero */}
         <div className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold font-['Playfair_Display'] text-gray-900 mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold font-['Playfair_Display'] text-white mb-3">
             Welcome back{user.name ? `, ${user.name}` : ''}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-300">
             Your personal romance library awaits
           </p>
         </div>
@@ -105,10 +105,10 @@ export default async function DashboardPage() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Quick Actions */}
-          <Card className="border-rose-100/50 hover:shadow-none">
+          <Card className="border-rose-900/30 bg-gray-900/50 backdrop-blur-sm hover:shadow-none">
             <CardHeader>
-              <CardTitle className="text-2xl font-['Playfair_Display']">Quick Actions</CardTitle>
-              <CardDescription className="text-base">Jump to your favorite sections</CardDescription>
+              <CardTitle className="text-2xl font-['Playfair_Display'] text-white">Quick Actions</CardTitle>
+              <CardDescription className="text-base text-gray-400">Jump to your favorite sections</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button className="w-full justify-start text-base" asChild>
@@ -133,21 +133,21 @@ export default async function DashboardPage() {
           </Card>
 
           {/* Credits Card */}
-          <Card className="border-amber-200/50 bg-gradient-to-br from-amber-50 via-white to-amber-50/50 hover:shadow-none">
+          <Card className="border-amber-700/30 bg-gradient-to-br from-amber-950/50 via-gray-900/50 to-amber-950/30 backdrop-blur-sm hover:shadow-none">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-2xl font-['Playfair_Display']">
-                <Star className="h-6 w-6 text-amber-600 fill-amber-600" />
+              <CardTitle className="flex items-center gap-2 text-2xl font-['Playfair_Display'] text-white">
+                <Star className="h-6 w-6 text-amber-400 fill-amber-400" />
                 Your Credits
               </CardTitle>
-              <CardDescription className="text-base">Story generation credits</CardDescription>
+              <CardDescription className="text-base text-gray-400">Story generation credits</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-6">
-                <div className="text-6xl font-bold font-['Playfair_Display'] bg-gradient-to-br from-amber-600 to-amber-800 bg-clip-text text-transparent mb-2">
+                <div className="text-6xl font-bold font-['Playfair_Display'] bg-gradient-to-br from-amber-400 to-amber-600 bg-clip-text text-transparent mb-2">
                   {user.credits}
                 </div>
-                <p className="text-sm text-gray-600 mb-6">credits remaining</p>
-                <Button variant="outline" className="w-full" asChild>
+                <p className="text-sm text-gray-400 mb-6">credits remaining</p>
+                <Button variant="outline" className="w-full border-amber-700/30 hover:bg-amber-950/30 text-gray-200" asChild>
                   <Link href="/pricing">Get More Credits</Link>
                 </Button>
               </div>
@@ -155,26 +155,26 @@ export default async function DashboardPage() {
           </Card>
 
           {/* Account Info Card */}
-          <Card className="border-rose-100/50 hover:shadow-none">
+          <Card className="border-rose-900/30 bg-gray-900/50 backdrop-blur-sm hover:shadow-none">
             <CardHeader>
-              <CardTitle className="text-2xl font-['Playfair_Display']">Your Account</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-2xl font-['Playfair_Display'] text-white">Your Account</CardTitle>
+              <CardDescription className="text-base text-gray-400">
                 {user.email}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+              <p className="text-sm text-gray-300 mb-6 leading-relaxed">
                 Ready to dive into your next romance adventure? Create a custom story or explore our curated library.
               </p>
               <div className="flex flex-col gap-3 text-sm">
-                <div className="flex items-center gap-3 px-4 py-2 bg-emerald-50 border border-emerald-200/50 rounded-lg">
-                  <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
-                  <span className="text-emerald-800 font-medium">All systems operational</span>
+                <div className="flex items-center gap-3 px-4 py-2 bg-emerald-950/50 border border-emerald-700/30 rounded-lg">
+                  <div className="h-2 w-2 rounded-full bg-emerald-400"></div>
+                  <span className="text-emerald-300 font-medium">All systems operational</span>
                 </div>
                 {user.isAdmin && (
-                  <div className="flex items-center gap-3 px-4 py-2 bg-violet-50 border border-violet-200/50 rounded-lg">
-                    <div className="h-2 w-2 rounded-full bg-violet-500"></div>
-                    <span className="text-violet-800 font-medium">Admin access enabled</span>
+                  <div className="flex items-center gap-3 px-4 py-2 bg-violet-950/50 border border-violet-700/30 rounded-lg">
+                    <div className="h-2 w-2 rounded-full bg-violet-400"></div>
+                    <span className="text-violet-300 font-medium">Admin access enabled</span>
                   </div>
                 )}
               </div>

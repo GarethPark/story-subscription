@@ -27,7 +27,7 @@ export default async function LibraryPage() {
   })
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
@@ -35,7 +35,7 @@ export default async function LibraryPage() {
             <Heart className="h-8 w-8 text-rose-500 fill-current" />
             <h1 className="text-4xl font-bold">My Library</h1>
           </div>
-          <p className="text-slate-600">
+          <p className="text-gray-300">
             Your favorite stories, all in one place
           </p>
         </div>
@@ -46,7 +46,7 @@ export default async function LibraryPage() {
           <Card className="p-12 text-center">
             <Heart className="h-16 w-16 text-slate-300 mx-auto mb-4" />
             <h2 className="text-2xl font-semibold mb-2">No favorites yet</h2>
-            <p className="text-slate-500 mb-6">
+            <p className="text-gray-400 mb-6">
               Start building your collection by saving stories you love
             </p>
             <Button asChild>
@@ -55,7 +55,7 @@ export default async function LibraryPage() {
           </Card>
         ) : (
           <>
-            <div className="mb-4 text-sm text-slate-600">
+            <div className="mb-4 text-sm text-gray-300">
               {favorites.length} {favorites.length === 1 ? 'story' : 'stories'}{' '}
               saved
             </div>
@@ -93,20 +93,20 @@ export default async function LibraryPage() {
                             {story.genre}
                           </span>
                           {story.readingTime && (
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-gray-400">
                               {story.readingTime} min
                             </span>
                           )}
                         </div>
                         <Heart className="h-4 w-4 text-rose-500 fill-current" />
                       </div>
-                      <h3 className="font-semibold text-lg mb-1 group-hover:text-slate-600 transition-colors">
+                      <h3 className="font-semibold text-lg mb-1 group-hover:text-gray-300 transition-colors">
                         {story.title}
                       </h3>
-                      <p className="text-sm text-slate-500 mb-2">
+                      <p className="text-sm text-gray-400 mb-2">
                         by {story.author}
                       </p>
-                      <p className="text-sm text-slate-600 line-clamp-3 mb-2">
+                      <p className="text-sm text-gray-300 line-clamp-3 mb-2">
                         {story.summary}
                       </p>
                       <p className="text-xs text-slate-400">
