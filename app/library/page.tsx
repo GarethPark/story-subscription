@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
-import { Heart } from 'lucide-react'
+import { Heart, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
 
 export default async function LibraryPage() {
   const user = await getCurrentUser()
@@ -27,21 +27,42 @@ export default async function LibraryPage() {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
+      <div className="container max-w-6xl mx-auto px-4">
+        {/* Navigation */}
+        <nav className="mb-8 flex items-center gap-2 flex-wrap">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Link>
+          <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Sparkles className="h-4 w-4" />
+            Generate
+          </Link>
+          <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Library className="h-4 w-4" />
+            Browse Stories
+          </Link>
+          <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <BookOpen className="h-4 w-4" />
+            My Stories
+          </Link>
+          <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
+            <Heart className="h-4 w-4" />
+            Favorites
+          </Link>
+        </nav>
+
+        {/* Header */}
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <Heart className="h-8 w-8 text-rose-500 fill-current" />
-            <h1 className="text-4xl font-bold">My Library</h1>
+            <Heart className="h-8 w-8 text-rose-400 fill-current" />
+            <h1 className="text-4xl font-bold text-white">My Library</h1>
           </div>
           <p className="text-gray-300">
             Your favorite stories, all in one place
           </p>
         </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8">
         {favorites.length === 0 ? (
           <Card className="p-12 text-center">
             <Heart className="h-16 w-16 text-slate-300 mx-auto mb-4" />

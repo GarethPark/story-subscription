@@ -3,7 +3,7 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Heart, BookOpen, Sparkles, Star, Menu } from 'lucide-react'
+import { Heart, BookOpen, Sparkles, Star, LayoutDashboard, Library } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -63,6 +63,30 @@ export default async function DashboardPage() {
 
       {/* Main Content */}
       <main className="w-full mx-auto px-5 py-10" style={{ maxWidth: '1200px' }}>
+        {/* Navigation */}
+        <nav className="mb-8 flex items-center gap-2 flex-wrap">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Link>
+          <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Sparkles className="h-4 w-4" />
+            Generate
+          </Link>
+          <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Library className="h-4 w-4" />
+            Browse Stories
+          </Link>
+          <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <BookOpen className="h-4 w-4" />
+            My Stories
+          </Link>
+          <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Heart className="h-4 w-4" />
+            Favorites
+          </Link>
+        </nav>
+
         {/* Welcome Hero */}
         <div className="mb-10">
           <h1 className="text-4xl md:text-5xl font-bold font-['Playfair_Display'] text-white mb-3">
@@ -111,24 +135,24 @@ export default async function DashboardPage() {
               <CardDescription className="text-base text-gray-400">Jump to your favorite sections</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full justify-start text-base" asChild>
-                <Link href="/my-stories">
+              <Link href="/my-stories" className="block w-full">
+                <Button className="w-full justify-start text-base">
                   <Sparkles className="h-5 w-5 mr-3" />
                   My Stories
-                </Link>
-              </Button>
-              <Button variant="outline" className="w-full justify-start text-base" asChild>
-                <Link href="/stories">
+                </Button>
+              </Link>
+              <Link href="/stories" className="block w-full">
+                <Button variant="outline" className="w-full justify-start text-base">
                   <BookOpen className="h-5 w-5 mr-3" />
                   Browse Library
-                </Link>
-              </Button>
-              <Button variant="outline" className="w-full justify-start text-base" asChild>
-                <Link href="/library">
+                </Button>
+              </Link>
+              <Link href="/library" className="block w-full">
+                <Button variant="outline" className="w-full justify-start text-base">
                   <Heart className="h-5 w-5 mr-3" />
                   My Favorites
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 

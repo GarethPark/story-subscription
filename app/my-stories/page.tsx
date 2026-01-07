@@ -2,7 +2,7 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
-import { Clock, BookOpen, Sparkles, AlertCircle, Loader2 } from 'lucide-react'
+import { Clock, BookOpen, Sparkles, AlertCircle, Loader2, LayoutDashboard, Heart, Library } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -50,6 +50,30 @@ export default async function MyStoriesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
       <div className="container max-w-6xl mx-auto px-4">
+        {/* Navigation */}
+        <nav className="mb-8 flex items-center gap-2 flex-wrap">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Link>
+          <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Sparkles className="h-4 w-4" />
+            Generate
+          </Link>
+          <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Library className="h-4 w-4" />
+            Browse Stories
+          </Link>
+          <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
+            <BookOpen className="h-4 w-4" />
+            My Stories
+          </Link>
+          <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Heart className="h-4 w-4" />
+            Favorites
+          </Link>
+        </nav>
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">

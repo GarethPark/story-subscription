@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { CustomStoryGenerationForm } from '@/components/generate/custom-story-form'
-import { Sparkles, Coins, ArrowLeft } from 'lucide-react'
+import { Sparkles, Coins, LayoutDashboard, BookOpen, Heart, Library } from 'lucide-react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -21,15 +21,28 @@ export default async function GeneratePage() {
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
       <div className="w-full mx-auto px-5" style={{ maxWidth: '1100px' }}>
         {/* Navigation */}
-        <div className="mb-8">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center text-gray-400 hover:text-white transition-colors group"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Back to Dashboard
+        <nav className="mb-8 flex items-center gap-2 flex-wrap">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
           </Link>
-        </div>
+          <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
+            <Sparkles className="h-4 w-4" />
+            Generate
+          </Link>
+          <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Library className="h-4 w-4" />
+            Browse Stories
+          </Link>
+          <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <BookOpen className="h-4 w-4" />
+            My Stories
+          </Link>
+          <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <Heart className="h-4 w-4" />
+            Favorites
+          </Link>
+        </nav>
 
         {/* Header */}
         <div className="mb-10">
