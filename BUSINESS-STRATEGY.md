@@ -386,6 +386,33 @@ Silk is a high-margin SaaS platform (90%+ profit margins) that allows romance re
 **Time:** 4-6 hours of development
 **Impact:** Additional revenue stream, increases engagement
 
+### Priority 4: User Feedback Form
+**Why:** Essential for understanding what users love/hate, guides product iteration.
+
+**Tasks:**
+1. Create feedback form component (rating + text feedback)
+2. Add feedback collection on story completion
+3. Store feedback in database (create Feedback model)
+4. Build admin view to review feedback
+5. Add feedback prompts at key moments (after generation, after reading story)
+6. Optional: Net Promoter Score (NPS) tracking
+
+**Time:** 4-6 hours of development
+**Impact:** User insights, product improvement data, testimonials for marketing
+
+### Priority 5: Category/Trope Visual System
+**Why:** Makes browsing more engaging, helps users discover new tropes visually.
+
+**Tasks:**
+1. Review all genre categories and trope combinations
+2. Generate hero images for each category/trope combo (using DALL-E)
+3. Add image fields to genre/trope selection UI
+4. Update story cards to display trope/genre images
+5. Create visual category browsing page
+
+**Time:** Image generation (user handles tomorrow) + 6-8 hours UI development
+**Impact:** Better UX, more engaging discovery, professional polish
+
 ---
 
 ## Success Metrics to Track
@@ -476,15 +503,17 @@ Everything else (marketing, ads, features) only works if the core product is exc
 2. **Stripe payment integration** - Can't charge users
 3. **Domain (readsilk.com)** - Need to purchase
 
-### 🔜 Post-Launch Features:
-- Story extensions ($2.99 each)
-- Email verification
-- Password reset
-- Profile editing
-- User analytics/tracking
-- Email notifications
-- Reading history
-- Rate limiting on API endpoints
+### 🔜 Post-Launch Features (In Priority Order):
+1. **Story extensions** ($2.99 each) - Additional revenue stream
+2. **User feedback form** - Collect ratings, reviews, testimonials
+3. **Category/trope images** - Visual browsing system
+4. Email verification
+5. Password reset
+6. Profile editing
+7. User analytics/tracking
+8. Email notifications
+9. Reading history
+10. Rate limiting on API endpoints
 
 ---
 
@@ -594,4 +623,7 @@ Everything else (marketing, ads, features) only works if the core product is exc
 
 *This is a living document. Update after major decisions or pivots.*
 
-**Next Session Focus:** Generate 50 curated stories + TikTok content strategy
+**Next Session Focus:**
+1. Generate 50 curated stories using Claude Opus
+2. Generate category/trope hero images using DALL-E
+3. Then: Stripe integration → Story extensions → Feedback form
