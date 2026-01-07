@@ -80,11 +80,11 @@ export default async function DashboardPage() {
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-500/20 rounded-full blur-3xl" />
 
           <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex-1">
+            <div className="flex-1 max-w-3xl">
               <h2 className="text-3xl md:text-4xl font-bold font-['Playfair_Display'] mb-3">
                 Create Your Perfect Romance
               </h2>
-              <p className="text-rose-100 text-lg mb-4 max-w-2xl">
+              <p className="text-rose-100 text-lg mb-4">
                 Personalize every detail - from character names to plot twists. Your story, your way.
               </p>
               <div className="flex items-center gap-2 text-sm">
