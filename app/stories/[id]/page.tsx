@@ -132,8 +132,8 @@ export default async function StoryPage({
       </div>
 
       {/* Story Content */}
-      <div className="container max-w-4xl mx-auto px-4 md:px-6 py-12">
-        <div className="w-full">
+      <div className="container mx-auto px-4 md:px-6 py-12">
+        <div className="max-w-4xl mx-auto">
           {/* Action bar */}
           <div className="bg-gray-900/50 border border-rose-900/30 rounded-2xl p-6 mb-8 backdrop-blur-sm">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -156,17 +156,16 @@ export default async function StoryPage({
           </div>
 
           {/* Story content with optimal reading typography */}
-          <div className="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
-            <div className="max-w-3xl mx-auto">
-              <div
-                className="whitespace-pre-wrap text-gray-300 leading-relaxed text-lg"
-                style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                  lineHeight: '1.8'
-                }}
-              >
-                {story.content}
-              </div>
+          <div className="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-6 md:p-12 backdrop-blur-sm">
+            <div
+              className="whitespace-pre-wrap text-gray-300 text-base md:text-lg mx-auto"
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                lineHeight: '1.8',
+                maxWidth: '65ch'
+              }}
+            >
+              {story.content}
             </div>
           </div>
 
