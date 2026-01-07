@@ -22,7 +22,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-b from-cream via-white to-cream">
       {/* Elegant Header */}
       <header className="border-b border-rose-100/50 bg-white/95 backdrop-blur-lg shadow-sm">
-        <div className="container mx-auto px-4 md:px-6 py-5">
+        <div className="w-full mx-auto py-5" style={{ maxWidth: '1200px', padding: '20px' }}>
           <div className="flex items-center justify-between">
             <div>
               <Link href="/" className="flex items-center space-x-2 group">
@@ -62,7 +62,7 @@ export default async function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 md:px-6 py-10">
+      <main className="w-full mx-auto py-10" style={{ maxWidth: '1200px', padding: '20px' }}>
         {/* Welcome Hero */}
         <div className="mb-10">
           <h1 className="text-4xl md:text-5xl font-bold font-['Playfair_Display'] text-gray-900 mb-3">
