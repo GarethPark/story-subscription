@@ -79,27 +79,27 @@ export default async function DashboardPage() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-rose-500/20 rounded-full blur-3xl" />
 
-          <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex-1 max-w-3xl">
+          <div className="relative">
+            <div className="mb-6">
               <h2 className="text-3xl md:text-4xl font-bold font-['Playfair_Display'] mb-3">
                 Create Your Perfect Romance
               </h2>
-              <p className="text-rose-100 text-lg mb-4">
+              <p className="text-rose-100 text-lg mb-4 max-w-2xl">
                 Personalize every detail - from character names to plot twists. Your story, your way.
               </p>
-              <div className="flex items-center gap-2 text-sm">
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
-                  <Star className="h-4 w-4 text-amber-300 fill-amber-300" />
-                  <span className="font-semibold">{user.credits} credits available</span>
-                </div>
-              </div>
             </div>
-            <Button size="lg" className="bg-white text-rose-700 hover:bg-rose-50 shadow-xl" asChild>
-              <Link href="/generate">
-                <Sparkles className="h-5 w-5 mr-2" />
-                Generate Story
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 text-sm">
+                <Star className="h-4 w-4 text-amber-300 fill-amber-300" />
+                <span className="font-semibold">{user.credits} credits available</span>
+              </div>
+              <Button size="lg" className="bg-white text-rose-700 hover:bg-rose-50 shadow-xl" asChild>
+                <Link href="/generate">
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Generate Story
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
