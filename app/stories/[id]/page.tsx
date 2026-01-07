@@ -132,10 +132,10 @@ export default async function StoryPage({
       </div>
 
       {/* Story Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
+      <div className="w-full py-8 sm:py-12">
+        <div className="mx-auto" style={{ maxWidth: '800px', padding: '0 20px' }}>
           {/* Action bar */}
-          <div className="bg-gray-900/50 border border-rose-900/30 rounded-xl p-4 mb-8 backdrop-blur-sm">
+          <div className="bg-gray-900/50 border border-rose-900/30 rounded-xl p-4 mb-6 sm:mb-8 backdrop-blur-sm">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <FavoriteButton
                 storyId={story.id}
@@ -155,12 +155,18 @@ export default async function StoryPage({
             </div>
           </div>
 
-          {/* Story content with optimal reading typography */}
-          <div className="prose prose-invert prose-lg max-w-none">
-            <div className="bg-gray-900/40 border border-gray-800/50 rounded-xl p-8 sm:p-12 backdrop-blur-sm">
-              <div className="whitespace-pre-wrap text-gray-200 text-base sm:text-lg leading-loose font-serif">
-                {story.content}
-              </div>
+          {/* Story content */}
+          <div className="bg-gray-900/40 border border-gray-800/50 rounded-xl p-5 sm:p-8 md:p-10 backdrop-blur-sm">
+            <div
+              className="whitespace-pre-wrap text-gray-100"
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontSize: '18px',
+                lineHeight: '1.75',
+                letterSpacing: '0.01em'
+              }}
+            >
+              {story.content}
             </div>
           </div>
 
