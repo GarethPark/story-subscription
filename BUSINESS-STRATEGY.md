@@ -1,293 +1,519 @@
-# Romance Story Platform - Business Strategy
+# Silk - Business Strategy & Launch Plan
 
-**Last Updated:** 2026-01-05
-**Status:** Phase 1 - Building Custom Generation Feature
-
----
-
-## Business Model: Hybrid Subscription + Custom Generation
-
-### Value Proposition
-AI-powered romance story platform where users can read curated stories OR create their own personalized romance stories with custom characters, tropes, and scenarios.
-
-**Unique Selling Point:** Only platform offering AI-generated personalized romance stories on-demand.
+**Product:** AI-powered personalized romance story platform
+**Brand:** Silk
+**Domain:** readsilk.com (to be purchased)
+**Current URL:** romance-story-subscription.vercel.app
+**Last Updated:** 2026-01-07
 
 ---
 
-## Pricing Structure
+## Executive Summary
 
-### Free Tier
-- Access to curated library (20-30 admin-generated stories)
-- Browse and discover stories
-- 1 new curated story added weekly
-- Community features (favorites, reading history)
+Silk is a high-margin SaaS platform (90%+ profit margins) that allows romance readers to generate personalized AI stories with custom characters, tropes, and scenarios. Revenue comes from subscriptions ($9.99/month) and credit purchases ($4.99/credit).
 
-### Premium ($9.99/month)
-- Everything in Free
-- **3 custom story credits/month**
-- Create personalized stories with:
-  - Custom character names
-  - Choose tropes, genre, heat level
-  - Specific scenario requests
-  - 6,000-8,000 word stories
-- Save unlimited favorites
-- Early access to new features
-
-### Pro ($19.99/month) - Future
-- Everything in Premium
-- **10 custom story credits/month**
-- Longer stories (up to 12,000 words)
-- Series generation (multi-part stories)
-- Advanced customization (describe ideal characters, settings)
-
-### Add-on
-- Extra story credits: $4.99 each (one-time purchase)
+**Key Insight:** Romance readers spend billions on romance content. We offer instant gratification + infinite personalization at competitive pricing.
 
 ---
 
-## Cost Analysis
+## Revenue Model
 
-### API Costs (per story)
-- Claude Sonnet 4: ~$3.00 per 8,000-word story
-- DALL-E 3 cover: ~$0.08 per image
-- **Total per story: ~$3.08**
+### Pricing Tiers
 
-### Pricing Strategy
-- Premium subscription: $9.99/month includes 3 credits = $3.33 per story
-- Covers API costs with small margin
-- Add-on credits: $4.99 each = $1.91 profit per story
-- Curated library stories: One-time cost, infinite value
+#### Tier 1: Free (Lead Generation)
+- Browse and read curated library
+- No story generation
+- **Goal:** Hook users with quality content, convert to paid
 
-### Revenue Projections
+#### Tier 2: Premium - $9.99/month
+- 3 custom story generation credits per month
+- Access to curated library
+- Keep all generated stories forever
+- **Target:** Core user base
+- **Cost:** ~$0.60 for 3 stories (Claude Sonnet 4)
+- **Margin:** ~94% ($9.39 profit per subscriber)
 
-**Conservative (100 paid users):**
-- 100 users × $9.99/month = $999/month
-- 50 add-on purchases × $4.99 = $249/month
-- API costs: ~$450/month (150 stories)
-- **Net: ~$800/month**
+#### Tier 3: Credit Add-ons - $4.99/credit
+- Purchase individual credits on-demand
+- For users who want more than 3 stories/month
+- No subscription required
+- **Target:** Power users, one-time purchasers
+- **Cost:** ~$0.20 per story
+- **Margin:** ~96% ($4.79 profit per credit)
 
-**Moderate (500 paid users):**
-- 500 users × $9.99 = $4,995/month
-- 200 add-on purchases × $4.99 = $998/month
-- API costs: ~$1,800/month
-- **Net: ~$4,200/month**
-
-**Optimistic (2,000 paid users):**
-- 2,000 users × $9.99 = $19,980/month
-- 1,000 add-on purchases × $4.99 = $4,990/month
-- API costs: ~$9,000/month
-- **Net: ~$16,000/month**
+#### Tier 4: Story Extensions - $2.99 each (Future)
+- Extend any story by 3,000-5,000 words
+- Continue the story you love
+- **Cost:** ~$0.10 to generate
+- **Margin:** 96% profit
+- **Target:** Engaged users who love specific stories
+- **Status:** Designed but not yet implemented
 
 ---
 
-## Roadmap
+## Unit Economics
 
-### Phase 1: Custom Generation ✅ **COMPLETE**
-**Goal:** Allow users to create personalized stories
+### Costs per Story
+- **Standard generation (Claude Sonnet 4):** ~$0.15-0.20
+- **Premium generation (Claude Opus):** ~$0.60-0.75
+- **Story extension:** ~$0.10
+- **Cover image (DALL-E 3):** ~$0.08 (optional)
 
-**Features Built:**
-- [x] Admin story generation working (async)
-- [x] User-facing custom story generation form
-- [x] Character name customization
-- [x] Scenario/plot customization (optional text input)
-- [x] Credit system (simple counter, no payment yet)
-- [x] "My Stories" page to view custom-generated stories
-- [x] Separate custom stories from curated library
-- [x] Fixed 404 issue - users can view their own unpublished stories
+### Revenue per Customer
 
-**Technical Implementation:**
-- [x] Created `/generate` page for users
-- [x] Added credits field to User model
-- [x] Created "My Stories" section in dashboard
-- [x] Updated Story model to track `isCustom` and `userId`
-- [x] Added credit checking before generation
-- [x] Updated UI to show remaining credits
-- [x] Async generation with status polling
-- [x] Enhanced parsing with fallback handling
-- [x] Fixed text visibility issues
+**Premium Subscriber ($9.99/month):**
+- Revenue: $9.99
+- Cost: ~$0.60 for 3 stories (Sonnet)
+- **Net margin: ~$9.39 (94%)**
 
-**AI Model Used:** Claude Sonnet 4 ($3 per 8,000-word story)
+**Credit Purchase ($4.99):**
+- Revenue: $4.99
+- Cost: ~$0.20
+- **Net margin: ~$4.79 (96%)**
 
-**Future Consideration:** Claude Opus 4 as premium tier option
-- Cost: ~$7 per story (2x Sonnet cost)
-- Use case: Premium users willing to pay 2 credits for ultra-premium quality
-- Implementation: Add "Premium Quality" toggle in generation form
+**Story Extension ($2.99):**
+- Revenue: $2.99
+- Cost: ~$0.10
+- **Net margin: ~$2.89 (96%)**
 
-### Phase 2: Polish & Design ✨ **IN PROGRESS**
-**Goal:** Create elegant, sophisticated UI targeting female romance readers
+### Monthly Operating Costs
+- AI generation: Variable based on usage
+- Hosting (Vercel): $20-50/month
+- Database (Neon): Free tier → $20-50/month at scale
+- Stripe fees: 2.9% + $0.30 per transaction
+- Domain: $10-15/year (~$1/month)
 
-**Design Philosophy:** "Luxury Romance Library"
-- See DESIGN-SYSTEM.md for complete specifications
-- Sophisticated, aspirational, feminine aesthetic
-- Premium feel without being exclusive
+**At 100 subscribers:**
+- Revenue: $999/month
+- Costs: ~$60/month
+- **Profit: ~$940/month**
+
+---
+
+## Money Flow (Critical - No Upfront Capital Needed)
+
+### Payment Flow (Upfront Collection)
+
+1. **User Pays First:**
+   - Subscription: $9.99/month charged immediately via Stripe
+   - OR One-time: $4.99/credit charged immediately
+   - Money hits your Stripe account **before** any generation
+
+2. **Credits Added:**
+   - Stripe webhook adds credits to user account
+   - User has pre-paid balance
+
+3. **User Generates Story:**
+   - Credit deducted IMMEDIATELY (before generation starts)
+   - Already implemented in code
+
+4. **We Pay for Generation:**
+   - API call to Anthropic (Claude)
+   - We pay ~$0.15-0.20 from our Anthropic account
+   - Billed monthly by Anthropic
+   - **We've already collected $4.99-9.99 from user**
+
+5. **If Generation Fails:**
+   - Credit auto-refunded to user
+   - Minimal loss (~$0.15)
+
+**Key:** Cash-flow positive from day 1. No upfront capital needed beyond domain ($10-15).
+
+---
+
+## Revenue Projections
+
+### Scenario 1: Soft Launch (Months 1-3)
+- 5-20 signups from friends/family/Reddit
+- 2-5 convert to paid (10-25% conversion)
+- **Revenue: $20-50/month**
+- **Profit: ~$15-45/month**
+
+### Scenario 2: Active Marketing (Months 3-6)
+- 50-200 signups/month
+- 10-30% conversion rate
+- 10-60 paying subscribers
+- **Revenue: $100-600/month**
+- **Profit: ~$90-550/month**
+
+### Scenario 3: Good Growth (Months 6-12)
+- 200-500 signups/month
+- 15-25% conversion
+- 50-150 paying subscribers (cumulative)
+- **Revenue: $500-1,500/month**
+- **Profit: ~$450-1,400/month**
+
+### Scenario 4: Strong Success (Year 1+)
+- 500-1,000 signups/month
+- 20-30% conversion
+- 200-500 paying subscribers
+- **Revenue: $2,000-5,000/month**
+- **Profit: ~$1,800-4,700/month**
+
+**Realistic Target:** $500-2,000/month within 6 months with good execution.
+
+---
+
+## Distribution & Marketing Strategy
+
+### Critical Success Factors
+1. **Content Quality:** Free library must be AMAZING
+2. **Distribution:** Find romance readers where they already are
+3. **Word of Mouth:** Romance readers share with friends
+4. **Retention:** Monthly subscriptions compound over time
+
+### Phase 1: Prove Quality (Weeks 1-4)
+
+#### 1. TikTok/BookTok - HIGHEST PRIORITY ⭐⭐⭐
+**Why:** 50M+ romance readers on BookTok
+
+**Strategy:**
+- Create account: @readsilk
+- Post 3-5 videos/day:
+  - "POV: You can customize your romance to YOUR fantasy"
+  - "Watch me generate an enemies-to-lovers story with MY name"
+  - Reading dramatic excerpts from AI-generated stories
+  - "This AI wrote me the spiciest scene I've ever read"
+  - Before/after: "I gave AI these details → It wrote THIS"
+
+**Hook:** Show the OUTCOME (dramatic story moments), not the process
+**CTA:** "Link in bio - read free stories or make your own"
+
+**Cost:** $0 (just time)
+**Potential:** Viral videos can get 100K-1M+ views
+
+#### 2. Reddit - Romance Communities ⭐⭐⭐
+**Where:**
+- r/RomanceBooks (500K+ members)
+- r/romancelandia
+- r/RomanceBookClub
+- r/smuttyromancebooks
+
+**Strategy:**
+- **DON'T spam** - Participate genuinely first (2 weeks)
+- Post: "I built a tool to generate custom romance stories - here's a free one I made for you"
+- Give away free custom stories
+- "Tell me your favorite trope and I'll generate you a story"
+- Share in weekly self-promotion threads
+
+**Cost:** $0
+**Potential:** 100-500 signups if well-received
+
+#### 3. Facebook Romance Groups ⭐⭐
+**Strategy:**
+- Join 20-30 romance reader groups (search "romance readers" "book club")
+- Participate first, then share
+- "Has anyone tried AI-generated romance?"
+- Post excerpts, ask for feedback
+
+**Cost:** $0
+**Potential:** Older demographic (30-60), more likely to pay
+
+---
+
+### Phase 2: Convert Free Users (Weeks 2-8)
+
+#### 4. Instagram Romance Community ⭐⭐
+**Strategy:**
+- Beautiful quote cards from stories
+- "Spicy excerpt of the day"
+- Partner with micro-influencers (bookstagram accounts)
+
+**Cost:** $0-100 for influencer partnerships
+**Potential:** 500-2K followers in 3 months
+
+#### 5. Pinterest (Long-term SEO) ⭐
+**Strategy:**
+- Pins for each story
+- "Best AI-Generated Romance Stories"
+- "Customize Your Romance Story - Silk"
+- Links drive to site
+
+**Cost:** $0
+**Potential:** Long tail traffic (months 3-12)
+
+---
+
+### Phase 3: Paid Acquisition (Month 2+)
+
+#### 6. TikTok Ads ⭐⭐⭐
+**Once organic is validated:**
+- $20-50/day budget
+- Target: Women 25-45, interested in romance novels, BookTok
+- Video ads: Testimonials, story generation demos
+
+**Cost:** $500-1,500/month
+**Expected:** $5-15 per subscriber
+**ROI:** Break even month 1-2, profit after
+
+#### 7. Facebook/Instagram Ads ⭐⭐
+**Target:**
+- Women 30-55
+- Interested in: Romance novels, Kindle Unlimited, Audible, Book of the Month
+- Lookalike audiences from subscribers
+
+**Cost:** $500-1,000/month
+**Expected:** $10-20 per subscriber
+
+---
+
+### Phase 4: Partnerships & Growth Hacks
+
+#### 8. Romance Author Partnerships ⭐⭐⭐
+**Strategy:**
+- Reach out to indie romance authors (10K-100K followers)
+- Offer: Free premium account + revenue share (20%?)
+- They promote to their audience
+- "Use Silk to write fan fiction of my characters!"
+
+**Potential:** Each author brings 50-500 users
+
+#### 9. Romance Podcasts ⭐
+**Examples:** "Fated Mates," "Smart Bitches Trashy Books"
+
+**Strategy:**
+- Guest appearances: "I built AI that writes personalized romance"
+- Offer discount codes to listeners
+- Sponsor episodes
+
+**Cost:** $0-500/episode
+**Potential:** 100-1,000 listeners convert
+
+#### 10. Giveaways & Viral Loops ⭐⭐
+**Launch promotions:**
+- "First 100 users get 5 free story credits"
+- "Refer a friend, both get 2 free credits"
+- "Share your AI story on TikTok, tag us, get free month"
+
+**Cost:** ~$50-200 in lost revenue
+**Potential:** Viral growth, early adopters
+
+---
+
+## Launch Timeline
+
+### Week 1: Foundation
+**Tasks:**
+- [ ] Generate 50 AMAZING curated stories (Claude Opus)
+- [ ] Create TikTok account (@readsilk)
+- [ ] Post 3 videos/day on TikTok
+- [ ] Join Reddit romance communities (participate, don't spam)
+
+**Goal:** 100 signups
+
+### Week 2: Soft Launch
+**Tasks:**
+- [ ] Continue TikTok (3-5 videos/day)
+- [ ] Post "I built this" on r/RomanceBooks
+- [ ] Offer 50 free custom stories on TikTok
+- [ ] Start collecting emails
+- [ ] Join 20 Facebook romance groups
+
+**Goal:** 500 signups, 10 paying ($100/month)
+
+### Week 3-4: Scale What Works
+**Tasks:**
+- [ ] If TikTok works → Post more
+- [ ] If Reddit works → Be more active
+- [ ] Add Instagram content
+- [ ] Start Pinterest pins
+- [ ] Launch referral program
+
+**Goal:** 1,000 signups, 50 paying ($500/month)
+
+### Month 2: Validate & Expand
+**Tasks:**
+- [ ] Start small ad budget ($20/day on best channel)
+- [ ] First influencer partnership
+- [ ] Track metrics ruthlessly
+- [ ] Collect user feedback
+
+**Goal:** 2,000 signups, 150 paying ($1,500/month)
+
+### Month 3+: Scale
+**Tasks:**
+- [ ] Increase ad budget to $50/day
+- [ ] Podcast appearances
+- [ ] Multiple influencer partnerships
+- [ ] Optimize conversion funnel
+
+**Goal:** 5,000 signups, 300 paying ($3,000/month)
+
+---
+
+## Immediate Next Steps (Tomorrow)
+
+### Priority 1: Populate Curated Library ⭐⭐⭐
+**Why:** Users need quality content to convert. Without this, nothing else matters.
 
 **Tasks:**
-- [ ] Set up design system (Tailwind config, fonts, colors)
-- [ ] Build beautiful landing page
-  - Hero with romantic imagery
-  - Features section
-  - How it works
-  - Testimonials
-  - Pricing preview
-- [ ] Redesign navigation/header
-  - Elegant desktop header
-  - Mobile bottom navigation
-  - Profile dropdown
-- [ ] Improve core pages
-  - Dashboard (personal library feel)
-  - Browse stories (Pinterest-style grid)
-  - Story detail page (beautiful reading experience)
-  - My Stories (elegant gallery)
-- [ ] Add animations & micro-interactions
-  - Smooth transitions
-  - Hover effects
-  - Loading states (shimmer, not spinner)
-  - Success celebrations
-- [ ] Mobile optimization
-  - Touch-friendly
-  - Thumb-zone navigation
-  - Swipe gestures
+1. Generate 50 high-quality romance stories using **Claude Opus** (not Sonnet)
+2. Ensure variety:
+   - **Genres:** Contemporary, Historical, Paranormal, Fantasy, Suspense
+   - **Heat levels:** Sweet, Warm, Hot, Scorching
+   - **Tropes:** Enemies to lovers, second chance, forced proximity, fake dating, etc.
+3. Review and polish the best ones
+4. Publish to library
 
-**Design Assets:**
-- Color Palette: Deep Rose, Rich Purple, Warm Gold, Cream
-- Typography: Playfair Display (headings) + Inter (body)
-- Components: Documented in DESIGN-SYSTEM.md
+**Cost:** ~$75-100 for 100 stories (select best 50)
+**Time:** Few hours of generation + review
+**Impact:** Makes platform look established, gives users content to fall in love with
 
-**Time Estimate:** 2-3 days
-
-### Phase 3: Curated Library Growth (Week 4-5)
-**Goal:** Build valuable free content library
+### Priority 2: Stripe Payment Integration
+**Why:** Can't generate revenue without this. Currently blocking all revenue.
 
 **Tasks:**
-- Generate 30-50 high-quality curated stories
-- Ensure variety: all genres, heat levels, tropes
-- Organize library with filters/search
-- Featured stories section
-- Quality review process
-- Batch generation tool for admins
+1. Set up Stripe account
+2. Implement subscription checkout ($9.99/month)
+3. Implement credit purchase flow ($4.99/credit)
+4. Create webhooks for payment events
+5. Build subscription management page
+6. Test thoroughly
 
-### Phase 4: Payment Integration (Week 5-6)
-**Goal:** Start generating revenue
+**Time:** 1-2 days of development
+**Impact:** Unblocks all revenue generation
 
-**Features:**
-- Stripe integration for subscriptions
-- Premium tier with 3 credits/month
-- Add-on credit purchases ($4.99 each)
-- Subscription management page
-- Free trial (7 days)
+### Priority 3: Story Extensions Feature (Quick Win)
+**Why:** High margin (96%), engagement driver, already designed.
 
-### Phase 5: Enhanced Customization (Month 2-3)
-**Goal:** Advanced personalization features
+**Tasks:**
+1. Add `StoryExtension` model to Prisma schema
+2. Create `/api/stories/[id]/extend` endpoint
+3. Add "Continue Story" button to story reader
+4. Implement credit deduction (charge 1 credit)
+5. Test
 
-**Features:**
-- Character description input (physical appearance, personality)
-- Setting customization (city, time period, specific locations)
-- Series generation (continue a story)
-- Story remix (regenerate with different tropes)
-- Save story templates
-- Claude Opus 4 as premium quality option (2 credits)
+**Time:** 4-6 hours of development
+**Impact:** Additional revenue stream, increases engagement
 
-### Phase 6: Community & Growth (Month 3+)
-**Goal:** Viral growth and retention
+---
 
-**Features:**
-- Share custom stories (optional, privacy controls)
-- Vote on next curated story themes
-- Reading challenges/achievements
-- Referral program (give 1 free credit)
-- Email notifications for new stories
-- Mobile-responsive PWA
+## Success Metrics to Track
+
+### Week 1
+- Signups: 100
+- TikTok views: 10K+
+- TikTok followers: 100+
+
+### Month 1
+- Signups: 500-1,000
+- Paying users: 10-50
+- MRR (Monthly Recurring Revenue): $100-500
+- Free-to-paid conversion: 5-10%
+- TikTok followers: 500+
+
+### Month 3
+- Signups: 2,000-5,000
+- Paying users: 100-300
+- MRR: $1,000-3,000
+- Free-to-paid conversion: 10-20%
+- TikTok followers: 2,000+
+- CAC (Customer Acquisition Cost): <$15
+- LTV (Lifetime Value): >$30
+
+### Month 6
+- Signups: 5,000-10,000
+- Paying users: 300-800
+- MRR: $3,000-8,000
+- Free-to-paid conversion: 15-25%
+- Churn rate: <10%/month
+- CAC: <$10
+- LTV: >$50
+
+---
+
+## Critical Rules for Success
+
+### ✅ DO:
+- Ship fast, iterate faster
+- Talk to users constantly
+- Focus on content quality first (free library must be AMAZING)
+- Be genuine in communities (don't spam)
+- Track metrics religiously
+- Double down on what works
+- Test one marketing channel at a time
+
+### ❌ DON'T:
+- Spend on ads before validating organic traction
+- Build features users don't ask for
+- Spam communities (instant ban + bad reputation)
+- Ignore user feedback
+- Give up after first month
+- Try to do everything at once
+
+---
+
+## The ONE Thing That Matters Most
+
+**Content quality in the free library.**
+
+If users read a free story and think "OMG this is amazing" → they'll pay for custom ones.
+If they think "meh, it's okay" → they won't convert.
+
+Everything else (marketing, ads, features) only works if the core product is excellent.
+
+**This is why Priority #1 tomorrow is generating 50 incredible stories using Claude Opus.**
+
+---
+
+## Current Product Status
+
+### ✅ Complete (Ready for Launch):
+- Full authentication system (JWT + sessions)
+- Story generation (async, polling, status tracking)
+- Credit system (deduction, refunds)
+- User dashboard
+- My Stories page (view custom generated stories)
+- Favorites system
+- Dark theme design (consistent "Silk" branding)
+- Consistent navigation across all pages
+- Story reader (optimized for readability)
+- Database schema (User, Story, Favorite, Session models)
+- Admin panel (generate, review, publish stories)
+
+### ❌ Blocking Launch:
+1. **Curated library (empty)** - Need 50 stories
+2. **Stripe payment integration** - Can't charge users
+3. **Domain (readsilk.com)** - Need to purchase
+
+### 🔜 Post-Launch Features:
+- Story extensions ($2.99 each)
+- Email verification
+- Password reset
+- Profile editing
+- User analytics/tracking
+- Email notifications
+- Reading history
+- Rate limiting on API endpoints
 
 ---
 
 ## Competitive Analysis
 
 ### Direct Competitors
-1. **Kindle Unlimited** ($11.99/month)
-   - Huge library, human-written
-   - No personalization
-   - We're cheaper with custom generation
 
-2. **Radish/Dreame** (Coins/chapter model)
-   - Serialized stories
-   - No personalization
-   - Can get expensive
+#### 1. Kindle Unlimited ($11.99/month)
+- **Strengths:** Huge library, human-written, established brand
+- **Weaknesses:** No personalization, limited to existing books
+- **Our Advantage:** Cheaper + infinite personalization
 
-3. **Wattpad** (Free + Premium $6.99/month)
-   - User-generated content
-   - Quality varies wildly
-   - No personalization
+#### 2. Radish/Dreame (Coins/chapter model)
+- **Strengths:** Serialized stories, large user base
+- **Weaknesses:** No personalization, can get expensive
+- **Our Advantage:** All-you-can-read model, custom generation
 
-### Our Advantage
-- **Only platform with AI personalization**
-- Instant gratification (2-min story generation)
-- Consistent quality (Claude Sonnet 4)
-- Infinite variety
-- Competitive pricing
+#### 3. Wattpad (Free + Premium $6.99/month)
+- **Strengths:** User-generated content, large community
+- **Weaknesses:** Quality varies wildly, no personalization
+- **Our Advantage:** Consistent AI quality, personalization
 
----
-
-## Marketing Strategy (Future)
-
-### Target Audience
-- Women 25-45 (primary romance readers)
-- Voracious readers (3+ books/week)
-- Tech-savvy early adopters
-- Active on BookTok, Bookstagram, romance subreddits
-
-### Channels
-1. **Social Media:**
-   - TikTok: "I made an AI romance story about [specific scenario]"
-   - Instagram: Cover images, story teasers
-   - Reddit: r/RomanceBooks, r/romancelandia
-
-2. **Content Marketing:**
-   - Blog: Romance writing tips, trope explanations
-   - SEO: "Best romance stories online", "free romance books"
-
-3. **Partnerships:**
-   - Romance book bloggers/reviewers
-   - BookTok influencers
-   - Romance writing communities
-
-4. **Referral Program:**
-   - Give 1 free credit for each referral who signs up
-
----
-
-## Success Metrics
-
-### Phase 1 Metrics (Custom Generation)
-- Users creating custom stories (target: 50% of signups)
-- Average credits used per user (target: 2+ per month)
-- Story completion rate (users actually reading generated stories)
-- Regeneration rate (are users happy first try?)
-
-### Phase 2 Metrics (Growth)
-- Monthly Active Users (MAU)
-- Conversion rate (free → paid): Target 5-10%
-- Churn rate: Target <5% monthly
-- Average revenue per user (ARPU): Target $8-10
-- Customer acquisition cost (CAC): Target <$20
-- Lifetime value (LTV): Target $100+
-
----
-
-## Technical Stack
-
-**Current:**
-- Next.js 15 (App Router)
-- PostgreSQL (Vercel Postgres)
-- Prisma ORM
-- Claude Sonnet 4 API (story generation)
-- DALL-E 3 API (cover images)
-- Vercel (hosting - free tier)
-
-**Future Additions:**
-- Stripe (payments)
-- SendGrid/Resend (email)
-- Vercel Analytics (usage tracking)
-- Sentry (error monitoring)
+### Our Unique Advantages
+- ✅ **Only platform with AI personalization**
+- ✅ Instant gratification (2-minute story generation)
+- ✅ Consistent quality (Claude Sonnet 4)
+- ✅ Infinite variety (never run out of content)
+- ✅ Competitive pricing ($9.99 vs $11.99 for Kindle Unlimited)
+- ✅ High margins (90%+) allow aggressive marketing
 
 ---
 
@@ -295,61 +521,77 @@ AI-powered romance story platform where users can read curated stories OR create
 
 ### API Cost Overruns
 - **Risk:** Users abuse system, generate too many stories
-- **Mitigation:** Credit limits, rate limiting, fraud detection
+- **Mitigation:** Credit limits, rate limiting, fraud detection, credit costs are pre-paid
 
 ### Content Quality Issues
 - **Risk:** AI generates inappropriate/low-quality content
-- **Mitigation:** Heat level controls, content moderation, user reporting
+- **Mitigation:** Heat level controls, content moderation, user reporting, test thoroughly
 
 ### AI Model Changes
 - **Risk:** Anthropic changes pricing/access
-- **Mitigation:** Multi-model strategy (fallback to GPT-4), cost monitoring alerts
+- **Mitigation:** Multi-model strategy (can switch to GPT-4), cost monitoring alerts
 
 ### Payment Fraud
 - **Risk:** Credit card fraud, chargebacks
-- **Mitigation:** Stripe Radar, email verification, usage patterns
+- **Mitigation:** Stripe Radar (built-in fraud detection), email verification, usage pattern monitoring
+
+### Platform Risk
+- **Risk:** Anthropic bans our use case
+- **Mitigation:** Review ToS, have backup (OpenAI GPT-4), diversify providers
 
 ---
 
-## Open Questions
+## Key Contacts & Resources
 
-1. Should we allow users to share/publish their custom stories publicly?
-   - Pro: Viral growth, community
-   - Con: Moderation burden, quality concerns
+### Domain Registration
+- **Recommended:** Namecheap.com
+- **Target domain:** readsilk.com
+- **Cost:** ~$10-15/year
 
-2. Should we offer refunds if user doesn't like generated story?
-   - Pro: Customer satisfaction
-   - Con: Could be abused
+### Payment Processing
+- **Stripe** (stripe.com)
+- Free to set up
+- 2.9% + $0.30 per transaction
 
-3. Should we add "regenerate" option (same config, new story)?
-   - Pro: User satisfaction
-   - Con: Higher API costs
+### AI Generation
+- **Anthropic API** (Claude)
+- Pay-as-you-go, billed monthly
+- No upfront cost
 
-4. What's the minimum curated library size before launch?
-   - Target: 30 stories minimum across all genres
-
----
-
-## Next Session Checklist
-
-When continuing work, check:
-- [ ] Current phase from roadmap
-- [ ] Recent commits (what was just built)
-- [ ] Open PRs or WIP features
-- [ ] Any production issues
-- [ ] User feedback or bugs
+### Marketing Channels (To Create)
+- TikTok: @readsilk
+- Reddit: Participate in r/RomanceBooks, r/romancelandia
+- Facebook: Join romance reader groups
+- Instagram: Bookstagram community
+- Pinterest: Romance story pins
 
 ---
 
 ## Decision Log
 
+**2026-01-07:**
+- ✅ Finalized pricing: $9.99 Premium (3 credits), $4.99 add-ons
+- ✅ Corrected cost estimates: $0.15-0.20 per story (not $3!)
+- ✅ Decided on brand name: "Silk"
+- ✅ Target domain: readsilk.com
+- ✅ TikTok as primary growth channel (BookTok)
+- ✅ Priority: Content quality > everything else
+- ✅ Launch plan: Week 1 = Generate 50 stories + TikTok
+- ✅ Revenue model validated: No upfront capital needed, cash-flow positive day 1
+
+**2026-01-06:**
+- ✅ Fixed all text layout issues (one-word-per-line problems)
+- ✅ Implemented consistent navigation across all pages
+- ✅ Converted entire site to dark theme for consistency
+- ✅ Fixed button clickability issues
+
 **2026-01-05:**
-- ✅ Chose Hybrid Model over pure subscription or pure custom
-- ✅ Decided to start with custom generation (Phase 1)
-- ✅ Set pricing: $9.99 Premium (3 credits), $4.99 add-on credits
-- ✅ Fixed character name repetition issue (updated prompt)
-- ✅ Implemented async generation to avoid Vercel timeout
+- ✅ Chose Hybrid Model over pure subscription
+- ✅ Implemented async generation to avoid Vercel timeouts
+- ✅ Fixed character name repetition in stories
 
 ---
 
 *This is a living document. Update after major decisions or pivots.*
+
+**Next Session Focus:** Generate 50 curated stories + TikTok content strategy
