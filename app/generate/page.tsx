@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { CustomStoryGenerationForm } from '@/components/generate/custom-story-form'
-import { Sparkles, Coins } from 'lucide-react'
+import { Sparkles, Coins, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -19,7 +19,18 @@ export default async function GeneratePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
-      <div className="w-full mx-auto" style={{ maxWidth: '1100px', padding: '0 20px' }}>
+      <div className="w-full mx-auto px-5" style={{ maxWidth: '1100px' }}>
+        {/* Navigation */}
+        <div className="mb-8">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Back to Dashboard
+          </Link>
+        </div>
+
         {/* Header */}
         <div className="mb-10">
           <div className="text-center mb-4">
@@ -31,7 +42,7 @@ export default async function GeneratePage() {
               Create Your Perfect Story
             </h1>
           </div>
-          <p className="text-gray-300 text-xl text-center leading-relaxed">
+          <p className="text-gray-300 text-xl text-center leading-relaxed max-w-3xl mx-auto">
             Personalize every detail - from character names to plot twists. Your story, your way.
           </p>
         </div>
