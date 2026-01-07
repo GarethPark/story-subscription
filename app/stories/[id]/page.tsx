@@ -62,16 +62,17 @@ export default async function StoryPage({
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
           </div>
         )}
-        <div className="relative container mx-auto px-4 md:px-6 py-12">
-          <Link
-            href="/stories"
-            className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors group"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Back to Stories
-          </Link>
+        <div className="relative w-full py-12">
+          <div className="mx-auto" style={{ maxWidth: '900px', padding: '0 20px' }}>
+            <Link
+              href="/stories"
+              className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors group"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+              Back to Stories
+            </Link>
 
-          <div className="max-w-4xl">
+            <div>
             <div className="flex items-center gap-2 mb-4 flex-wrap">
               <Badge variant="genre">
                 {story.genre}
@@ -127,6 +128,7 @@ export default async function StoryPage({
                 ))}
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>
