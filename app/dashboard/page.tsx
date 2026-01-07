@@ -22,7 +22,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-b from-cream via-white to-cream">
       {/* Elegant Header */}
       <header className="border-b border-rose-100/50 bg-white/95 backdrop-blur-lg shadow-sm">
-        <div className="w-full mx-auto py-5" style={{ maxWidth: '1200px', padding: '20px' }}>
+        <div className="w-full mx-auto px-5 py-5" style={{ maxWidth: '1200px' }}>
           <div className="flex items-center justify-between">
             <div>
               <Link href="/" className="flex items-center space-x-2 group">
@@ -62,7 +62,7 @@ export default async function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="w-full mx-auto py-10" style={{ maxWidth: '1200px', padding: '20px' }}>
+      <main className="w-full mx-auto px-5 py-10" style={{ maxWidth: '1200px' }}>
         {/* Welcome Hero */}
         <div className="mb-10">
           <h1 className="text-4xl md:text-5xl font-bold font-['Playfair_Display'] text-gray-900 mb-3">
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
               <h2 className="text-3xl md:text-4xl font-bold font-['Playfair_Display'] mb-3">
                 Create Your Perfect Romance
               </h2>
-              <p className="text-rose-100 text-lg mb-4 max-w-2xl">
+              <p className="text-rose-100 text-lg mb-4" style={{ maxWidth: '600px' }}>
                 Personalize every detail - from character names to plot twists. Your story, your way.
               </p>
             </div>
