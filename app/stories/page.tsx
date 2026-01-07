@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Search } from 'lucide-react'
+import { Heart, Search, ArrowLeft } from 'lucide-react'
 
 export default async function StoriesPage({
   searchParams,
@@ -43,20 +43,31 @@ export default async function StoriesPage({
       {/* Dramatic Header */}
       <div className="relative bg-gradient-to-r from-black via-gray-900 to-black border-b border-rose-900/30">
         <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-purple-950/20" />
-        <div className="container mx-auto px-4 md:px-6 py-16 relative z-10">
+        <div className="w-full mx-auto px-5 py-16 relative z-10" style={{ maxWidth: '1400px' }}>
+          {/* Navigation */}
+          <div className="mb-8">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center text-gray-400 hover:text-white transition-colors group"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+              Back to Dashboard
+            </Link>
+          </div>
+
           <div className="flex items-center justify-center mb-4">
             <Heart className="h-8 w-8 text-rose-500 fill-rose-500 mr-3" />
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-center mb-4 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
             Silk Stories
           </h1>
-          <p className="text-gray-300 text-center text-xl max-w-4xl mx-auto leading-relaxed">
+          <p className="text-gray-300 text-center text-xl mx-auto leading-relaxed" style={{ maxWidth: '700px' }}>
             Indulge in our curated collection of irresistible romance
           </p>
         </div>
       </div>
 
-      <div className="container max-w-[1600px] mx-auto px-4 md:px-6 py-12">
+      <div className="w-full mx-auto px-5 py-12" style={{ maxWidth: '1600px' }}>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <aside className="w-full lg:w-64 flex-shrink-0">
