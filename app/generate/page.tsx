@@ -19,7 +19,7 @@ export default async function GeneratePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
-      <div className="container max-w-5xl mx-auto px-4 md:px-6">
+      <div className="w-full mx-auto" style={{ maxWidth: '1100px', padding: '0 20px' }}>
         {/* Header */}
         <div className="mb-10">
           <div className="text-center mb-4">
@@ -31,7 +31,7 @@ export default async function GeneratePage() {
               Create Your Perfect Story
             </h1>
           </div>
-          <p className="text-gray-300 text-xl text-center max-w-5xl mx-auto leading-relaxed">
+          <p className="text-gray-300 text-xl text-center leading-relaxed">
             Personalize every detail - from character names to plot twists. Your story, your way.
           </p>
         </div>
