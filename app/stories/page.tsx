@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Search, ArrowLeft } from 'lucide-react'
+import { Heart, Search, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
 
 export default async function StoriesPage({
   searchParams,
@@ -45,15 +45,28 @@ export default async function StoriesPage({
         <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-purple-950/20" />
         <div className="w-full mx-auto px-5 py-16 relative z-10" style={{ maxWidth: '1400px' }}>
           {/* Navigation */}
-          <div className="mb-8">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center text-gray-400 hover:text-white transition-colors group"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-              Back to Dashboard
+          <nav className="mb-8 flex items-center gap-2 flex-wrap">
+            <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
             </Link>
-          </div>
+            <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <Sparkles className="h-4 w-4" />
+              Generate
+            </Link>
+            <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
+              <Library className="h-4 w-4" />
+              Browse Stories
+            </Link>
+            <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <BookOpen className="h-4 w-4" />
+              My Stories
+            </Link>
+            <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <Heart className="h-4 w-4" />
+              Favorites
+            </Link>
+          </nav>
 
           <div className="flex items-center justify-center mb-4">
             <Heart className="h-8 w-8 text-rose-500 fill-rose-500 mr-3" />
