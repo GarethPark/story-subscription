@@ -31,7 +31,7 @@ export default async function GeneratePage() {
               Create Your Perfect Story
             </h1>
           </div>
-          <p className="text-gray-300 text-lg text-center max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-300 text-xl text-center max-w-5xl mx-auto leading-relaxed">
             Personalize every detail - from character names to plot twists. Your story, your way.
           </p>
         </div>

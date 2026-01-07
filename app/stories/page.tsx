@@ -56,10 +56,10 @@ export default async function StoriesPage({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 py-12">
+      <div className="container max-w-[1600px] mx-auto px-4 md:px-6 py-12">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
-          <aside className="w-full lg:w-72 flex-shrink-0">
+          <aside className="w-full lg:w-64 flex-shrink-0">
             <Card className="bg-gray-900/50 border-rose-900/30 backdrop-blur-sm sticky top-4">
               <div className="p-6">
                 <h2 className="font-bold text-xl mb-6 text-white font-['Playfair_Display']">
@@ -150,7 +150,7 @@ export default async function StoriesPage({
                     </Link>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
                   {stories.map((story) => (
                     <Link
                       key={story.id}
