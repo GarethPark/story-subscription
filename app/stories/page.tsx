@@ -50,7 +50,7 @@ export default async function StoriesPage({
           <h1 className="text-5xl md:text-6xl font-black text-center mb-4 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
             Silk Stories
           </h1>
-          <p className="text-gray-300 text-center text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 text-center text-xl max-w-4xl mx-auto leading-relaxed">
             Indulge in our curated collection of irresistible romance
           </p>
         </div>
