@@ -55,7 +55,7 @@ export default async function GeneratePage() {
               Create Your Perfect Story
             </h1>
           </div>
-          <p className="text-gray-300 text-xl text-center leading-relaxed max-w-3xl mx-auto">
+          <p className="text-gray-300 text-xl text-center leading-relaxed mx-auto" style={{ maxWidth: '700px' }}>
             Personalize every detail - from character names to plot twists. Your story, your way.
           </p>
         </div>

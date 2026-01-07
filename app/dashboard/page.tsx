@@ -35,17 +35,6 @@ export default async function DashboardPage() {
               </Link>
             </div>
             <div className="flex items-center gap-4">
-              <nav className="hidden md:flex items-center gap-6 mr-4">
-                <Link href="/stories" className="text-sm font-semibold text-gray-300 hover:text-rose-400 transition-colors">
-                  Browse Stories
-                </Link>
-                <Link href="/my-stories" className="text-sm font-semibold text-gray-300 hover:text-rose-400 transition-colors">
-                  My Stories
-                </Link>
-                <Link href="/library" className="text-sm font-semibold text-gray-300 hover:text-rose-400 transition-colors">
-                  Favorites
-                </Link>
-              </nav>
               <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200/50 rounded-full">
                 <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
                 <span className="text-sm font-semibold text-amber-900">{user.credits}</span>
