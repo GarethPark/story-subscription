@@ -158,11 +158,10 @@ export default async function StoryPage({
           {/* Story content with optimal reading typography */}
           <div className="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
             <div
-              className="whitespace-pre-wrap text-gray-300 leading-relaxed text-lg mx-auto"
+              className="whitespace-pre-wrap text-gray-300 leading-relaxed text-lg"
               style={{
                 fontFamily: 'Georgia, "Times New Roman", serif',
-                lineHeight: '1.9',
-                maxWidth: '600px'
+                lineHeight: '1.8'
               }}
             >
               {story.content}
