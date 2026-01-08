@@ -37,7 +37,7 @@ export default async function ReviewStoryPage({
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="border-b bg-white sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
+        <div className="w-full px-5 py-4" style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/admin" className="text-slate-600 hover:text-slate-900">
@@ -58,7 +58,7 @@ export default async function ReviewStoryPage({
       {/* Alert Banner */}
       {!story.published && (
         <div className="bg-yellow-50 border-b border-yellow-200">
-          <div className="container mx-auto px-4 py-3">
+          <div className="w-full px-5 py-3" style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <div className="flex items-center gap-2 text-yellow-800">
               <AlertCircle className="h-5 w-5" />
               <p className="text-sm font-medium">
@@ -70,8 +70,8 @@ export default async function ReviewStoryPage({
       )}
 
       {/* Story Preview */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="w-full py-8">
+        <div className="mx-auto px-5" style={{ maxWidth: '900px' }}>
           {/* Story Header */}
           <div className="mb-8">
             {story.coverImage && (
@@ -132,10 +132,16 @@ export default async function ReviewStoryPage({
 
           {/* Story Content */}
           <Card className="p-8 md:p-12 mb-8">
-            <div className="prose prose-slate max-w-none">
-              <div className="whitespace-pre-wrap text-lg leading-relaxed">
-                {story.content}
-              </div>
+            <div
+              className="whitespace-pre-wrap text-slate-800"
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontSize: '18px',
+                lineHeight: '1.75',
+                letterSpacing: '0.01em'
+              }}
+            >
+              {story.content}
             </div>
           </Card>
 
