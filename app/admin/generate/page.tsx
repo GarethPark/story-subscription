@@ -21,7 +21,7 @@ export default async function GenerateStoryPage() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="border-b bg-white">
-        <div className="container mx-auto px-4 py-4">
+        <div className="w-full px-5 py-4" style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/admin" className="text-slate-600 hover:text-slate-900">
@@ -38,8 +38,8 @@ export default async function GenerateStoryPage() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto">
+      <main className="w-full py-8">
+        <div className="mx-auto px-5" style={{ maxWidth: '900px' }}>
           <Card className="p-6">
             <StoryGenerationForm />
           </Card>
