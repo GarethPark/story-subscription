@@ -52,14 +52,29 @@ async function autoMapCoverImages() {
       const firstTrope = story.tags.split(',')[0]?.trim().toLowerCase().replace(/\s+/g, '-')
       const genreSlug = story.genre.toLowerCase().replace(/\s+/g, '-')
 
-      // Build expected filename
-      const imagePath = `/images/genre-tropes/${genreSlug}_${firstTrope}.jpg`
+      // Try both .png and .jpg extensions
+      const fs = require('fs')
+      const path = require('path')
+      const publicDir = path.join(process.cwd(), 'public')
 
-      await prisma.story.update({
-        where: { id: story.id },
-        data: { coverImage: imagePath },
-      })
-      console.log(`✅ ${story.title}: ${imagePath}`)
+      let imagePath = null
+      const basePath = `${publicDir}/images/genre-tropes/${genreSlug}_${firstTrope}`
+
+      if (fs.existsSync(`${basePath}.png`)) {
+        imagePath = `/images/genre-tropes/${genreSlug}_${firstTrope}.png`
+      } else if (fs.existsSync(`${basePath}.jpg`)) {
+        imagePath = `/images/genre-tropes/${genreSlug}_${firstTrope}.jpg`
+      }
+
+      if (imagePath) {
+        await prisma.story.update({
+          where: { id: story.id },
+          data: { coverImage: imagePath },
+        })
+        console.log(`✅ ${story.title}: ${imagePath}`)
+      } else {
+        console.log(`⚠️  ${story.title}: No image found for ${genreSlug}_${firstTrope}`)
+      }
     } else {
       console.log(`⚠️  ${story.title}: No tags/genre - skipped`)
     }
