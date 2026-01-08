@@ -147,7 +147,8 @@ TAGS: [5-7 comma-separated tags like "enemies to lovers, steamy, billionaire, se
 STORY:
 [The complete story text, approximately ${wordCount} words]`
 
-  const message = await anthropic.messages.create({
+  // Use streaming to avoid serverless function timeouts
+  const stream = await anthropic.messages.stream({
     model: 'claude-opus-4-20250514', // Opus for maximum quality admin-curated stories
     max_tokens: 24000, // Increased for 8,000 word stories
     temperature: 1,
@@ -159,7 +160,13 @@ STORY:
     ],
   })
 
-  const responseText = message.content[0].type === 'text' ? message.content[0].text : ''
+  // Collect all chunks from the stream
+  let responseText = ''
+  for await (const chunk of stream) {
+    if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+      responseText += chunk.delta.text
+    }
+  }
 
   // Parse the response
   const titleMatch = responseText.match(/TITLE:\s*(.+?)(?:\n|$)/i)
