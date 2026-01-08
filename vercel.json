@@ -3,5 +3,7 @@
     "app/api/admin/generate-story/route.ts": {
       "maxDuration": 60
     }
-  }
+  },
+  "cleanUrls": true,
+  "trailingSlash": false
 }
