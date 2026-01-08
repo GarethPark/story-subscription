@@ -10,7 +10,7 @@ const HEAT_LEVELS = ['Sweet', 'Warm', 'Hot', 'Scorching'] as const
 
 const TROPES_BY_GENRE = {
   Romantasy: ['fated mates', 'enemies to lovers', 'morally gray hero', 'chosen one', 'dragon shifter', 'vampire romance', 'rival courts', 'magic bond', 'forbidden supernatural love', 'royal romance'],
-  Contemporary: ['enemies to lovers', 'second chance', 'fake relationship', 'friends to lovers', 'grumpy sunshine', 'office romance', 'forced proximity', 'one bed', 'billionaire', 'secret baby'],
+  Contemporary: ['enemies to lovers', 'second chance', 'fake relationship', 'friends to lovers', 'grumpy sunshine', 'office romance', 'forced proximity', 'one bed', 'billionaire'],
   'Small Town': ['return to hometown', 'grumpy sunshine', 'second chance', 'small business romance', 'city person moves to town', 'friends to lovers', 'enemies to lovers', 'fake dating', 'single parent'],
   'Sports Romance': ['hockey romance', 'football romance', 'basketball romance', 'baseball romance', 'MMA fighter', 'rival teams', 'athlete & trainer', 'athlete & journalist', 'grumpy athlete'],
   Historical: ['arranged marriage', 'marriage of convenience', 'forbidden love', 'regency romance', 'victorian romance', 'highland romance', 'secret identity', 'redemption', 'enemies to lovers'],
