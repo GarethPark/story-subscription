@@ -5,15 +5,17 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { Loader2, Sparkles } from 'lucide-react'
 
-const GENRES = ['Contemporary', 'Historical', 'Paranormal', 'Fantasy', 'Suspense'] as const
+const GENRES = ['Romantasy', 'Contemporary', 'Small Town', 'Sports Romance', 'Historical', 'Dark Romance', 'Romantic Suspense'] as const
 const HEAT_LEVELS = ['Sweet', 'Warm', 'Hot', 'Scorching'] as const
 
 const TROPES_BY_GENRE = {
-  Contemporary: ['enemies to lovers', 'second chance', 'fake relationship', 'boss/employee', 'friends to lovers', 'forced proximity'],
-  Historical: ['arranged marriage', 'forbidden love', 'secret identity', 'class difference', 'marriage of convenience', 'redemption'],
-  Paranormal: ['fated mates', 'vampire romance', 'shifter romance', 'witch/warlock', 'forbidden supernatural love', 'chosen one'],
-  Fantasy: ['destined lovers', 'magic bond', 'rival kingdoms', 'quest romance', 'dragon shifter', 'royal romance'],
-  Suspense: ['protector romance', 'witness protection', 'undercover', 'romantic suspense', 'bodyguard', 'detective romance'],
+  Romantasy: ['fated mates', 'enemies to lovers', 'morally gray hero', 'chosen one', 'dragon shifter', 'vampire romance', 'rival courts', 'magic bond', 'forbidden supernatural love', 'royal romance'],
+  Contemporary: ['enemies to lovers', 'second chance', 'fake relationship', 'friends to lovers', 'grumpy sunshine', 'office romance', 'forced proximity', 'one bed', 'billionaire', 'secret baby'],
+  'Small Town': ['return to hometown', 'grumpy sunshine', 'second chance', 'small business romance', 'city person moves to town', 'friends to lovers', 'enemies to lovers', 'fake dating', 'single parent'],
+  'Sports Romance': ['hockey romance', 'football romance', 'basketball romance', 'baseball romance', 'MMA fighter', 'rival teams', 'athlete & trainer', 'athlete & journalist', 'grumpy athlete'],
+  Historical: ['arranged marriage', 'marriage of convenience', 'forbidden love', 'regency romance', 'victorian romance', 'highland romance', 'secret identity', 'redemption', 'enemies to lovers'],
+  'Dark Romance': ['mafia romance', 'morally gray hero', 'forbidden love', 'enemies to lovers', 'captive', 'antihero', 'revenge', 'possessive love', 'forced proximity'],
+  'Romantic Suspense': ['bodyguard', 'detective romance', 'witness protection', 'undercover', 'protector romance', 'spy romance', 'FBI agent', 'enemies to lovers', 'forced proximity'],
 }
 
 export function StoryGenerationForm() {
