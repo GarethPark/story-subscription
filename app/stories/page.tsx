@@ -3,7 +3,6 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Heart, Search, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
 
 export default async function StoriesPage({
@@ -185,12 +184,10 @@ export default async function StoriesPage({
                         {/* Cover Image */}
                         {story.coverImage ? (
                           <div className="relative h-72 bg-gray-800 overflow-hidden">
-                            <Image
+                            <img
                               src={story.coverImage}
                               alt={story.title}
-                              fill
-                              unoptimized
-                              className="object-cover group-hover:scale-110 transition-transform duration-500"
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                           </div>
