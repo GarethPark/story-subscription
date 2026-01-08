@@ -117,12 +117,12 @@ export function StoryGenerationForm() {
         }
       }, 3000)
 
-      // Safety timeout after 3 minutes
+      // Safety timeout after 15 minutes (8,000-word Opus stories can take 5-10 minutes)
       setTimeout(() => {
         clearInterval(pollInterval)
         setProgress('Generation is taking longer than expected. Check the admin panel for the story status.')
         setIsGenerating(false)
-      }, 180000)
+      }, 900000)
 
     } catch (error) {
       console.error('Generation error:', error)
@@ -251,7 +251,7 @@ export function StoryGenerationForm() {
               <p className="text-sm font-medium text-blue-900">{progress}</p>
               <p className="text-xs text-blue-600 mt-1">
                 {wordCount > 4000
-                  ? 'Longer stories take 1-2 minutes. You can close this tab and check back later!'
+                  ? '⏱️ 8,000-word Opus stories take 5-10 minutes. Please wait - you will be redirected automatically when complete!'
                   : 'This will take 30-90 seconds. Feel free to wait or check back soon!'}
               </p>
             </div>
