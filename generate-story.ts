@@ -74,8 +74,8 @@ STORY:
 [The complete story text, approximately ${wordCount} words]`
 
   const message = await anthropic.messages.create({
-    model: 'claude-3-5-sonnet-20241022',
-    max_tokens: 16000,
+    model: 'claude-opus-4-20250514', // Opus for maximum quality curated stories
+    max_tokens: 24000, // Increased for 8,000 word stories
     temperature: 1,
     messages: [
       {
@@ -234,7 +234,7 @@ ${Object.entries(ROMANCE_TROPES).map(([genre, tropes]) => `  ${genre}: ${tropes.
     genre,
     heatLevel,
     tropes,
-    wordCount: 3500,
+    wordCount: 8000, // Maximum length for curated stories
   })
 
   await prisma.$disconnect()

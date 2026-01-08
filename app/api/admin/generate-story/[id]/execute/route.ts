@@ -148,8 +148,8 @@ STORY:
 [The complete story text, approximately ${wordCount} words]`
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 8192,
+    model: 'claude-opus-4-20250514', // Opus for maximum quality admin-curated stories
+    max_tokens: 24000, // Increased for 8,000 word stories
     temperature: 1,
     messages: [
       {
