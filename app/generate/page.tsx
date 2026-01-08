@@ -18,47 +18,48 @@ export default async function GeneratePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-12">
-      <div className="w-full mx-auto px-5" style={{ maxWidth: '1100px' }}>
-        {/* Navigation */}
-        <nav className="mb-8 flex items-center gap-2 flex-wrap">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
-            <LayoutDashboard className="h-4 w-4" />
-            Dashboard
-          </Link>
-          <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
-            <Sparkles className="h-4 w-4" />
-            Generate
-          </Link>
-          <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
-            <Library className="h-4 w-4" />
-            Browse Stories
-          </Link>
-          <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
-            <BookOpen className="h-4 w-4" />
-            My Stories
-          </Link>
-          <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
-            <Heart className="h-4 w-4" />
-            Favorites
-          </Link>
-        </nav>
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
+      {/* Dramatic Header */}
+      <div className="relative bg-gradient-to-r from-black via-gray-900 to-black border-b border-rose-900/30">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-950/20 via-transparent to-rose-950/20" />
+        <div className="w-full mx-auto px-5 py-16 relative z-10" style={{ maxWidth: '1400px' }}>
+          {/* Navigation */}
+          <nav className="mb-8 flex items-center gap-2 flex-wrap">
+            <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
+            <Link href="/generate" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
+              <Sparkles className="h-4 w-4" />
+              Generate
+            </Link>
+            <Link href="/stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <Library className="h-4 w-4" />
+              Browse Stories
+            </Link>
+            <Link href="/my-stories" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <BookOpen className="h-4 w-4" />
+              My Stories
+            </Link>
+            <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <Heart className="h-4 w-4" />
+              Favorites
+            </Link>
+          </nav>
 
-        {/* Header */}
-        <div className="mb-10">
-          <div className="text-center mb-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-rose-950/30 backdrop-blur-sm rounded-full border border-rose-800/30 mb-4">
-              <Sparkles className="h-4 w-4 text-rose-400" />
-              <span className="text-sm text-rose-200 font-medium">AI Story Generation</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black mb-3 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
-              Create Your Perfect Story
-            </h1>
+          <div className="flex items-center justify-center mb-4">
+            <Sparkles className="h-8 w-8 text-violet-500 mr-3" />
           </div>
-          <p className="text-gray-300 text-xl text-center leading-relaxed mx-auto" style={{ maxWidth: '700px' }}>
+          <h1 className="text-5xl md:text-6xl font-black text-center mb-4 font-['Playfair_Display'] bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent">
+            Create Your Perfect Story
+          </h1>
+          <p className="text-gray-300 text-center text-xl mx-auto leading-relaxed" style={{ maxWidth: '700px' }}>
             Personalize every detail - from character names to plot twists. Your story, your way.
           </p>
         </div>
+      </div>
+
+      <div className="w-full mx-auto px-5 py-12" style={{ maxWidth: '1100px' }}>
 
         {/* Credits Display */}
         <div className="bg-gradient-to-r from-rose-900/30 to-violet-900/30 border border-rose-700/30 rounded-2xl p-6 mb-8 backdrop-blur-sm">
