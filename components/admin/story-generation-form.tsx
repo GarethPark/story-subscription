@@ -26,7 +26,7 @@ export function StoryGenerationForm() {
   const [heatLevel, setHeatLevel] = useState<typeof HEAT_LEVELS[number]>('Hot')
   const [selectedTropes, setSelectedTropes] = useState<string[]>([])
   const [wordCount, setWordCount] = useState(8000) // Maximum length for curated stories
-  const [generateCover, setGenerateCover] = useState(true)
+  const [generateCover] = useState(false) // Skip AI cover generation - will add custom images later
 
   const availableTropes = TROPES_BY_GENRE[genre]
 
@@ -234,21 +234,10 @@ export function StoryGenerationForm() {
           </div>
         </div>
 
-        {/* Cover Image Option */}
-        <div className="mb-6">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={generateCover}
-              onChange={(e) => setGenerateCover(e.target.checked)}
-              className="rounded"
-            />
-            <span className="text-sm font-medium">
-              Generate AI cover image with DALL-E (requires OpenAI API key)
-            </span>
-          </label>
-          <p className="text-xs text-slate-500 mt-1 ml-6">
-            Uncheck to use a gradient fallback
+        {/* Note about covers */}
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-slate-700">
+            <strong>Note:</strong> Cover images will be added manually after generation using your custom genre/trope image library.
           </p>
         </div>
       </div>
