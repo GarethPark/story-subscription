@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { Sparkles, BookOpen, Users } from 'lucide-react'
+import { Sparkles, BookOpen, Users, BarChart3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default async function AdminPage() {
@@ -43,7 +43,7 @@ export default async function AdminPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">
@@ -89,6 +89,31 @@ export default async function AdminPage() {
                 <Link href="/stories">
                   <BookOpen className="h-4 w-4 mr-2" />
                   View Stories
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-rose-100 rounded-lg">
+                  <BarChart3 className="h-6 w-6 text-rose-600" />
+                </div>
+                <div>
+                  <CardTitle>Analytics Dashboard</CardTitle>
+                  <CardDescription>Platform insights & metrics</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-slate-600 mb-4">
+                View platform performance, user engagement, popular stories, and content distribution metrics.
+              </p>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/admin/analytics">
+                  <BarChart3 className="h-4 w-4 mr-2" />
+                  View Analytics
                 </Link>
               </Button>
             </CardContent>

@@ -1,10 +1,10 @@
 // FORCE REBUILD - Regular img tags only
 import { prisma } from '@/lib/db'
 import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { Heart, Search, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
+import { Heart, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
+import { StoryFilters } from '@/components/stories/story-filters'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -12,34 +12,63 @@ export const revalidate = 0
 export default async function StoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ genre?: string; search?: string }>
+  searchParams: Promise<{
+    genre?: string
+    search?: string
+    heatLevel?: string
+    length?: string
+    sort?: string
+  }>
 }) {
-  const { genre, search } = await searchParams
+  const params = await searchParams
+  const { genre, search, heatLevel, length, sort = 'newest' } = params
 
-  // Fetch published stories
+  // Build where clause
+  const where: any = {
+    published: true,
+    ...(genre && { genre }),
+    ...(search && {
+      OR: [
+        { title: { contains: search, mode: 'insensitive' } },
+        { summary: { contains: search, mode: 'insensitive' } },
+        { author: { contains: search, mode: 'insensitive' } },
+        { tags: { contains: search, mode: 'insensitive' } },
+      ],
+    }),
+  }
+
+  // Add heat level filter (would need to add this field to schema later)
+  // For now, we'll skip this since ageRating might be similar
+
+  // Add length filter based on reading time
+  if (length === 'short') {
+    where.readingTime = { lt: 15 } // < 3000 words (~15 min)
+  } else if (length === 'medium') {
+    where.readingTime = { gte: 15, lte: 25 } // 3000-5000 words (15-25 min)
+  } else if (length === 'long') {
+    where.readingTime = { gt: 25 } // > 5000 words (> 25 min)
+  }
+
+  // Build orderBy based on sort option
+  let orderBy: any
+  if (sort === 'views') {
+    orderBy = { viewCount: 'desc' }
+  } else if (sort === 'favorites') {
+    orderBy = { favorites: { _count: 'desc' } }
+  } else {
+    orderBy = { createdAt: 'desc' }
+  }
+
+  // Fetch published stories with filters
   const stories = await prisma.story.findMany({
-    where: {
-      published: true,
-      ...(genre && { genre: genre }),
-      ...(search && {
-        OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { summary: { contains: search, mode: 'insensitive' } },
-          { author: { contains: search, mode: 'insensitive' } },
-        ],
-      }),
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    where,
+    orderBy,
+    include: {
+      _count: {
+        select: { favorites: true }
+      }
+    }
   })
-
-  // Get unique genres for filters
-  const allStories = await prisma.story.findMany({
-    where: { published: true },
-    select: { genre: true },
-  })
-  const genres = [...new Set(allStories.map((s) => s.genre).filter(Boolean))]
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
@@ -83,74 +112,12 @@ export default async function StoriesPage({
         </div>
       </div>
 
-      <div className="w-full mx-auto px-5 py-12" style={{ maxWidth: '1600px' }}>
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
-          <aside className="w-full lg:w-64 flex-shrink-0">
-            <Card className="bg-gray-900/50 border-rose-900/30 backdrop-blur-sm sticky top-4">
-              <div className="p-6">
-                <h2 className="font-bold text-xl mb-6 text-white font-['Playfair_Display']">
-                  Discover
-                </h2>
+      <div className="w-full mx-auto px-5 py-12" style={{ maxWidth: '1400px' }}>
+        {/* Advanced Filters */}
+        <StoryFilters totalCount={stories.length} />
 
-                {/* Search */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Search Stories
-                  </label>
-                  <form method="get" className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
-                    <input
-                      type="text"
-                      name="search"
-                      placeholder="Find your passion..."
-                      defaultValue={search}
-                      className="w-full pl-10 pr-3 py-2.5 bg-gray-800/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600 focus:border-transparent text-white placeholder:text-gray-500"
-                    />
-                    <input type="hidden" name="genre" value={genre || ''} />
-                    <Button type="submit" className="w-full mt-3 bg-gradient-to-r from-rose-700 to-violet-700 hover:from-rose-600 hover:to-violet-600">
-                      Search
-                    </Button>
-                  </form>
-                </div>
-
-                {/* Genre Filter */}
-                <div>
-                  <h3 className="text-sm font-semibold mb-3 text-gray-300 uppercase tracking-wider">
-                    Genre
-                  </h3>
-                  <div className="space-y-1.5">
-                    <Link
-                      href="/stories"
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                        !genre
-                          ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
-                          : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                      }`}
-                    >
-                      All Stories
-                    </Link>
-                    {genres.map((g) => (
-                      <Link
-                        key={g}
-                        href={`/stories?genre=${g}`}
-                        className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                          genre === g
-                            ? 'bg-gradient-to-r from-rose-700 to-violet-700 text-white shadow-lg'
-                            : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                        }`}
-                      >
-                        {g}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </aside>
-
-          {/* Stories Grid */}
-          <main className="flex-1">
+        {/* Stories Grid */}
+        <main>
             {stories.length === 0 ? (
               <Card className="p-16 text-center bg-gray-900/30 border-rose-900/30">
                 <Heart className="h-16 w-16 text-rose-500/30 mx-auto mb-4" />
@@ -162,21 +129,6 @@ export default async function StoriesPage({
                 </p>
               </Card>
             ) : (
-              <>
-                <div className="mb-6 flex items-center justify-between">
-                  <div className="text-sm text-gray-400">
-                    <span className="text-rose-400 font-semibold">{stories.length}</span>{' '}
-                    {stories.length === 1 ? 'story' : 'stories'} available
-                  </div>
-                  {(genre || search) && (
-                    <Link
-                      href="/stories"
-                      className="text-sm text-rose-400 hover:text-rose-300 transition-colors"
-                    >
-                      Clear filters
-                    </Link>
-                  )}
-                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
                   {stories.map((story) => (
                     <Link
@@ -231,7 +183,6 @@ export default async function StoriesPage({
                     </Link>
                   ))}
                 </div>
-              </>
             )}
           </main>
         </div>
