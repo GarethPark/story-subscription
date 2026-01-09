@@ -22,9 +22,10 @@ model User {
   updatedAt     DateTime @updatedAt
 
   // Relations
-  sessions      Session[]
-  favorites     Favorite[]
-  customStories Story[]  @relation("UserCustomStories")
+  sessions        Session[]
+  favorites       Favorite[]
+  customStories   Story[]  @relation("UserCustomStories")
+  readingHistory  ReadingHistory[]
 }
 
 // Session management for JWT alternative
@@ -73,6 +74,7 @@ model Story {
 
   // Relations
   favorites         Favorite[]
+  readingHistory    ReadingHistory[]
   creator           User?            @relation("UserCustomStories", fields: [userId], references: [id], onDelete: SetNull)
   parentStory       Story?           @relation("StoryExtensions", fields: [parentStoryId], references: [id], onDelete: SetNull)
   extensions        Story[]          @relation("StoryExtensions")
@@ -105,5 +107,21 @@ model Favorite {
 
   @@unique([userId, storyId]) // Prevent duplicate favorites
   @@index([userId])
+  @@index([storyId])
+}
+
+// Reading history for "Recently Read" feature
+model ReadingHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  storyId     String
+  lastReadAt  DateTime @default(now())
+  progress    Float    @default(0) // 0-100 percentage read
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, storyId])
+  @@index([userId, lastReadAt])
   @@index([storyId])
 }

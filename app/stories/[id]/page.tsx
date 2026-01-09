@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { getCurrentUser } from '@/lib/auth/session'
 import { FavoriteButton } from '@/components/story/favorite-button'
 import { ContinueStoryButton } from '@/components/story/continue-story-button'
+import { ReadingTracker } from '@/components/story/reading-tracker'
 
 export default async function StoryPage({
   params,
@@ -56,6 +57,9 @@ export default async function StoryPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
+      {/* Track reading for authenticated users */}
+      <ReadingTracker storyId={story.id} isAuthenticated={!!user} />
+
       {/* Header with cover */}
       <div className="relative bg-gradient-to-r from-black via-gray-900 to-black border-b border-rose-900/30">
         {story.coverImage && (

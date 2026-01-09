@@ -3,8 +3,10 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Heart, BookOpen, Sparkles, Star, LayoutDashboard, Library } from 'lucide-react'
+import { Heart, BookOpen, Sparkles, Star, LayoutDashboard, Library, Clock, ChevronRight } from 'lucide-react'
 import type { Metadata } from 'next'
+import { prisma } from '@/lib/db'
+import { Badge } from '@/components/ui/badge'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -17,6 +19,20 @@ export default async function DashboardPage() {
   if (!user) {
     redirect('/login')
   }
+
+  // Fetch recently read stories
+  const recentlyRead = await prisma.readingHistory.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      story: true,
+    },
+    orderBy: {
+      lastReadAt: 'desc',
+    },
+    take: 5,
+  })
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
@@ -115,6 +131,72 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* Recently Read Section */}
+        {recentlyRead.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold font-['Playfair_Display'] text-white flex items-center gap-2">
+                  <Clock className="h-6 w-6 text-rose-400" />
+                  Recently Read
+                </h2>
+                <p className="text-gray-400 mt-1">Pick up where you left off</p>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {recentlyRead.map((history) => (
+                <Link
+                  key={history.id}
+                  href={`/stories/${history.story.id}`}
+                  className="group block bg-gray-900/50 border border-gray-800 hover:border-rose-700 rounded-xl overflow-hidden transition-all hover:shadow-lg hover:shadow-rose-900/20"
+                >
+                  {history.story.coverImage && (
+                    <div className="relative h-48 bg-gray-800 overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={history.story.coverImage}
+                        alt={history.story.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      {/* Progress bar */}
+                      {history.progress > 0 && (
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-800">
+                          <div
+                            className="h-full bg-gradient-to-r from-rose-500 to-violet-500"
+                            style={{ width: `${history.progress}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="genre" className="text-xs">
+                        {history.story.genre}
+                      </Badge>
+                      {history.progress > 0 && (
+                        <span className="text-xs text-gray-500">
+                          {Math.round(history.progress)}% read
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="font-bold text-white mb-1 line-clamp-2 group-hover:text-rose-400 transition-colors">
+                      {history.story.title}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      {new Date(history.lastReadAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Quick Actions */}
