@@ -52,26 +52,30 @@ async function autoMapCoverImages() {
       const firstTrope = story.tags.split(',')[0]?.trim().toLowerCase().replace(/\s+/g, '-')
       const genreSlug = story.genre.toLowerCase().replace(/\s+/g, '-')
 
-      // Try both .png and .jpg extensions
+      // Try both .png and .jpg extensions in /covers/ directory
       const fs = require('fs')
       const path = require('path')
       const publicDir = path.join(process.cwd(), 'public')
 
       let imagePath = null
-      const basePath = `${publicDir}/images/genre-tropes/${genreSlug}_${firstTrope}`
+      const basePath = `${publicDir}/covers/${genreSlug}_${firstTrope}`
 
       if (fs.existsSync(`${basePath}.png`)) {
-        imagePath = `/images/genre-tropes/${genreSlug}_${firstTrope}.png`
+        imagePath = `/covers/${genreSlug}_${firstTrope}.png`
       } else if (fs.existsSync(`${basePath}.jpg`)) {
-        imagePath = `/images/genre-tropes/${genreSlug}_${firstTrope}.jpg`
+        imagePath = `/covers/${genreSlug}_${firstTrope}.jpg`
       }
 
       if (imagePath) {
+        // Convert to GitHub raw URL (workaround for Vercel deployment issues)
+        const filename = imagePath.split('/').pop()
+        const githubUrl = `https://raw.githubusercontent.com/GarethPark/story-subscription/main/public/covers/${filename}`
+
         await prisma.story.update({
           where: { id: story.id },
-          data: { coverImage: imagePath },
+          data: { coverImage: githubUrl },
         })
-        console.log(`✅ ${story.title}: ${imagePath}`)
+        console.log(`✅ ${story.title}: ${githubUrl}`)
       } else {
         console.log(`⚠️  ${story.title}: No image found for ${genreSlug}_${firstTrope}`)
       }
