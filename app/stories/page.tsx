@@ -6,6 +6,9 @@ import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Heart, Search, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function StoriesPage({
   searchParams,
 }: {
