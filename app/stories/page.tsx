@@ -184,6 +184,7 @@ export default async function StoriesPage({
                         {/* Cover Image */}
                         {story.coverImage ? (
                           <div className="relative h-72 bg-gray-800 overflow-hidden">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={story.coverImage}
                               alt={story.title}
