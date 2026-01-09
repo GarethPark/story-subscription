@@ -1,3 +1,4 @@
+// FORCE REBUILD - Regular img tags only
 import { prisma } from '@/lib/db'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
