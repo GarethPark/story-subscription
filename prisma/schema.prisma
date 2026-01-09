@@ -64,12 +64,18 @@ model Story {
   characterNames    String?          // JSON string of custom character names {"protagonist": "name", "love_interest": "name"}
   customScenario    String?          // Optional plot/scenario request from user
 
+  // Story extensions
+  parentStoryId     String?          // If this is an extension, the ID of the parent story
+  chapterNumber     Int              @default(1) // 1 for original, 2+ for extensions
+
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
   // Relations
   favorites         Favorite[]
   creator           User?            @relation("UserCustomStories", fields: [userId], references: [id], onDelete: SetNull)
+  parentStory       Story?           @relation("StoryExtensions", fields: [parentStoryId], references: [id], onDelete: SetNull)
+  extensions        Story[]          @relation("StoryExtensions")
 
   @@index([genre])
   @@index([published])
@@ -77,6 +83,7 @@ model Story {
   @@index([generationStatus])
   @@index([userId])
   @@index([isCustom])
+  @@index([parentStoryId])
 }
 
 enum GenerationStatus {

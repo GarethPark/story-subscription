@@ -3,10 +3,11 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Clock, Eye, Heart, BookOpen } from 'lucide-react'
+import { ArrowLeft, Clock, Eye, Heart, BookOpen, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { getCurrentUser } from '@/lib/auth/session'
 import { FavoriteButton } from '@/components/story/favorite-button'
+import { ContinueStoryButton } from '@/components/story/continue-story-button'
 
 export default async function StoryPage({
   params,
@@ -18,6 +19,12 @@ export default async function StoryPage({
 
   const story = await prisma.story.findUnique({
     where: { id },
+    include: {
+      extensions: {
+        where: { published: true },
+        orderBy: { chapterNumber: 'asc' },
+      },
+    },
   })
 
   if (!story) {
@@ -64,13 +71,26 @@ export default async function StoryPage({
         )}
         <div className="relative w-full py-12">
           <div className="mx-auto" style={{ maxWidth: '900px', padding: '0 20px' }}>
-            <Link
-              href="/stories"
-              className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors group"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-              Back to Stories
-            </Link>
+            <div className="flex flex-wrap items-center gap-4 mb-8">
+              <Link
+                href="/stories"
+                className="inline-flex items-center text-gray-400 hover:text-white transition-colors group"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+                Back to Stories
+              </Link>
+              {story.parentStoryId && (
+                <>
+                  <span className="text-gray-600">•</span>
+                  <Link
+                    href={`/stories/${story.parentStoryId}`}
+                    className="inline-flex items-center text-violet-400 hover:text-violet-300 transition-colors"
+                  >
+                    Read Chapter 1
+                  </Link>
+                </>
+              )}
+            </div>
 
             <div>
             <div className="flex items-center gap-2 mb-4 flex-wrap">
@@ -178,12 +198,15 @@ export default async function StoryPage({
               <Heart className="h-8 w-8 text-rose-400 fill-rose-400" />
             </div>
             <p className="text-2xl font-bold text-white mb-3 font-['Playfair_Display']">
-              The End
+              {story.chapterNumber > 1 ? `End of Chapter ${story.chapterNumber}` : 'The End'}
             </p>
             <p className="text-gray-400 mb-8 text-lg">
               Thank you for reading "{story.title}"
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
+              {user && !story.parentStoryId && (
+                <ContinueStoryButton storyId={story.id} isAuthenticated={true} />
+              )}
               <Button
                 asChild
                 className="bg-gradient-to-r from-rose-700 to-violet-700 hover:from-rose-600 hover:to-violet-600 shadow-lg"
@@ -218,6 +241,46 @@ export default async function StoryPage({
               )}
             </div>
           </div>
+
+          {/* Show extensions if they exist */}
+          {story.extensions && story.extensions.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold text-white mb-4 font-['Playfair_Display']">
+                Continue Reading
+              </h2>
+              <div className="space-y-4">
+                {story.extensions.map((extension) => (
+                  <Link
+                    key={extension.id}
+                    href={`/stories/${extension.id}`}
+                    className="block bg-gray-900/50 border border-gray-800 hover:border-violet-700 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-violet-900/20"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="default" className="bg-violet-700 text-white">
+                            Chapter {extension.chapterNumber}
+                          </Badge>
+                          {extension.readingTime && (
+                            <span className="text-sm text-gray-500">
+                              {extension.readingTime} min read
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-lg font-bold text-white mb-2">
+                          {extension.title}
+                        </h3>
+                        <p className="text-gray-400 text-sm line-clamp-2">
+                          {extension.summary}
+                        </p>
+                      </div>
+                      <ChevronRight className="h-5 w-5 text-gray-500 flex-shrink-0 ml-4" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
