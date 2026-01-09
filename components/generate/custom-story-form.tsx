@@ -30,7 +30,6 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
   const [heatLevel, setHeatLevel] = useState<typeof HEAT_LEVELS[number]>('Warm')
   const [selectedTropes, setSelectedTropes] = useState<string[]>([])
   const [wordCount, setWordCount] = useState(3500)
-  const [generateCover, setGenerateCover] = useState(true)
 
   // Custom story fields
   const [protagonistName, setProtagonistName] = useState('')
@@ -97,7 +96,6 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
           heatLevel,
           tropes: selectedTropes,
           wordCount,
-          generateCover,
           // Custom fields
           protagonistName: protagonistName.trim() || undefined,
           loveInterestName: loveInterestName.trim() || undefined,
@@ -312,24 +310,6 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
             <span>📖 2,000 (quick read)</span>
             <span>📚 8,000 (full story)</span>
           </div>
-        </div>
-
-        {/* Cover Image Option */}
-        <div className="mb-8">
-          <label className="flex items-center gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              checked={generateCover}
-              onChange={(e) => setGenerateCover(e.target.checked)}
-              className="w-5 h-5 rounded bg-gray-800 border-gray-700 text-rose-600 focus:ring-rose-600 focus:ring-offset-gray-900"
-            />
-            <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
-              Generate AI cover image with DALL-E 3
-            </span>
-          </label>
-          <p className="text-xs text-gray-500 mt-2 ml-8 italic">
-            {generateCover ? '🎨 AI will create a unique cover for your story' : 'Using gradient fallback'}
-          </p>
         </div>
       </div>
 
