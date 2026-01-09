@@ -9,6 +9,7 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { FavoriteButton } from '@/components/story/favorite-button'
 import { ContinueStoryButton } from '@/components/story/continue-story-button'
 import { ReadingTracker } from '@/components/story/reading-tracker'
+import { StoryContent } from '@/components/story/story-content'
 
 export default async function StoryPage({
   params,
@@ -182,19 +183,7 @@ export default async function StoryPage({
           </div>
 
           {/* Story content */}
-          <div className="bg-gray-900/40 border border-gray-800/50 rounded-xl p-5 sm:p-8 md:p-10 backdrop-blur-sm">
-            <div
-              className="whitespace-pre-wrap text-gray-100"
-              style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: '18px',
-                lineHeight: '1.75',
-                letterSpacing: '0.01em'
-              }}
-            >
-              {story.content}
-            </div>
-          </div>
+          <StoryContent content={story.content} />
 
           {/* End of story section */}
           <div className="mt-12 bg-gradient-to-r from-rose-950/30 to-violet-950/30 border border-rose-900/30 rounded-2xl p-10 text-center backdrop-blur-sm">
