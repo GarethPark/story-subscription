@@ -5,9 +5,5 @@
     }
   },
   "cleanUrls": true,
-  "trailingSlash": false,
-  "images": {
-    "domains": ["raw.githubusercontent.com"],
-    "unoptimized": true
-  }
+  "trailingSlash": false
 }
