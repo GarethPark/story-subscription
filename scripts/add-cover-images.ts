@@ -67,15 +67,15 @@ async function autoMapCoverImages() {
       }
 
       if (imagePath) {
-        // Convert to GitHub raw URL (workaround for Vercel deployment issues)
+        // Use GitHub raw URL directly (works with regular img tags)
         const filename = imagePath.split('/').pop()
-        const githubUrl = `https://raw.githubusercontent.com/GarethPark/story-subscription/main/public/covers/${filename}`
+        const directUrl = `https://raw.githubusercontent.com/GarethPark/story-subscription/main/public/covers/${filename}`
 
         await prisma.story.update({
           where: { id: story.id },
-          data: { coverImage: githubUrl },
+          data: { coverImage: directUrl },
         })
-        console.log(`✅ ${story.title}: ${githubUrl}`)
+        console.log(`✅ ${story.title}: ${directUrl}`)
       } else {
         console.log(`⚠️  ${story.title}: No image found for ${genreSlug}_${firstTrope}`)
       }
