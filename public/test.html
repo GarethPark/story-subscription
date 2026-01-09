@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Test - Proof GitHub URLs Work</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; padding: 20px; }
+        img { width: 200px; height: 300px; object-fit: cover; margin: 10px; border: 2px solid #0f0; }
+        .working { color: #0f0; font-size: 24px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1 class="working">✅ PROOF: GitHub URLs Work!</h1>
+    <p>These are regular img tags with GitHub raw URLs:</p>
+
+    <img src="https://raw.githubusercontent.com/GarethPark/story-subscription/main/public/covers/romantasy_enemies-to-lovers.png" alt="Romantasy">
+    <img src="https://raw.githubusercontent.com/GarethPark/story-subscription/main/public/covers/dark-romance_forbidden-love.png" alt="Dark Romance">
+
+    <p>If you see images above, GitHub URLs work perfectly!</p>
+    <p style="color: yellow;">Problem: Vercel is caching old Next.js Image code</p>
+    <p style="color: #0f0;">Solution: Clear Vercel build cache (instructions above)</p>
+</body>
+</html>
