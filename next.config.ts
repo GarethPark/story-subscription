@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
       },
     ],
     unoptimized: true,
+    loader: 'custom',
+    loaderFile: './image-loader.ts',
   },
 };
 
