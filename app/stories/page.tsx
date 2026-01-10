@@ -233,7 +233,6 @@ export default async function StoriesPage({
             )}
           </main>
         </div>
-      </div>
     </div>
   )
 }

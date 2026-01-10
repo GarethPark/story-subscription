@@ -76,16 +76,13 @@ export default async function AdminAnalyticsPage() {
         },
       },
       take: 5,
-      include: {
-        _count: {
-          select: { favorites: true },
-        },
-      },
       select: {
         id: true,
         title: true,
         genre: true,
-        _count: true,
+        _count: {
+          select: { favorites: true },
+        },
       },
     }),
     prisma.story.findMany({

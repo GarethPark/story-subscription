@@ -27,7 +27,7 @@ export async function POST(
     const story = await prisma.story.findUnique({
       where: { id },
       include: {
-        user: {
+        creator: {
           select: {
             email: true,
             name: true,
@@ -95,15 +95,15 @@ export async function POST(
     })
 
     // Send email notification to user
-    if (story.user?.email && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+    if (story.creator?.email && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
       try {
         await sendStoryReadyEmail({
-          to: story.user.email,
-          userName: story.user.name || 'Reader',
+          to: story.creator.email,
+          userName: story.creator.name || 'Reader',
           storyTitle: storyData.title,
           storyId: id,
         })
-        console.log(`Story ready email sent to ${story.user.email}`)
+        console.log(`Story ready email sent to ${story.creator.email}`)
       } catch (emailError) {
         // Don't fail the whole request if email fails
         console.error('Failed to send story ready email:', emailError)
