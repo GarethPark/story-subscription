@@ -10,6 +10,8 @@ import { FavoriteButton } from '@/components/story/favorite-button'
 import { ContinueStoryButton } from '@/components/story/continue-story-button'
 import { ReadingTracker } from '@/components/story/reading-tracker'
 import { StoryContent } from '@/components/story/story-content'
+import { StoryRating } from '@/components/story/story-rating'
+import { StoryReviews } from '@/components/story/story-reviews'
 
 export default async function StoryPage({
   params,
@@ -184,6 +186,20 @@ export default async function StoryPage({
 
           {/* Story content */}
           <StoryContent content={story.content} />
+
+          {/* Rating & Reviews Section */}
+          <div className="mt-12 space-y-8">
+            {/* Rating */}
+            <div className="bg-gray-900/50 border border-rose-900/30 rounded-xl p-6 backdrop-blur-sm">
+              <h3 className="text-lg font-bold text-white mb-4">Rate This Story</h3>
+              <StoryRating storyId={story.id} isAuthenticated={!!user} />
+            </div>
+
+            {/* Reviews */}
+            <div className="bg-gray-900/50 border border-rose-900/30 rounded-xl p-6 backdrop-blur-sm">
+              <StoryReviews storyId={story.id} isAuthenticated={!!user} />
+            </div>
+          </div>
 
           {/* End of story section */}
           <div className="mt-12 bg-gradient-to-r from-rose-950/30 to-violet-950/30 border border-rose-900/30 rounded-2xl p-10 text-center backdrop-blur-sm">

@@ -26,6 +26,9 @@ model User {
   favorites       Favorite[]
   customStories   Story[]  @relation("UserCustomStories")
   readingHistory  ReadingHistory[]
+  ratings         Rating[]
+  reviews         Review[]
+  feedback        Feedback[]
 }
 
 // Session management for JWT alternative
@@ -75,6 +78,8 @@ model Story {
   // Relations
   favorites         Favorite[]
   readingHistory    ReadingHistory[]
+  ratings           Rating[]
+  reviews           Review[]
   creator           User?            @relation("UserCustomStories", fields: [userId], references: [id], onDelete: SetNull)
   parentStory       Story?           @relation("StoryExtensions", fields: [parentStoryId], references: [id], onDelete: SetNull)
   extensions        Story[]          @relation("StoryExtensions")
@@ -124,4 +129,74 @@ model ReadingHistory {
   @@unique([userId, storyId])
   @@index([userId, lastReadAt])
   @@index([storyId])
+}
+
+// Story ratings (1-5 stars)
+model Rating {
+  id        String   @id @default(cuid())
+  userId    String
+  storyId   String
+  rating    Int      // 1-5 stars
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, storyId]) // One rating per user per story
+  @@index([storyId])
+  @@index([userId])
+}
+
+// Story reviews/comments
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  storyId   String
+  content   String   // Review text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId, createdAt])
+  @@index([userId])
+}
+
+// User feedback about the platform
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String?  // Optional - allow anonymous feedback
+  name      String?  // For display if user wants
+  email     String?  // Contact email
+  subject   String?  // Feedback category
+  message   String   // Feedback content
+  status    FeedbackStatus @default(PENDING)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([userId])
+}
+
+enum FeedbackStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+}
+
+// Testimonials for landing page
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String   // Display name (e.g., "Sarah M.")
+  quote     String   // The testimonial text
+  impact    String?  // Short impact statement (e.g., "Breathes life back into marriage")
+  active    Boolean  @default(true) // Show on landing page
+  order     Int      @default(0) // Display order
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, order])
 }

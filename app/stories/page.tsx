@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { Heart, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
+import { Heart, LayoutDashboard, Sparkles, BookOpen, Library, Star } from 'lucide-react'
 import { StoryFilters } from '@/components/stories/story-filters'
 
 export const dynamic = 'force-dynamic'
@@ -65,8 +65,26 @@ export default async function StoriesPage({
     orderBy,
     include: {
       _count: {
-        select: { favorites: true }
+        select: {
+          favorites: true,
+          ratings: true
+        }
+      },
+      ratings: {
+        select: {
+          rating: true
+        }
       }
+    }
+  })
+
+  // Calculate average ratings for each story
+  const storiesWithRatings = stories.map(story => {
+    const totalRating = story.ratings.reduce((sum, r) => sum + r.rating, 0)
+    const averageRating = story.ratings.length > 0 ? totalRating / story.ratings.length : 0
+    return {
+      ...story,
+      averageRating: parseFloat(averageRating.toFixed(1))
     }
   })
 
@@ -114,11 +132,11 @@ export default async function StoriesPage({
 
       <div className="w-full mx-auto px-5 py-12" style={{ maxWidth: '1400px' }}>
         {/* Advanced Filters */}
-        <StoryFilters totalCount={stories.length} />
+        <StoryFilters totalCount={storiesWithRatings.length} />
 
         {/* Stories Grid */}
         <main>
-            {stories.length === 0 ? (
+            {storiesWithRatings.length === 0 ? (
               <Card className="p-16 text-center bg-gray-900/30 border-rose-900/30">
                 <Heart className="h-16 w-16 text-rose-500/30 mx-auto mb-4" />
                 <p className="text-gray-400 text-lg font-medium mb-2">
@@ -130,7 +148,7 @@ export default async function StoriesPage({
               </Card>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-                  {stories.map((story) => (
+                  {storiesWithRatings.map((story) => (
                     <Link
                       key={story.id}
                       href={`/stories/${story.id}`}
@@ -175,6 +193,23 @@ export default async function StoriesPage({
                           <p className="text-sm text-gray-400 mb-3">
                             by {story.author}
                           </p>
+                          {story.averageRating > 0 && (
+                            <div className="flex items-center gap-1.5 mb-3">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-4 w-4 ${
+                                    star <= Math.round(story.averageRating)
+                                      ? 'fill-rose-500 text-rose-500'
+                                      : 'text-gray-600'
+                                  }`}
+                                />
+                              ))}
+                              <span className="text-xs text-gray-500 ml-1">
+                                {story.averageRating} ({story._count.ratings})
+                              </span>
+                            </div>
+                          )}
                           <p className="text-sm text-gray-300 line-clamp-3 leading-relaxed">
                             {story.summary}
                           </p>

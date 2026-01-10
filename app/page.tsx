@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/landing/navbar'
 import { Hero } from '@/components/landing/hero'
 import { Features } from '@/components/landing/features'
+import { Testimonials } from '@/components/landing/testimonials'
 import { Pricing } from '@/components/landing/pricing'
 import { Footer } from '@/components/landing/footer'
 import { Heart, Sparkles, BookOpen, Wand2, Library, Flame } from 'lucide-react'
@@ -60,6 +61,49 @@ export default function Home() {
               icon: <Sparkles className="h-10 w-10 text-amber-400" />,
               title: 'Instant Access',
               description: 'New stories generated in minutes, available immediately on any device'
+            }
+          ]}
+        />
+
+        <Testimonials
+          title="Real Readers, Real Stories"
+          subtitle="See how Silk Stories is transforming reading experiences"
+          testimonials={[
+            {
+              id: '1',
+              name: 'Sarah M.',
+              quote: 'I used to dread my daily commute on the tube, but now it\'s my favorite part of the day. These stories make the journey fly by!',
+              impact: 'Takes the boredom out of train rides'
+            },
+            {
+              id: '2',
+              name: 'Jessica T.',
+              quote: 'As a busy mum, I barely had time for myself. Now I get 20 minutes before bed to escape into these amazing stories. It\'s my little indulgence.',
+              impact: 'Helps me get excited again before bed'
+            },
+            {
+              id: '3',
+              name: 'Emma K.',
+              quote: 'My husband and I were stuck in a rut. I started sharing some of the steamier stories with him and... wow. It\'s like we\'re newlyweds again!',
+              impact: 'Breathes life back into marriage'
+            },
+            {
+              id: '4',
+              name: 'Rachel P.',
+              quote: 'I\'ve read romance novels for years, but the custom stories here are on another level. Being able to create exactly what I want to read? Game changer.',
+              impact: 'My perfect stories, every time'
+            },
+            {
+              id: '5',
+              name: 'Lauren W.',
+              quote: 'The quality is incredible. I was skeptical about AI-written stories, but these have genuine emotion, chemistry, and heat. I\'m hooked!',
+              impact: 'Professional quality, instant gratification'
+            },
+            {
+              id: '6',
+              name: 'Amanda H.',
+              quote: 'Long-haul flights used to be torture. Now I look forward to them because I can binge read guilt-free. Downloaded 10 stories for my last trip!',
+              impact: 'Makes travel time enjoyable'
             }
           ]}
         />
