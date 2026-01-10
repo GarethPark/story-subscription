@@ -23,7 +23,7 @@ export function Testimonials({ title, subtitle, testimonials }: TestimonialsProp
       <div className="absolute top-20 right-20 w-72 h-72 bg-rose-600/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-20 w-96 h-96 bg-violet-600/5 rounded-full blur-3xl" />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         {(title || subtitle) && (
           <div className="text-center mb-16">
@@ -36,7 +36,7 @@ export function Testimonials({ title, subtitle, testimonials }: TestimonialsProp
               </div>
             )}
             {subtitle && (
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto px-4">
                 {subtitle}
               </p>
             )}
