@@ -181,7 +181,8 @@ export default function Home() {
             links: [
               { label: 'About', href: '/about' },
               { label: 'Features', href: '#features' },
-              { label: 'Pricing', href: '#pricing' }
+              { label: 'Pricing', href: '#pricing' },
+              { label: 'Feedback', href: '/feedback' }
             ]
           },
           {

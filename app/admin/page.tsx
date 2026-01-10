@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { Sparkles, BookOpen, Users, BarChart3 } from 'lucide-react'
+import { Sparkles, BookOpen, Users, BarChart3, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default async function AdminPage() {
@@ -122,21 +122,49 @@ export default async function AdminPage() {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Users className="h-6 w-6 text-green-600" />
+                <div className="p-2 bg-violet-100 rounded-lg">
+                  <MessageSquare className="h-6 w-6 text-violet-600" />
                 </div>
                 <div>
-                  <CardTitle>User Management</CardTitle>
-                  <CardDescription>Coming soon</CardDescription>
+                  <CardTitle>User Feedback</CardTitle>
+                  <CardDescription>Review & manage feedback</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-slate-600 mb-4">
-                Manage user accounts, subscriptions, and permissions.
+                View and respond to user feedback, feature requests, and bug reports.
               </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/admin/feedback">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  View Feedback
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <Users className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <CardTitle>User Management</CardTitle>
+                  <CardDescription>Manage users & credits</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-slate-600 mb-4">
+                View all users, manage credits, and monitor user activity and engagement.
+              </p>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/admin/users">
+                  <Users className="h-4 w-4 mr-2" />
+                  Manage Users
+                </Link>
               </Button>
             </CardContent>
           </Card>

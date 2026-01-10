@@ -88,6 +88,18 @@ export default async function StoriesPage({
     }
   })
 
+  // Sort by rating if requested (done after calculating averages)
+  if (sort === 'rating') {
+    storiesWithRatings.sort((a, b) => {
+      // Stories with no ratings go to the end
+      if (a.averageRating === 0 && b.averageRating === 0) return 0
+      if (a.averageRating === 0) return 1
+      if (b.averageRating === 0) return -1
+      // Sort by rating descending
+      return b.averageRating - a.averageRating
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       {/* Dramatic Header */}

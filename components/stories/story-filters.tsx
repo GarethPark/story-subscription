@@ -17,6 +17,7 @@ const SORT_OPTIONS = [
   { label: 'Newest First', value: 'newest' },
   { label: 'Most Viewed', value: 'views' },
   { label: 'Most Favorited', value: 'favorites' },
+  { label: 'Highest Rated', value: 'rating' },
 ]
 
 interface StoryFiltersProps {
