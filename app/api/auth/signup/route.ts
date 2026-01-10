@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { hashPassword } from '@/lib/auth/password'
 import { createSession } from '@/lib/auth/session'
+import { sendWelcomeEmail } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,6 +55,20 @@ export async function POST(request: NextRequest) {
 
     // Create session
     await createSession(user.id, user.email)
+
+    // Send welcome email
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await sendWelcomeEmail({
+          to: user.email,
+          userName: user.name || 'Reader',
+        })
+        console.log(`Welcome email sent to ${user.email}`)
+      } catch (emailError) {
+        // Don't fail signup if email fails
+        console.error('Failed to send welcome email:', emailError)
+      }
+    }
 
     return NextResponse.json(
       {

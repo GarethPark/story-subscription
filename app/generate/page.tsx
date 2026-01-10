@@ -136,11 +136,11 @@ export default async function GeneratePage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-violet-600 text-white text-xs flex items-center justify-center font-bold">3</span>
-                  <span>Click generate and wait 1-2 minutes while AI crafts your unique story</span>
+                  <span>Click generate and we'll email you when your story is ready (1-2 minutes)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-violet-600 text-white text-xs flex items-center justify-center font-bold">4</span>
-                  <span>Read, save, and enjoy your personalized romance story!</span>
+                  <span>Check your email or "My Stories" - read, save, and enjoy!</span>
                 </li>
               </ol>
             </div>

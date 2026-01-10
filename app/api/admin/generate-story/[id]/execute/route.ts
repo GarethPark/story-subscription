@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { prisma } from '@/lib/db'
+import { sendStoryReadyEmail } from '@/lib/email'
 
 interface StoryConfig {
   genre: 'Contemporary' | 'Historical' | 'Paranormal' | 'Fantasy' | 'Suspense'
@@ -18,9 +19,17 @@ export async function POST(
   try {
     const { id } = await params
 
-    // Get the story config from database
+    // Get the story config from database with user info
     const story = await prisma.story.findUnique({
       where: { id },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+          },
+        },
+      },
     })
 
     if (!story) {
@@ -80,6 +89,22 @@ export async function POST(
         generationError: null,
       },
     })
+
+    // Send email notification to user
+    if (story.user?.email && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await sendStoryReadyEmail({
+          to: story.user.email,
+          userName: story.user.name || 'Reader',
+          storyTitle: storyData.title,
+          storyId: id,
+        })
+        console.log(`Story ready email sent to ${story.user.email}`)
+      } catch (emailError) {
+        // Don't fail the whole request if email fails
+        console.error('Failed to send story ready email:', emailError)
+      }
+    }
 
     return NextResponse.json({ success: true, wordCount })
   } catch (error) {

@@ -46,28 +46,6 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
     )
   }
 
-  const checkStatus = async (storyId: string): Promise<boolean> => {
-    try {
-      const response = await fetch(`/api/stories/${storyId}/status`)
-      const data = await response.json()
-
-      if (data.generationStatus === 'COMPLETED') {
-        setProgress('Story generated successfully!')
-        return true
-      } else if (data.generationStatus === 'FAILED') {
-        throw new Error(data.generationError || 'Generation failed')
-      } else if (data.generationStatus === 'GENERATING') {
-        setProgress('Generating your story... This takes 1-2 minutes.')
-      } else {
-        setProgress('Starting generation...')
-      }
-
-      return false
-    } catch (error) {
-      throw error
-    }
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -111,34 +89,13 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
       const data = await response.json()
       const storyId = data.storyId
 
-      setProgress('Generation started! Waiting for completion...')
+      // Show success message and redirect to My Stories
+      setProgress('Story generation started! We\'ll email you when it\'s ready (1-2 minutes).')
 
-      // Poll for status every 3 seconds
-      const pollInterval = setInterval(async () => {
-        try {
-          const isComplete = await checkStatus(storyId)
-          if (isComplete) {
-            clearInterval(pollInterval)
-            // Wait a moment before redirect to show success message
-            setTimeout(() => {
-              router.push(`/stories/${storyId}`)
-            }, 1000)
-          }
-        } catch (error) {
-          clearInterval(pollInterval)
-          console.error('Status check error:', error)
-          alert(error instanceof Error ? error.message : 'Generation failed')
-          setIsGenerating(false)
-          setProgress('')
-        }
-      }, 3000)
-
-      // Safety timeout after 3 minutes
+      // Redirect after showing message
       setTimeout(() => {
-        clearInterval(pollInterval)
-        setProgress('Generation is taking longer than expected. Check "My Stories" for the story status.')
-        setIsGenerating(false)
-      }, 180000)
+        router.push('/my-stories')
+      }, 2000)
 
     } catch (error) {
       console.error('Generation error:', error)
