@@ -22,14 +22,25 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  // Stripe subscription fields
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?   // Current price ID
+  stripeCurrentPeriodEnd DateTime? // When subscription period ends
+  subscriptionTier       SubscriptionTier @default(FREE)
+  monthlyCredits         Int       @default(0)  // Credits allocated per month for subscription
+  creditsResetAt         DateTime? // When monthly credits reset
+
   // Relations
-  sessions        Session[]
-  favorites       Favorite[]
-  customStories   Story[]  @relation("UserCustomStories")
-  readingHistory  ReadingHistory[]
-  ratings         Rating[]
-  reviews         Review[]
-  feedback        Feedback[]
+  sessions              Session[]
+  favorites             Favorite[]
+  customStories         Story[]  @relation("UserCustomStories")
+  readingHistory        ReadingHistory[]
+  ratings               Rating[]
+  reviews               Review[]
+  feedback              Feedback[]
+  subscriptionHistory   SubscriptionHistory[]
+  creditTransactions    CreditTransaction[]
 }
 
 // Session management for JWT alternative
@@ -81,6 +92,7 @@ model Story {
   readingHistory    ReadingHistory[]
   ratings           Rating[]
   reviews           Review[]
+  creditTransactions CreditTransaction[]
   creator           User?            @relation("UserCustomStories", fields: [userId], references: [id], onDelete: SetNull)
   parentStory       Story?           @relation("StoryExtensions", fields: [parentStoryId], references: [id], onDelete: SetNull)
   extensions        Story[]          @relation("StoryExtensions")
@@ -200,4 +212,54 @@ model Testimonial {
   updatedAt DateTime @updatedAt
 
   @@index([active, order])
+}
+
+// Subscription tiers
+enum SubscriptionTier {
+  FREE
+  STARTER
+  PLUS
+  UNLIMITED
+}
+
+// Subscription payment history
+model SubscriptionHistory {
+  id              String   @id @default(cuid())
+  userId          String
+  tier            SubscriptionTier
+  stripeInvoiceId String?
+  amount          Int      // in cents
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Credit transaction log
+model CreditTransaction {
+  id          String                @id @default(cuid())
+  userId      String
+  amount      Int                   // positive = added, negative = used
+  type        CreditTransactionType
+  description String?
+  storyId     String?
+  createdAt   DateTime              @default(now())
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  story Story? @relation(fields: [storyId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([type])
+}
+
+enum CreditTransactionType {
+  PURCHASE         // One-time credit purchase
+  SUBSCRIPTION     // Monthly subscription credits
+  SIGNUP_BONUS     // Initial signup credits
+  ADMIN_GRANT      // Admin manually added credits
+  STORY_GENERATION // Credit used for story
+  REFUND           // Credit refunded
 }
