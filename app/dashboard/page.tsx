@@ -7,6 +7,7 @@ import { Heart, BookOpen, Sparkles, Star, LayoutDashboard, Library, Clock, Chevr
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/db'
 import { Badge } from '@/components/ui/badge'
+import { SubscriptionCard } from '@/components/stripe/subscription-card'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -248,6 +249,14 @@ export default async function DashboardPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Subscription Card */}
+          <SubscriptionCard
+            tier={user.subscriptionTier}
+            monthlyCredits={user.monthlyCredits}
+            creditsResetAt={user.creditsResetAt}
+            stripeCustomerId={user.stripeCustomerId}
+          />
 
           {/* Account Info Card */}
           <Card className="border-rose-900/30 bg-gray-900/50 backdrop-blur-sm hover:shadow-none">
