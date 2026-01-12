@@ -94,7 +94,16 @@ export async function getCurrentUser() {
       name: true,
       isAdmin: true,
       credits: true,
-      createdAt: true
+      creditsUsed: true,
+      createdAt: true,
+      // Stripe subscription fields
+      stripeCustomerId: true,
+      stripeSubscriptionId: true,
+      stripePriceId: true,
+      stripeCurrentPeriodEnd: true,
+      subscriptionTier: true,
+      monthlyCredits: true,
+      creditsResetAt: true,
     }
   })
 
