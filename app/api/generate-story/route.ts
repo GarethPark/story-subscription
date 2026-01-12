@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentUser } from '@/lib/auth/session'
 import { prisma } from '@/lib/db'
+import { canGenerateStory, useCredit, getUserCredits } from '@/lib/credits'
 
 // Story generation types
 interface StoryConfig {
@@ -27,10 +28,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user has credits
-    if (user.credits < 1) {
+    // Check if user can generate a story
+    const creditCheck = await canGenerateStory(user.id)
+    if (!creditCheck.canGenerate) {
       return NextResponse.json(
-        { error: 'Insufficient credits. Please purchase more credits or upgrade to Premium.' },
+        { error: creditCheck.reason },
         { status: 403 }
       )
     }
@@ -87,14 +89,16 @@ export async function POST(request: NextRequest) {
     })
 
     // Deduct credit from user
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        credits: {
-          decrement: 1,
-        },
-      },
-    })
+    const creditUsed = await useCredit(user.id, story.id)
+
+    if (!creditUsed) {
+      // This shouldn't happen since we checked earlier, but handle it anyway
+      await prisma.story.delete({ where: { id: story.id } })
+      return NextResponse.json(
+        { error: 'Failed to use credit. Please try again.' },
+        { status: 500 }
+      )
+    }
 
     // Trigger async generation (fire and forget)
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -115,24 +119,32 @@ export async function POST(request: NextRequest) {
           generationStatus: 'FAILED',
           generationError: 'Failed to start generation',
         },
-      }).then(() => {
-        // Refund the credit
-        prisma.user.update({
+      }).then(async () => {
+        // Refund the credit with transaction log
+        await prisma.user.update({
           where: { id: user.id },
+          data: { credits: { increment: 1 } },
+        })
+        await prisma.creditTransaction.create({
           data: {
-            credits: {
-              increment: 1,
-            },
+            userId: user.id,
+            storyId: story.id,
+            amount: 1,
+            type: 'REFUND',
+            description: 'Story generation failed - credit refunded',
           },
         })
       }).catch(console.error)
     })
 
+    // Get updated credit balance
+    const creditsRemaining = await getUserCredits(user.id)
+
     return NextResponse.json({
       success: true,
       storyId: story.id,
       message: 'Story generation started. Check status to see progress.',
-      creditsRemaining: user.credits - 1,
+      creditsRemaining,
     })
   } catch (error) {
     console.error('Story generation error:', error)
