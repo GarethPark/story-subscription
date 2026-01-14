@@ -26,17 +26,17 @@ export function Testimonials({ title, subtitle, testimonials }: TestimonialsProp
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         {(title || subtitle) && (
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 px-4">
             {title && (
-              <div className="flex items-center justify-center mb-4">
-                <Heart className="h-8 w-8 text-rose-500 fill-rose-500 mr-3" />
-                <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent font-['Playfair_Display']">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4">
+                <Heart className="h-8 w-8 text-rose-500 fill-rose-500 flex-shrink-0" />
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-rose-400 via-pink-300 to-violet-400 bg-clip-text text-transparent font-['Playfair_Display']">
                   {title}
                 </h2>
               </div>
             )}
             {subtitle && (
-              <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto px-4">
+              <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
                 {subtitle}
               </p>
             )}
