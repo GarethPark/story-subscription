@@ -5,12 +5,10 @@ export async function POST() {
   try {
     await deleteSession()
 
-    return NextResponse.json({ success: true })
+    // Redirect to home page after logout
+    return NextResponse.redirect(new URL('/', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'))
   } catch (error) {
     console.error('Logout error:', error)
-    return NextResponse.json(
-      { error: 'An error occurred during logout' },
-      { status: 500 }
-    )
+    return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'))
   }
 }
