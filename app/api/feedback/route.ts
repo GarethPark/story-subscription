@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth/session'
+import { notifyAdminNewFeedback } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,6 +26,20 @@ export async function POST(request: NextRequest) {
         message: message.trim(),
       },
     })
+
+    // Notify admin of new feedback
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await notifyAdminNewFeedback({
+          userName: name?.trim(),
+          userEmail: email?.trim(),
+          subject: subject?.trim() || 'General Feedback',
+          message: message.trim(),
+        })
+      } catch (notifyError) {
+        console.error('Failed to notify admin:', notifyError)
+      }
+    }
 
     return NextResponse.json({
       success: true,

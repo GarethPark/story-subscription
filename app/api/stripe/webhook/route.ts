@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { stripe, getTierFromPriceId, TIER_CREDITS } from '@/lib/stripe'
 import { prisma } from '@/lib/db'
+import { notifyAdminPaymentFailed } from '@/lib/email'
 import Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
@@ -268,6 +269,21 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
 
   console.error('Payment failed for customer:', customerId)
 
-  // You could send an email notification here
-  // For now, Stripe will automatically retry and send emails
+  // Get customer email from Stripe
+  try {
+    const customer = await stripe.customers.retrieve(customerId)
+    if (customer && !customer.deleted) {
+      const customerEmail = customer.email || 'unknown'
+
+      // Notify admin of failed payment
+      if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+        await notifyAdminPaymentFailed({
+          customerEmail,
+          amount: invoice.amount_due,
+        })
+      }
+    }
+  } catch (error) {
+    console.error('Failed to notify admin of payment failure:', error)
+  }
 }

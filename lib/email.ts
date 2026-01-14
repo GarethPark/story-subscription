@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM_EMAIL = 'Silk Stories <stories@readsilk.com>'
+const ADMIN_EMAIL = 'garethpark@yahoo.com'
 
 export async function sendStoryReadyEmail({
   to,
@@ -215,6 +216,238 @@ export async function sendWelcomeEmail({
     return { success: true, data }
   } catch (error) {
     console.error('Error sending welcome email:', error)
+    return { success: false, error }
+  }
+}
+
+// ============================================
+// ADMIN NOTIFICATION EMAILS
+// ============================================
+
+export async function notifyAdminNewUser({
+  userName,
+  userEmail,
+}: {
+  userName: string
+  userEmail: string
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `🎉 New User Signup: ${userName}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #fff;">
+  <div style="max-width: 500px; margin: 0 auto; background: #2a2a2a; padding: 30px; border-radius: 10px;">
+    <h2 style="color: #fb7185; margin-top: 0;">🎉 New User Signed Up!</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Name:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${userName}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Email:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${userEmail}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Time:</td>
+        <td style="padding: 10px 0; color: #fff;">${new Date().toLocaleString()}</td>
+      </tr>
+    </table>
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #444;">
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/admin/users" style="color: #fb7185;">View all users →</a>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending admin notification:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending admin notification:', error)
+    return { success: false, error }
+  }
+}
+
+export async function notifyAdminNewFeedback({
+  userName,
+  userEmail,
+  subject,
+  message,
+}: {
+  userName?: string
+  userEmail?: string
+  subject: string
+  message: string
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `📝 New Feedback: ${subject}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #fff;">
+  <div style="max-width: 500px; margin: 0 auto; background: #2a2a2a; padding: 30px; border-radius: 10px;">
+    <h2 style="color: #a78bfa; margin-top: 0;">📝 New Feedback Received</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">From:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${userName || 'Anonymous'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Email:</td>
+        <td style="padding: 10px 0; color: #fff;">${userEmail || 'Not provided'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Subject:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${subject}</td>
+      </tr>
+    </table>
+    <div style="margin-top: 20px; padding: 15px; background: #1a1a1a; border-radius: 8px; border-left: 3px solid #a78bfa;">
+      <p style="margin: 0; color: #d1d5db; white-space: pre-wrap;">${message}</p>
+    </div>
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #444;">
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/admin/feedback" style="color: #a78bfa;">View all feedback →</a>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending admin notification:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending admin notification:', error)
+    return { success: false, error }
+  }
+}
+
+export async function notifyAdminPaymentFailed({
+  customerEmail,
+  amount,
+  error: paymentError,
+}: {
+  customerEmail: string
+  amount?: number
+  error?: string
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `⚠️ Payment Failed: ${customerEmail}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #fff;">
+  <div style="max-width: 500px; margin: 0 auto; background: #2a2a2a; padding: 30px; border-radius: 10px; border: 2px solid #ef4444;">
+    <h2 style="color: #ef4444; margin-top: 0;">⚠️ Payment Failed</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Customer:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${customerEmail}</td>
+      </tr>
+      ${amount ? `
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Amount:</td>
+        <td style="padding: 10px 0; color: #fff;">$${(amount / 100).toFixed(2)}</td>
+      </tr>
+      ` : ''}
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Time:</td>
+        <td style="padding: 10px 0; color: #fff;">${new Date().toLocaleString()}</td>
+      </tr>
+    </table>
+    ${paymentError ? `
+    <div style="margin-top: 20px; padding: 15px; background: #450a0a; border-radius: 8px;">
+      <p style="margin: 0; color: #fca5a5; font-size: 14px;">${paymentError}</p>
+    </div>
+    ` : ''}
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #444;">
+      <a href="https://dashboard.stripe.com/payments" style="color: #fb7185;">View in Stripe →</a>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending admin notification:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending admin notification:', error)
+    return { success: false, error }
+  }
+}
+
+export async function notifyAdminError({
+  context,
+  error: errorMessage,
+  userId,
+}: {
+  context: string
+  error: string
+  userId?: string
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `🚨 Error: ${context}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #fff;">
+  <div style="max-width: 500px; margin: 0 auto; background: #2a2a2a; padding: 30px; border-radius: 10px; border: 2px solid #ef4444;">
+    <h2 style="color: #ef4444; margin-top: 0;">🚨 Error Alert</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Context:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${context}</td>
+      </tr>
+      ${userId ? `
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">User ID:</td>
+        <td style="padding: 10px 0; color: #fff;">${userId}</td>
+      </tr>
+      ` : ''}
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Time:</td>
+        <td style="padding: 10px 0; color: #fff;">${new Date().toLocaleString()}</td>
+      </tr>
+    </table>
+    <div style="margin-top: 20px; padding: 15px; background: #450a0a; border-radius: 8px; overflow-x: auto;">
+      <pre style="margin: 0; color: #fca5a5; font-size: 12px; white-space: pre-wrap;">${errorMessage}</pre>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending admin notification:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending admin notification:', error)
     return { success: false, error }
   }
 }
