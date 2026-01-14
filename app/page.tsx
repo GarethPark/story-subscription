@@ -114,50 +114,50 @@ export default function Home() {
             subtitle="Start free, upgrade anytime for custom stories"
             tiers={[
               {
-                name: 'Free',
-                price: '$0',
-                description: 'Perfect for discovering your new favorite stories',
+                name: 'Starter',
+                price: '$6.99',
+                period: '/month',
+                description: 'Perfect for occasional custom stories',
                 features: [
-                  'Access to curated story library',
-                  'All genres and heat levels',
-                  'New stories added weekly',
-                  'Save favorites',
-                  'Reading history'
+                  '3 custom story credits per month',
+                  'Full character customization',
+                  '6,000-8,000 word stories',
+                  'Priority generation queue',
+                  'Unlimited curated story reading'
                 ],
-                cta: 'Start Reading',
-                ctaLink: '/signup'
+                cta: 'Get Started',
+                ctaLink: '/pricing'
               },
               {
-                name: 'Premium',
-                price: '$9.99',
+                name: 'Plus',
+                price: '$11.99',
                 period: '/month',
-                description: 'For readers who want their own personalized stories',
+                description: 'For avid readers who want their perfect stories',
                 features: [
-                  'Everything in Free',
-                  '3 custom story credits per month',
-                  'Personalize characters & scenarios',
-                  '6,000-8,000 word stories',
-                  'Priority generation',
-                  'Early access to new features'
+                  '8 custom story credits per month',
+                  'Everything in Starter',
+                  'Extended stories (8,000-10,000 words)',
+                  'Early access to new features',
+                  'Same price as Kindle Unlimited!'
                 ],
-                cta: 'Go Premium',
-                ctaLink: '/signup',
+                cta: 'Go Plus',
+                ctaLink: '/pricing',
                 popular: true
               },
               {
-                name: 'Add-On Credits',
-                price: '$4.99',
-                period: '/story',
-                description: 'Need more custom stories?',
+                name: 'Unlimited',
+                price: '$19.99',
+                period: '/month',
+                description: "For true romantics who can't get enough",
                 features: [
-                  'One-time purchase',
-                  'Never expires',
-                  'Full customization',
-                  'Same premium quality',
-                  'Stack unlimited credits'
+                  'Unlimited custom stories',
+                  'Fair use: 2 stories per day',
+                  'Everything in Plus',
+                  'VIP support',
+                  'Beta features early access'
                 ],
-                cta: 'Buy Credits',
-                ctaLink: '/signup'
+                cta: 'Go Unlimited',
+                ctaLink: '/pricing'
               }
             ]}
           />
