@@ -33,7 +33,7 @@ export default function PricingPage() {
         'Priority generation queue',
         'Unlimited curated story reading',
       ],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER || 'price_1SoobdKjruuOoDVKUPuKrMpK',
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER || 'price_1SqJ2NKjruuOoDVK5jj67hu0',
       popular: false,
     },
     {
@@ -49,7 +49,7 @@ export default function PricingPage() {
         'Early access to new features',
         'Same price as Kindle Unlimited!',
       ],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PLUS || 'price_1SoocSKjruuOoDVKCVWCTDYx',
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PLUS || 'price_1SqJ2cKjruuOoDVKYwtkPmcG',
       popular: true,
     },
     {
@@ -65,7 +65,7 @@ export default function PricingPage() {
         'VIP support',
         'Beta features early access',
       ],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_UNLIMITED || 'price_1Sood6KjruuOoDVKdkJxrrrb',
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_UNLIMITED || 'price_1SqJ2sKjruuOoDVKn12a7VZ2',
       popular: false,
     },
   ]
@@ -184,11 +184,11 @@ export default function PricingPage() {
 
         {/* One-time Credit Purchase */}
         <div className="mt-12 max-w-2xl mx-auto">
-          <Card className="bg-gray-900/50 border-gray-800 p-6">
+          <Card className="bg-gray-900/50 border-gray-800 p-6 text-left">
             <h3 className="text-xl font-bold text-white mb-2 font-['Playfair_Display']">
               Need Extra Credits?
             </h3>
-            <p className="text-gray-400 mb-4">
+            <p className="text-gray-400 mb-4 max-w-prose">
               Purchase individual story credits for $3.99 each. Credits never expire.
             </p>
             {!user ? (
@@ -201,7 +201,7 @@ export default function PricingPage() {
             ) : (
               <CheckoutButton
                 priceId={
-                  process.env.NEXT_PUBLIC_STRIPE_PRICE_CREDIT || 'price_1SoodoKjruuOoDVKETDj0VCs'
+                  process.env.NEXT_PUBLIC_STRIPE_PRICE_CREDIT || 'price_1SqJ3FKjruuOoDVKX8WUvc76'
                 }
                 label="Buy 1 Credit - $3.99"
                 variant="outline"
