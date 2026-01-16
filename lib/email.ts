@@ -8,7 +8,7 @@ const FROM_EMAIL = process.env.NODE_ENV === 'development'
   : 'Silk Stories <stories@readsilk.com>'
 const ADMIN_EMAIL = 'garethpark@yahoo.com'
 
-// Genre image mapping
+// Genre image mapping - map all genres to available images
 const GENRE_IMAGES: Record<string, string> = {
   'Contemporary': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
   'Dark Romance': '/images/genre-tropes/dark-romance_forbidden-love.png',
@@ -17,6 +17,9 @@ const GENRE_IMAGES: Record<string, string> = {
   'Historical': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
   'Paranormal': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
   'Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Small Town': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Sports Romance': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Romantic Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
 }
 
 export async function sendStoryReadyEmail({

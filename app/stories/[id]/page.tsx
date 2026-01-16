@@ -13,7 +13,7 @@ import { StoryContent } from '@/components/story/story-content'
 import { StoryRating } from '@/components/story/story-rating'
 import { StoryReviews } from '@/components/story/story-reviews'
 
-// Genre mood images
+// Genre mood images - map all genres to available images
 const GENRE_MOOD_IMAGES: Record<string, string> = {
   'Contemporary': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
   'Dark Romance': '/images/genre-tropes/dark-romance_forbidden-love.png',
@@ -22,6 +22,9 @@ const GENRE_MOOD_IMAGES: Record<string, string> = {
   'Historical': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
   'Paranormal': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
   'Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Small Town': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Sports Romance': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Romantic Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
 }
 
 export default async function StoryPage({
