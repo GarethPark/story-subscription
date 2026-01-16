@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { stripe, getTierFromPriceId, TIER_CREDITS } from '@/lib/stripe'
 import { prisma } from '@/lib/db'
-import { notifyAdminPaymentFailed } from '@/lib/email'
+import {
+  notifyAdminPaymentFailed,
+  sendSubscriptionConfirmationEmail,
+  sendCreditsRenewedEmail,
+  sendSubscriptionCancelledEmail,
+} from '@/lib/email'
 import Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
@@ -173,6 +178,21 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
     })
 
     console.log(`Granted ${monthlyCredits} credits for ${tier} subscription:`, user.id)
+
+    // Send subscription confirmation email
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await sendSubscriptionConfirmationEmail({
+          to: user.email,
+          userName: user.name || 'Reader',
+          tier,
+          credits: monthlyCredits,
+        })
+        console.log(`Subscription confirmation email sent to ${user.email}`)
+      } catch (emailError) {
+        console.error('Failed to send subscription confirmation email:', emailError)
+      }
+    }
   }
 }
 
@@ -181,6 +201,11 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string
 
   console.log('Subscription deleted for customer:', customerId)
+
+  // Get user before updating to send cancellation email
+  const user = await prisma.user.findUnique({
+    where: { stripeCustomerId: customerId },
+  })
 
   await prisma.user.updateMany({
     where: { stripeCustomerId: customerId },
@@ -196,6 +221,20 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   })
 
   console.log('User downgraded to FREE tier')
+
+  // Send subscription cancelled email
+  if (user && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+    try {
+      await sendSubscriptionCancelledEmail({
+        to: user.email,
+        userName: user.name || 'Reader',
+        remainingCredits: user.credits,
+      })
+      console.log(`Subscription cancelled email sent to ${user.email}`)
+    } catch (emailError) {
+      console.error('Failed to send subscription cancelled email:', emailError)
+    }
+  }
 }
 
 // Handle successful recurring payment (monthly renewal)
@@ -250,6 +289,21 @@ async function handleInvoicePayment(invoice: Stripe.Invoice) {
     })
 
     console.log(`Reset ${user.monthlyCredits} credits for renewal:`, user.id)
+
+    // Send credits renewed email
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await sendCreditsRenewedEmail({
+          to: user.email,
+          userName: user.name || 'Reader',
+          credits: user.monthlyCredits,
+          tier: user.subscriptionTier,
+        })
+        console.log(`Credits renewed email sent to ${user.email}`)
+      } catch (emailError) {
+        console.error('Failed to send credits renewed email:', emailError)
+      }
+    }
   }
 
   // Record payment in history

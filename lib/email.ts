@@ -451,3 +451,417 @@ export async function notifyAdminError({
     return { success: false, error }
   }
 }
+
+// ============================================
+// USER SUBSCRIPTION EMAILS
+// ============================================
+
+export async function sendSubscriptionConfirmationEmail({
+  to,
+  userName,
+  tier,
+  credits,
+}: {
+  to: string
+  userName: string
+  tier: string
+  credits: number
+}) {
+  const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/dashboard`
+  const generateUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/generate`
+
+  const tierDisplay = tier.charAt(0).toUpperCase() + tier.slice(1).toLowerCase()
+  const creditsText = tier === 'UNLIMITED' ? 'Unlimited stories (fair use: 2/day)' : `${credits} story credits`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: `Welcome to ${tierDisplay}! Your subscription is active`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Confirmed</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Georgia', serif; background: linear-gradient(to bottom, #000000, #1a1a1a); color: #ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #000000;">
+    <!-- Header -->
+    <tr>
+      <td style="padding: 40px 30px; text-align: center; background: linear-gradient(to right, #be123c, #7c2d12); border-bottom: 2px solid #fb7185;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 900; background: linear-gradient(to right, #fda4af, #f9a8d4, #ddd6fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Silk Stories
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Content -->
+    <tr>
+      <td style="padding: 40px 30px; background-color: #111827;">
+        <h2 style="margin: 0 0 20px 0; font-size: 28px; color: #fda4af; font-weight: bold;">
+          Welcome to ${tierDisplay}, ${userName}!
+        </h2>
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          Thank you for subscribing! Your ${tierDisplay} membership is now active and ready to use.
+        </p>
+
+        <div style="background: linear-gradient(to bottom right, #450a0a, #3b0764); border: 1px solid #9f1239; border-radius: 12px; padding: 24px; margin: 30px 0;">
+          <h3 style="margin: 0 0 16px 0; font-size: 20px; color: #fda4af;">
+            Your Plan Details
+          </h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 8px 0; color: #9ca3af;">Plan:</td>
+              <td style="padding: 8px 0; color: #fff; font-weight: bold;">${tierDisplay}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #9ca3af;">Monthly Allowance:</td>
+              <td style="padding: 8px 0; color: #fff; font-weight: bold;">${creditsText}</td>
+            </tr>
+          </table>
+        </div>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+          <tr>
+            <td align="center">
+              <a href="${generateUrl}" style="display: inline-block; padding: 16px 32px; background: linear-gradient(to right, #be123c, #7c2d12); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);">
+                Create Your First Story
+              </a>
+            </td>
+          </tr>
+        </table>
+
+        <p style="margin: 30px 0 0 0; font-size: 14px; line-height: 1.6; color: #9ca3af; text-align: center;">
+          Your credits renew automatically each month. Happy reading!
+        </p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 30px; text-align: center; background-color: #000000; border-top: 1px solid #374151;">
+        <p style="margin: 0 0 10px 0; font-size: 14px; color: #6b7280;">
+          Questions? Just reply to this email.
+        </p>
+        <p style="margin: 0; font-size: 12px; color: #4b5563;">
+          <a href="${dashboardUrl}" style="color: #fb7185; text-decoration: none;">Go to Dashboard</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending subscription confirmation email:', error)
+      return { success: false, error }
+    }
+
+    console.log('Subscription confirmation email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending subscription confirmation email:', error)
+    return { success: false, error }
+  }
+}
+
+export async function sendCreditsRenewedEmail({
+  to,
+  userName,
+  credits,
+  tier,
+}: {
+  to: string
+  userName: string
+  credits: number
+  tier: string
+}) {
+  const generateUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/generate`
+  const tierDisplay = tier.charAt(0).toUpperCase() + tier.slice(1).toLowerCase()
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: `Your ${credits} story credits have been renewed!`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credits Renewed</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Georgia', serif; background: linear-gradient(to bottom, #000000, #1a1a1a); color: #ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #000000;">
+    <!-- Header -->
+    <tr>
+      <td style="padding: 40px 30px; text-align: center; background: linear-gradient(to right, #be123c, #7c2d12); border-bottom: 2px solid #fb7185;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 900; background: linear-gradient(to right, #fda4af, #f9a8d4, #ddd6fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Silk Stories
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Content -->
+    <tr>
+      <td style="padding: 40px 30px; background-color: #111827;">
+        <h2 style="margin: 0 0 20px 0; font-size: 28px; color: #fda4af; font-weight: bold;">
+          Your Credits Have Been Renewed!
+        </h2>
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          Hi ${userName}, great news! Your monthly story credits have been refreshed.
+        </p>
+
+        <div style="background: linear-gradient(to bottom right, #450a0a, #3b0764); border: 1px solid #9f1239; border-radius: 12px; padding: 24px; margin: 30px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #9ca3af;">Available Credits</p>
+          <p style="margin: 0; font-size: 48px; font-weight: bold; color: #fda4af;">${credits}</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px; color: #9ca3af;">${tierDisplay} Plan</p>
+        </div>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+          <tr>
+            <td align="center">
+              <a href="${generateUrl}" style="display: inline-block; padding: 16px 32px; background: linear-gradient(to right, #be123c, #7c2d12); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);">
+                Create a New Story
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 30px; text-align: center; background-color: #000000; border-top: 1px solid #374151;">
+        <p style="margin: 0; font-size: 12px; color: #4b5563;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}" style="color: #fb7185; text-decoration: none;">Visit Silk Stories</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending credits renewed email:', error)
+      return { success: false, error }
+    }
+
+    console.log('Credits renewed email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending credits renewed email:', error)
+    return { success: false, error }
+  }
+}
+
+export async function sendSubscriptionCancelledEmail({
+  to,
+  userName,
+  remainingCredits,
+}: {
+  to: string
+  userName: string
+  remainingCredits: number
+}) {
+  const storiesUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/stories`
+  const pricingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/pricing`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: 'Your Silk Stories subscription has ended',
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Cancelled</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Georgia', serif; background: linear-gradient(to bottom, #000000, #1a1a1a); color: #ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #000000;">
+    <!-- Header -->
+    <tr>
+      <td style="padding: 40px 30px; text-align: center; background: linear-gradient(to right, #be123c, #7c2d12); border-bottom: 2px solid #fb7185;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 900; background: linear-gradient(to right, #fda4af, #f9a8d4, #ddd6fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Silk Stories
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Content -->
+    <tr>
+      <td style="padding: 40px 30px; background-color: #111827;">
+        <h2 style="margin: 0 0 20px 0; font-size: 28px; color: #fda4af; font-weight: bold;">
+          We're Sorry to See You Go
+        </h2>
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          Hi ${userName}, your subscription has been cancelled. We hope you enjoyed your time with Silk Stories.
+        </p>
+
+        ${remainingCredits > 0 ? `
+        <div style="background: linear-gradient(to bottom right, #1e3a5f, #1e1b4b); border: 1px solid #3b82f6; border-radius: 12px; padding: 24px; margin: 30px 0;">
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #93c5fd;">
+            Good News!
+          </h3>
+          <p style="margin: 0; font-size: 14px; color: #d1d5db; line-height: 1.6;">
+            You still have <strong style="color: #fda4af;">${remainingCredits} credits</strong> remaining. These credits never expire, so you can use them anytime to create new stories.
+          </p>
+        </div>
+        ` : ''}
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          You can still browse our curated story library anytime. If you ever want to create custom stories again, we'll be here.
+        </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+          <tr>
+            <td align="center">
+              <a href="${storiesUrl}" style="display: inline-block; padding: 14px 28px; background: transparent; border: 2px solid #fb7185; color: #fb7185; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; margin-right: 10px;">
+                Browse Stories
+              </a>
+              <a href="${pricingUrl}" style="display: inline-block; padding: 14px 28px; background: linear-gradient(to right, #be123c, #7c2d12); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">
+                Resubscribe
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 30px; text-align: center; background-color: #000000; border-top: 1px solid #374151;">
+        <p style="margin: 0 0 10px 0; font-size: 14px; color: #6b7280;">
+          Thank you for being part of our story.
+        </p>
+        <p style="margin: 0; font-size: 12px; color: #4b5563;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}" style="color: #fb7185; text-decoration: none;">Visit Silk Stories</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending subscription cancelled email:', error)
+      return { success: false, error }
+    }
+
+    console.log('Subscription cancelled email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending subscription cancelled email:', error)
+    return { success: false, error }
+  }
+}
+
+export async function sendLowCreditsWarningEmail({
+  to,
+  userName,
+  remainingCredits,
+}: {
+  to: string
+  userName: string
+  remainingCredits: number
+}) {
+  const pricingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/pricing`
+  const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/dashboard`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: `You're running low on story credits (${remainingCredits} left)`,
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Low Credits Warning</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Georgia', serif; background: linear-gradient(to bottom, #000000, #1a1a1a); color: #ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #000000;">
+    <!-- Header -->
+    <tr>
+      <td style="padding: 40px 30px; text-align: center; background: linear-gradient(to right, #be123c, #7c2d12); border-bottom: 2px solid #fb7185;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 900; background: linear-gradient(to right, #fda4af, #f9a8d4, #ddd6fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Silk Stories
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Content -->
+    <tr>
+      <td style="padding: 40px 30px; background-color: #111827;">
+        <h2 style="margin: 0 0 20px 0; font-size: 28px; color: #fda4af; font-weight: bold;">
+          Running Low on Credits
+        </h2>
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          Hi ${userName}, just a friendly heads up - you're running low on story credits!
+        </p>
+
+        <div style="background: linear-gradient(to bottom right, #78350f, #451a03); border: 1px solid #f59e0b; border-radius: 12px; padding: 24px; margin: 30px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #fcd34d;">Credits Remaining</p>
+          <p style="margin: 0; font-size: 48px; font-weight: bold; color: #fcd34d;">${remainingCredits}</p>
+        </div>
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          Don't let writer's block stop your reading adventures! Top up your credits or upgrade your plan to keep the stories flowing.
+        </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+          <tr>
+            <td align="center">
+              <a href="${pricingUrl}" style="display: inline-block; padding: 16px 32px; background: linear-gradient(to right, #be123c, #7c2d12); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);">
+                Get More Credits
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 30px; text-align: center; background-color: #000000; border-top: 1px solid #374151;">
+        <p style="margin: 0; font-size: 12px; color: #4b5563;">
+          <a href="${dashboardUrl}" style="color: #fb7185; text-decoration: none;">Go to Dashboard</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending low credits warning email:', error)
+      return { success: false, error }
+    }
+
+    console.log('Low credits warning email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending low credits warning email:', error)
+    return { success: false, error }
+  }
+}

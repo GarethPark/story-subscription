@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentUser } from '@/lib/auth/session'
 import { prisma } from '@/lib/db'
 import { canGenerateStory, useCredit, getUserCredits } from '@/lib/credits'
+import { sendLowCreditsWarningEmail } from '@/lib/email'
 
 // Story generation types
 interface StoryConfig {
@@ -139,6 +140,26 @@ export async function POST(request: NextRequest) {
 
     // Get updated credit balance
     const creditsRemaining = await getUserCredits(user.id)
+
+    // Send low credits warning email if down to 1 credit (for non-unlimited users)
+    if (creditsRemaining === 1 && creditCheck.tier !== 'UNLIMITED') {
+      // Get full user info for email
+      const fullUser = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { email: true, name: true },
+      })
+
+      if (fullUser && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+        // Send async - don't block the response
+        sendLowCreditsWarningEmail({
+          to: fullUser.email,
+          userName: fullUser.name || 'Reader',
+          remainingCredits: creditsRemaining,
+        }).catch((error) => {
+          console.error('Failed to send low credits warning email:', error)
+        })
+      }
+    }
 
     return NextResponse.json({
       success: true,
