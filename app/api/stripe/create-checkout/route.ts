@@ -12,10 +12,13 @@ export async function POST(request: NextRequest) {
 
     const { priceId, mode = 'subscription' } = await request.json()
 
-    // Validate price ID
-    const validPriceIds = Object.values(STRIPE_PRICES)
-    if (!validPriceIds.includes(priceId)) {
-      return NextResponse.json({ error: 'Invalid price ID' }, { status: 400 })
+    // Log for debugging
+    console.log('Checkout request - priceId:', priceId)
+    console.log('Valid prices from env:', STRIPE_PRICES)
+
+    // Validate price ID - check if it starts with price_ (basic validation)
+    if (!priceId || !priceId.startsWith('price_')) {
+      return NextResponse.json({ error: 'Invalid price ID format' }, { status: 400 })
     }
 
     // Get or create Stripe customer
@@ -38,8 +41,10 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Determine mode based on price ID
-    const isOneTime = priceId === STRIPE_PRICES.CREDIT
+    // Determine mode based on price ID or mode parameter
+    // Credit pack price ID for one-time payments
+    const creditPriceId = process.env.STRIPE_PRICE_CREDIT || 'price_1SqJ3FKjruuOoDVKX8WUvc76'
+    const isOneTime = priceId === creditPriceId || mode === 'payment'
     const sessionMode = isOneTime ? 'payment' : 'subscription'
 
     // Create checkout session
