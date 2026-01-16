@@ -36,7 +36,10 @@ export function CheckoutButton({
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create checkout session')
+        const errorMsg = data.details
+          ? `${data.error}: ${data.details}`
+          : data.error || 'Failed to create checkout session'
+        throw new Error(errorMsg)
       }
 
       // Redirect to Stripe checkout
