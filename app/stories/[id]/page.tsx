@@ -198,13 +198,13 @@ export default async function StoryPage({
             </div>
           </div>
 
-          {/* Mood Image */}
-          {story.genre && GENRE_MOOD_IMAGES[story.genre] && (
+          {/* Story Image - use cover image if available, otherwise genre mood image */}
+          {(story.coverImage || (story.genre && GENRE_MOOD_IMAGES[story.genre])) && (
             <div className="mb-8 sm:mb-10 rounded-2xl overflow-hidden border border-rose-900/30 shadow-2xl shadow-rose-900/10">
               <div className="relative aspect-[21/9] w-full">
                 <Image
-                  src={GENRE_MOOD_IMAGES[story.genre]}
-                  alt={`${story.genre} mood`}
+                  src={story.coverImage || GENRE_MOOD_IMAGES[story.genre!]}
+                  alt={story.coverImage ? story.title : `${story.genre} mood`}
                   fill
                   className="object-cover"
                   priority
