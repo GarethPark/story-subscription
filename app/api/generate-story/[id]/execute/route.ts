@@ -102,6 +102,7 @@ export async function POST(
           userName: story.creator.name || 'Reader',
           storyTitle: storyData.title,
           storyId: id,
+          genre: config.genre,
         })
         console.log(`Story ready email sent to ${story.creator.email}`)
       } catch (emailError) {

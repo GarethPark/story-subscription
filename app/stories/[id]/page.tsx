@@ -13,6 +13,17 @@ import { StoryContent } from '@/components/story/story-content'
 import { StoryRating } from '@/components/story/story-rating'
 import { StoryReviews } from '@/components/story/story-reviews'
 
+// Genre mood images
+const GENRE_MOOD_IMAGES: Record<string, string> = {
+  'Contemporary': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Dark Romance': '/images/genre-tropes/dark-romance_forbidden-love.png',
+  'Romantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
+  'Fantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
+  'Historical': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Paranormal': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+}
+
 export default async function StoryPage({
   params,
 }: {
@@ -65,10 +76,10 @@ export default async function StoryPage({
 
       {/* Header with cover */}
       <div className="relative bg-gradient-to-r from-black via-gray-900 to-black border-b border-rose-900/30">
-        {story.coverImage && (
+        {(story.coverImage || (story.genre && GENRE_MOOD_IMAGES[story.genre])) && (
           <div className="absolute inset-0 opacity-20">
             <Image
-              src={story.coverImage}
+              src={story.coverImage || GENRE_MOOD_IMAGES[story.genre!]}
               alt={story.title}
               fill
               className="object-cover"
@@ -183,6 +194,27 @@ export default async function StoryPage({
               </div>
             </div>
           </div>
+
+          {/* Mood Image */}
+          {story.genre && GENRE_MOOD_IMAGES[story.genre] && (
+            <div className="mb-8 sm:mb-10 rounded-2xl overflow-hidden border border-rose-900/30 shadow-2xl shadow-rose-900/10">
+              <div className="relative aspect-[21/9] w-full">
+                <Image
+                  src={GENRE_MOOD_IMAGES[story.genre]}
+                  alt={`${story.genre} mood`}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+                <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+                  <span className="px-3 py-1.5 bg-black/60 backdrop-blur-sm text-rose-300 text-sm font-medium rounded-full border border-rose-500/30">
+                    {story.genre} Romance
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Story content */}
           <StoryContent content={story.content} />

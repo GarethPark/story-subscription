@@ -2,21 +2,40 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM_EMAIL = 'Silk Stories <stories@readsilk.com>'
+// Use Resend's test domain in development, real domain in production
+const FROM_EMAIL = process.env.NODE_ENV === 'development'
+  ? 'Silk Stories <onboarding@resend.dev>'
+  : 'Silk Stories <stories@readsilk.com>'
 const ADMIN_EMAIL = 'garethpark@yahoo.com'
+
+// Genre image mapping
+const GENRE_IMAGES: Record<string, string> = {
+  'Contemporary': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Dark Romance': '/images/genre-tropes/dark-romance_forbidden-love.png',
+  'Romantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
+  'Fantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
+  'Historical': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Paranormal': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+}
 
 export async function sendStoryReadyEmail({
   to,
   userName,
   storyTitle,
   storyId,
+  genre,
 }: {
   to: string
   userName: string
   storyTitle: string
   storyId: string
+  genre?: string
 }) {
-  const storyUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}/stories/${storyId}`
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'
+  const storyUrl = `${baseUrl}/stories/${storyId}`
+  const genreImage = genre ? GENRE_IMAGES[genre] || GENRE_IMAGES['Contemporary'] : GENRE_IMAGES['Contemporary']
+  const imageUrl = `${baseUrl}${genreImage}`
 
   try {
     const { data, error } = await resend.emails.send({
@@ -42,6 +61,13 @@ export async function sendStoryReadyEmail({
       </td>
     </tr>
 
+    <!-- Genre Image -->
+    <tr>
+      <td style="padding: 0; text-align: center; background-color: #111827;">
+        <img src="${imageUrl}" alt="${genre || 'Romance'}" style="width: 100%; max-width: 600px; height: auto; display: block;" />
+      </td>
+    </tr>
+
     <!-- Content -->
     <tr>
       <td style="padding: 40px 30px; background-color: #111827;">
@@ -50,7 +76,7 @@ export async function sendStoryReadyEmail({
         </h2>
 
         <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
-          Your personalized romance story has been crafted and is waiting for you:
+          Your personalized ${genre ? genre.toLowerCase() + ' ' : ''}romance story has been crafted and is waiting for you:
         </p>
 
         <div style="background: linear-gradient(to bottom right, #450a0a, #3b0764); border: 1px solid #9f1239; border-radius: 12px; padding: 24px; margin: 30px 0;">
@@ -58,7 +84,7 @@ export async function sendStoryReadyEmail({
             "${storyTitle}"
           </h3>
           <p style="margin: 0; font-size: 14px; color: #9ca3af;">
-            Created just for you
+            ${genre ? `A ${genre} Romance` : 'Created just for you'}
           </p>
         </div>
 
@@ -85,7 +111,7 @@ export async function sendStoryReadyEmail({
           Happy reading! ❤️
         </p>
         <p style="margin: 0; font-size: 12px; color: #4b5563;">
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'}" style="color: #fb7185; text-decoration: none;">Visit Silk Stories</a>
+          <a href="${baseUrl}" style="color: #fb7185; text-decoration: none;">Visit Silk Stories</a>
         </p>
       </td>
     </tr>
