@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     // Log for debugging
     console.log('Checkout request - priceId:', priceId)
     console.log('Valid prices from env:', STRIPE_PRICES)
+    console.log('Stripe key prefix:', process.env.STRIPE_SECRET_KEY?.substring(0, 10))
 
     // Validate price ID - check if it starts with price_ (basic validation)
     if (!priceId || !priceId.startsWith('price_')) {
@@ -69,12 +70,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ sessionId: session.id, url: session.url })
   } catch (error: any) {
     console.error('Checkout error:', error)
+    console.error('Error stack:', error?.stack)
+    console.error('Error code:', error?.code)
+    console.error('Error statusCode:', error?.statusCode)
     // Return more detailed error for debugging
     return NextResponse.json(
       {
         error: 'Failed to create checkout session',
         details: error?.message || 'Unknown error',
-        type: error?.type || 'unknown'
+        type: error?.type || 'unknown',
+        code: error?.code || 'unknown'
       },
       { status: 500 }
     )

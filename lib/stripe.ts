@@ -4,7 +4,13 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set in environment variables')
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+// Trim the key to remove any accidental whitespace
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY.trim()
+
+export const stripe = new Stripe(stripeSecretKey, {
+  typescript: true,
+  maxNetworkRetries: 3,
+})
 
 // Price ID mappings from environment
 export const STRIPE_PRICES = {
