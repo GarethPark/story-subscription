@@ -37,7 +37,7 @@ export default function PrivacyPage() {
           </div>
 
           {/* Content */}
-          <div className="prose prose-invert prose-rose max-w-none">
+          <div className="text-left">
             <div className="bg-gray-900/50 border border-rose-900/30 rounded-2xl p-8 md:p-10 backdrop-blur-sm space-y-8">
 
               <section>
