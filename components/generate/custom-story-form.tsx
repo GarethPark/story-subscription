@@ -206,8 +206,8 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
           <p className="text-xs text-gray-400 mt-3 italic">
             {heatLevel === 'Sweet' && '❤️ Emotional connection, innocent touches, fade to black'}
             {heatLevel === 'Warm' && '💕 Sensual tension, passionate kissing, tasteful romance'}
-            {heatLevel === 'Hot' && '🔥 Explicit romantic scenes, detailed intimacy'}
-            {heatLevel === 'Scorching' && '🌶️ Very explicit, detailed intimate scenes'}
+            {heatLevel === 'Hot' && '🔥 Explicit sex scenes with anatomical details and physical sensations'}
+            {heatLevel === 'Scorching' && '🌶️ Graphic erotica - multiple detailed sex scenes, direct language, uninhibited'}
           </p>
         </div>
 
