@@ -95,8 +95,16 @@ export async function POST(
     })
 
     // Send email notification to user
+    console.log('Email check:', {
+      hasCreatorEmail: !!story.creator?.email,
+      creatorEmail: story.creator?.email,
+      hasResendKey: !!process.env.RESEND_API_KEY,
+      resendKeyPrefix: process.env.RESEND_API_KEY?.substring(0, 10),
+    })
+
     if (story.creator?.email && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
       try {
+        console.log(`Attempting to send email to ${story.creator.email}...`)
         await sendStoryReadyEmail({
           to: story.creator.email,
           userName: story.creator.name || 'Reader',
@@ -104,11 +112,13 @@ export async function POST(
           storyId: id,
           genre: config.genre,
         })
-        console.log(`Story ready email sent to ${story.creator.email}`)
+        console.log(`Story ready email sent successfully to ${story.creator.email}`)
       } catch (emailError) {
         // Don't fail the whole request if email fails
         console.error('Failed to send story ready email:', emailError)
       }
+    } else {
+      console.log('Skipping email - conditions not met')
     }
 
     return NextResponse.json({ success: true, wordCount })
