@@ -33,7 +33,7 @@ export default function PricingPage() {
         'Priority generation queue',
         'Unlimited curated story reading',
       ],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER || 'price_1SqJ2NKjruuOoDVK5jj67hu0',
+      priceId: (process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER || 'price_1SqJ2NKjruuOoDVK5jj67hu0').trim(),
       popular: false,
     },
     {
@@ -49,7 +49,7 @@ export default function PricingPage() {
         'Early access to new features',
         'Same price as Kindle Unlimited!',
       ],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PLUS || 'price_1SqJ2cKjruuOoDVKYwtkPmcG',
+      priceId: (process.env.NEXT_PUBLIC_STRIPE_PRICE_PLUS || 'price_1SqJ2cKjruuOoDVKYwtkPmcG').trim(),
       popular: true,
     },
     {
@@ -65,7 +65,7 @@ export default function PricingPage() {
         'VIP support',
         'Beta features early access',
       ],
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_UNLIMITED || 'price_1SqJ2sKjruuOoDVKn12a7VZ2',
+      priceId: (process.env.NEXT_PUBLIC_STRIPE_PRICE_UNLIMITED || 'price_1SqJ2sKjruuOoDVKn12a7VZ2').trim(),
       popular: false,
     },
   ]
@@ -201,7 +201,7 @@ export default function PricingPage() {
             ) : (
               <CheckoutButton
                 priceId={
-                  process.env.NEXT_PUBLIC_STRIPE_PRICE_CREDIT || 'price_1SqJ3FKjruuOoDVKX8WUvc76'
+                  (process.env.NEXT_PUBLIC_STRIPE_PRICE_CREDIT || 'price_1SqJ3FKjruuOoDVKX8WUvc76').trim()
                 }
                 label="Buy 1 Credit - $3.99"
                 variant="outline"
