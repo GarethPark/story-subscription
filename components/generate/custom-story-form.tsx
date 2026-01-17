@@ -89,13 +89,63 @@ export function CustomStoryGenerationForm({ userCredits }: CustomStoryGeneration
       const data = await response.json()
       const storyId = data.storyId
 
-      // Show success message and redirect to My Stories
-      setProgress('Story generation started! We\'ll email you when it\'s ready (1-2 minutes).')
+      // Poll for status instead of just redirecting
+      setProgress('Creating your story... This usually takes 1-2 minutes.')
 
-      // Redirect after showing message
-      setTimeout(() => {
-        router.push('/my-stories')
-      }, 2000)
+      const pollStatus = async () => {
+        try {
+          const statusRes = await fetch(`/api/stories/${storyId}/status`)
+          const statusData = await statusRes.json()
+
+          if (statusData.generationStatus === 'COMPLETED') {
+            setProgress('Your story is ready! Redirecting...')
+            setTimeout(() => {
+              router.push(`/stories/${storyId}`)
+            }, 1000)
+            return true
+          } else if (statusData.generationStatus === 'FAILED') {
+            const errorMsg = statusData.generationError || 'Generation failed'
+            setProgress(`Generation failed: ${errorMsg}. Your credit has been refunded.`)
+            setIsGenerating(false)
+            return true
+          } else {
+            // Still generating - update progress
+            const elapsed = Math.floor((Date.now() - startTime) / 1000)
+            if (elapsed < 30) {
+              setProgress('Crafting your characters and plot...')
+            } else if (elapsed < 60) {
+              setProgress('Writing your story... almost there!')
+            } else if (elapsed < 90) {
+              setProgress('Adding the finishing touches...')
+            } else {
+              setProgress('Still working on your story... longer stories take more time.')
+            }
+            return false
+          }
+        } catch (err) {
+          console.error('Status check failed:', err)
+          return false
+        }
+      }
+
+      const startTime = Date.now()
+
+      // Poll every 3 seconds for up to 3 minutes
+      const pollInterval = setInterval(async () => {
+        const done = await pollStatus()
+        if (done || Date.now() - startTime > 180000) {
+          clearInterval(pollInterval)
+          if (Date.now() - startTime > 180000) {
+            setProgress('Taking longer than expected. Check "My Stories" for your story.')
+            setTimeout(() => {
+              router.push('/my-stories')
+            }, 2000)
+          }
+        }
+      }, 3000)
+
+      // Initial check after 5 seconds
+      setTimeout(pollStatus, 5000)
 
     } catch (error) {
       console.error('Generation error:', error)
