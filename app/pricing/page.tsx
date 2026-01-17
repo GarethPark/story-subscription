@@ -188,7 +188,7 @@ export default function PricingPage() {
             <h3 className="text-xl font-bold text-white mb-2 font-['Playfair_Display']">
               Need Extra Credits?
             </h3>
-            <p className="text-gray-400 mb-4 max-w-prose">
+            <p className="text-gray-400 mb-4">
               Purchase individual story credits for $3.99 each. Credits never expire.
             </p>
             {!user ? (
