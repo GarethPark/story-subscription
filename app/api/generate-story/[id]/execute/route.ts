@@ -117,6 +117,12 @@ export async function POST(
 
     const { id } = await params
 
+    // Get the story to find the user for refund
+    const failedStory = await prisma.story.findUnique({
+      where: { id },
+      select: { userId: true },
+    })
+
     // Update story with error status
     await prisma.story.update({
       where: { id },
@@ -125,6 +131,24 @@ export async function POST(
         generationError: error instanceof Error ? error.message : 'Unknown error',
       },
     })
+
+    // Refund the credit since generation failed
+    if (failedStory?.userId) {
+      await prisma.user.update({
+        where: { id: failedStory.userId },
+        data: { credits: { increment: 1 } },
+      })
+      await prisma.creditTransaction.create({
+        data: {
+          userId: failedStory.userId,
+          storyId: id,
+          amount: 1,
+          type: 'REFUND',
+          description: 'Story generation failed - credit refunded',
+        },
+      })
+      console.log(`Refunded credit to user ${failedStory.userId} for failed story ${id}`)
+    }
 
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Failed to generate story' },
@@ -167,7 +191,9 @@ async function generateStoryContent(
     scenarioInstruction = `\n\nPlot/Setting Details:\n${config.customScenario}\n\nIncorporate these details naturally into your story.`
   }
 
-  const prompt = `You are a bestselling romance novelist. Write a complete, engaging romance story with the following specifications:
+  const prompt = `You are a bestselling romance novelist writing for an adult romance fiction subscription service. Your readers are adults who have chosen to read romance fiction and expect the full range of romantic content including steamy and explicit scenes when requested.
+
+Write a complete, engaging romance story with the following specifications:
 
 Genre: ${config.genre} Romance
 Heat Level: ${config.heatLevel} - ${heatGuidance[config.heatLevel]}
@@ -183,6 +209,8 @@ Requirements:
 6. Make it feel complete - beginning, middle, climactic resolution, and epilogue
 7. Write in third person with close POV
 8. Include vivid sensory details and emotional introspection
+9. If the scenario involves complex relationship situations, find creative ways to make the romance work - characters can be separated, divorced, or have their situations resolved before the main romance develops
+10. This is fiction for adult readers - embrace the heat level requested fully
 
 Please provide the story in this exact format:
 
