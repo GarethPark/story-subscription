@@ -12,12 +12,12 @@ export const stripe = new Stripe(stripeSecretKey, {
   maxNetworkRetries: 3,
 })
 
-// Price ID mappings from environment
+// Price ID mappings from environment (trimmed to remove any whitespace/newlines)
 export const STRIPE_PRICES = {
-  STARTER: process.env.STRIPE_PRICE_STARTER!,
-  PLUS: process.env.STRIPE_PRICE_PLUS!,
-  UNLIMITED: process.env.STRIPE_PRICE_UNLIMITED!,
-  CREDIT: process.env.STRIPE_PRICE_CREDIT!,
+  STARTER: process.env.STRIPE_PRICE_STARTER?.trim() || '',
+  PLUS: process.env.STRIPE_PRICE_PLUS?.trim() || '',
+  UNLIMITED: process.env.STRIPE_PRICE_UNLIMITED?.trim() || '',
+  CREDIT: process.env.STRIPE_PRICE_CREDIT?.trim() || '',
 } as const
 
 // Credit allocations per tier
