@@ -139,8 +139,8 @@ async function generateStoryContent(
   const heatGuidance = {
     Sweet: 'Focus on emotional connection, longing looks, and innocent touches. Keep intimacy to kissing and fade to black.',
     Warm: 'Include some sensual tension, passionate kissing, and implied intimacy. Tasteful but romantic.',
-    Hot: 'Include explicit romantic scenes with detailed intimate moments. Sensual and passionate.',
-    Scorching: 'Include very explicit, detailed intimate scenes. Erotic romance with graphic descriptions.',
+    Hot: 'Write explicit sex scenes with anatomical details. Describe the physical sensations, movements, and positions. Include at least one full intimate scene that is several paragraphs long.',
+    Scorching: 'Write very explicit, graphic sex scenes. Use direct language for body parts and sexual acts. Include multiple detailed intimate scenes throughout the story. Describe physical sensations, dirty talk, and erotic details. This is adult erotica - be bold and uninhibited.',
   }
 
   const prompt = `You are a bestselling romance novelist. Write a complete, engaging romance story with the following specifications:

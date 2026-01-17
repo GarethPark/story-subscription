@@ -23,7 +23,7 @@ export function StoryGenerationForm() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [progress, setProgress] = useState('')
   const [genre, setGenre] = useState<typeof GENRES[number]>('Romantasy')
-  const [heatLevel, setHeatLevel] = useState<typeof HEAT_LEVELS[number]>('Hot')
+  const [heatLevel, setHeatLevel] = useState<typeof HEAT_LEVELS[number]>('Sweet')
   const [selectedTropes, setSelectedTropes] = useState<string[]>([])
   const [wordCount, setWordCount] = useState(8000) // Maximum length for curated stories
   const [generateCover] = useState(false) // Skip AI cover generation - will add custom images later
