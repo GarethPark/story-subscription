@@ -95,7 +95,7 @@ export default async function GeneratePage() {
             <h3 className="text-2xl font-bold text-white mb-3 font-['Playfair_Display']">
               Out of Credits
             </h3>
-            <p className="text-gray-300 text-lg mb-6 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-gray-300 text-lg mb-6 mx-auto leading-relaxed" style={{ maxWidth: '600px' }}>
               Upgrade to Premium for 3 credits per month, or purchase additional credits to continue generating custom stories.
             </p>
             <div className="flex gap-4 justify-center">
