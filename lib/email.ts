@@ -14,12 +14,12 @@ const GENRE_IMAGES: Record<string, string> = {
   'Dark Romance': '/images/genre-tropes/dark-romance_forbidden-love.png',
   'Romantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
   'Fantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
-  'Historical': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Historical': 'https://i.ibb.co/PZTqL1M5/historical-regency.jpg',
   'Paranormal': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
   'Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
-  'Small Town': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
-  'Sports Romance': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
-  'Romantic Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Small Town': 'https://i.ibb.co/ccSLw728/small-town-romance-2.jpg',
+  'Sports Romance': 'https://i.ibb.co/YrnRsRL/sports-romance-hockey.jpg',
+  'Romantic Suspense': 'https://i.ibb.co/dsvHHgQ4/romantic-suspense-bodyguard.jpg',
 }
 
 export async function sendStoryReadyEmail({
