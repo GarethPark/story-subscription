@@ -4,6 +4,7 @@ import OpenAI from 'openai'
 import { prisma } from '@/lib/db'
 import { sendStoryReadyEmail } from '@/lib/email'
 
+
 interface StoryConfig {
   genre: 'Contemporary' | 'Historical' | 'Paranormal' | 'Fantasy' | 'Suspense'
   heatLevel: 'Sweet' | 'Warm' | 'Hot' | 'Scorching'
@@ -49,12 +50,10 @@ export async function POST(
     // Get config from request body
     const config: StoryConfig = await request.json()
 
-    // Initialize Anthropic client
+    // Generate story content using Claude
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY!,
     })
-
-    // Generate story content
     const storyData = await generateStoryContent(anthropic, config)
 
     // Generate cover image if requested
