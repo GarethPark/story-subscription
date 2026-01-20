@@ -1,5 +1,19 @@
 // FORCE REBUILD - Regular img tags only
 import { prisma } from '@/lib/db'
+
+// Genre mood images - fallback when no cover image
+const GENRE_MOOD_IMAGES: Record<string, string> = {
+  'Contemporary': '/images/genre-tropes/contemporary_grumpy-sunshine.png',
+  'Dark Romance': '/images/genre-tropes/dark-romance_forbidden-love.png',
+  'Romantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
+  'Fantasy': '/images/genre-tropes/romantasy_enemies-to-lovers.png',
+  'Historical': 'https://i.ibb.co/PZTqL1M5/historical-regency.jpg',
+  'Paranormal': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Suspense': '/images/genre-tropes/dark-romance_morally-gray-hero.png',
+  'Small Town': 'https://i.ibb.co/ccSLw728/small-town-romance-2.jpg',
+  'Sports Romance': 'https://i.ibb.co/YrnRsRL/sports-romance-hockey.jpg',
+  'Romantic Suspense': 'https://i.ibb.co/dsvHHgQ4/romantic-suspense-bodyguard.jpg',
+}
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
@@ -168,11 +182,11 @@ export default async function StoriesPage({
                     >
                       <Card className="overflow-hidden bg-gray-900/50 border-rose-900/30 hover:border-rose-700/50 transition-all duration-300 hover:shadow-2xl hover:shadow-rose-900/20 hover:-translate-y-1">
                         {/* Cover Image */}
-                        {story.coverImage ? (
+                        {(story.coverImage || (story.genre && GENRE_MOOD_IMAGES[story.genre])) ? (
                           <div className="relative h-72 bg-gray-800 overflow-hidden">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={story.coverImage}
+                              src={story.coverImage || GENRE_MOOD_IMAGES[story.genre!]}
                               alt={story.title}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
