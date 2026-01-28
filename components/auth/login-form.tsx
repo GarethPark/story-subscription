@@ -77,10 +77,15 @@ export function LoginForm() {
 
           {/* Password Field */}
           <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-gray-200 flex items-center gap-2">
-              <Lock className="h-4 w-4 text-gray-400" />
-              Password
-            </label>
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="text-sm font-medium text-gray-200 flex items-center gap-2">
+                <Lock className="h-4 w-4 text-gray-400" />
+                Password
+              </label>
+              <a href="/forgot-password" className="text-sm text-rose-400 hover:text-rose-300 transition-colors">
+                Forgot password?
+              </a>
+            </div>
             <Input
               id="password"
               type="password"

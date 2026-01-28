@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { hashPassword } from '@/lib/auth/password'
 import { createSession } from '@/lib/auth/session'
-import { sendWelcomeEmail, notifyAdminNewUser } from '@/lib/email'
+import { sendWelcomeEmail, notifyAdminNewUser, notifyAdminError } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -89,6 +89,19 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error('Signup error:', error)
+
+    // Notify admin of signup error
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await notifyAdminError({
+          context: 'User Signup',
+          error: error instanceof Error ? error.message : String(error),
+        })
+      } catch (notifyError) {
+        console.error('Failed to notify admin of signup error:', notifyError)
+      }
+    }
+
     return NextResponse.json(
       { error: 'An error occurred during signup' },
       { status: 500 }

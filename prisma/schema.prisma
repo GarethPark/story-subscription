@@ -22,6 +22,10 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  // Password reset fields
+  passwordResetToken     String?
+  passwordResetExpiresAt DateTime?
+
   // Stripe subscription fields
   stripeCustomerId       String?   @unique
   stripeSubscriptionId   String?   @unique

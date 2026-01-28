@@ -12,6 +12,9 @@ import { ReadingTracker } from '@/components/story/reading-tracker'
 import { StoryContent } from '@/components/story/story-content'
 import { StoryRating } from '@/components/story/story-rating'
 import { StoryReviews } from '@/components/story/story-reviews'
+import { Metadata } from 'next'
+
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'
 
 // Genre mood images - map all genres to available images
 const GENRE_MOOD_IMAGES: Record<string, string> = {
@@ -25,6 +28,64 @@ const GENRE_MOOD_IMAGES: Record<string, string> = {
   'Small Town': 'https://i.ibb.co/ccSLw728/small-town-romance-2.jpg',
   'Sports Romance': 'https://i.ibb.co/YrnRsRL/sports-romance-hockey.jpg',
   'Romantic Suspense': 'https://i.ibb.co/dsvHHgQ4/romantic-suspense-bodyguard.jpg',
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+
+  const story = await prisma.story.findUnique({
+    where: { id },
+    select: {
+      title: true,
+      summary: true,
+      genre: true,
+      author: true,
+      coverImage: true,
+      published: true,
+    },
+  })
+
+  if (!story || !story.published) {
+    return {
+      title: 'Story Not Found',
+    }
+  }
+
+  const ogImage = story.coverImage || GENRE_MOOD_IMAGES[story.genre] || '/images/genre-tropes/romantasy_enemies-to-lovers.png'
+  const description = story.summary.length > 160
+    ? story.summary.substring(0, 157) + '...'
+    : story.summary
+
+  return {
+    title: story.title,
+    description,
+    openGraph: {
+      title: story.title,
+      description,
+      type: 'article',
+      url: `${baseUrl}/stories/${id}`,
+      siteName: 'Silk',
+      images: [
+        {
+          url: ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`,
+          width: 1200,
+          height: 630,
+          alt: story.title,
+        },
+      ],
+      authors: [story.author],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: story.title,
+      description,
+      images: [ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`],
+    },
+  }
 }
 
 export default async function StoryPage({

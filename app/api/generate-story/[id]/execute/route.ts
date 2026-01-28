@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { prisma } from '@/lib/db'
-import { sendStoryReadyEmail } from '@/lib/email'
+import { sendStoryReadyEmail, notifyAdminError } from '@/lib/email'
 
 
 interface StoryConfig {
@@ -157,6 +157,19 @@ export async function POST(
         },
       })
       console.log(`Refunded credit to user ${failedStory.userId} for failed story ${id}`)
+    }
+
+    // Notify admin of generation failure
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await notifyAdminError({
+          context: 'Story Generation',
+          error: error instanceof Error ? error.message : String(error),
+          userId: failedStory?.userId || undefined,
+        })
+      } catch (notifyError) {
+        console.error('Failed to notify admin of generation error:', notifyError)
+      }
     }
 
     return NextResponse.json(

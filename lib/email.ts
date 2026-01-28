@@ -364,6 +364,64 @@ export async function notifyAdminNewFeedback({
   }
 }
 
+export async function notifyAdminSubscriptionCancelled({
+  userName,
+  userEmail,
+  tier,
+}: {
+  userName: string
+  userEmail: string
+  tier: string
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      subject: `📉 Subscription Cancelled: ${userName}`,
+      html: `
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: #fff;">
+  <div style="max-width: 500px; margin: 0 auto; background: #2a2a2a; padding: 30px; border-radius: 10px; border: 2px solid #f59e0b;">
+    <h2 style="color: #f59e0b; margin-top: 0;">📉 Subscription Cancelled</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Name:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${userName}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Email:</td>
+        <td style="padding: 10px 0; color: #fff; font-weight: bold;">${userEmail}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Plan:</td>
+        <td style="padding: 10px 0; color: #fff;">${tier}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0; color: #9ca3af;">Time:</td>
+        <td style="padding: 10px 0; color: #fff;">${new Date().toLocaleString()}</td>
+      </tr>
+    </table>
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #444;">
+      <a href="https://dashboard.stripe.com/customers" style="color: #f59e0b;">View in Stripe →</a>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending admin notification:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending admin notification:', error)
+    return { success: false, error }
+  }
+}
+
 export async function notifyAdminPaymentFailed({
   customerEmail,
   amount,
@@ -796,6 +854,103 @@ export async function sendSubscriptionCancelledEmail({
     return { success: true, data }
   } catch (error) {
     console.error('Error sending subscription cancelled email:', error)
+    return { success: false, error }
+  }
+}
+
+export async function sendPasswordResetEmail({
+  to,
+  userName,
+  resetToken,
+}: {
+  to: string
+  userName: string
+  resetToken: string
+}) {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://readsilk.com'
+  const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: 'Reset your Silk Stories password',
+      html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Your Password</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Georgia', serif; background: linear-gradient(to bottom, #000000, #1a1a1a); color: #ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #000000;">
+    <!-- Header -->
+    <tr>
+      <td style="padding: 40px 30px; text-align: center; background: linear-gradient(to right, #be123c, #7c2d12); border-bottom: 2px solid #fb7185;">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 900; background: linear-gradient(to right, #fda4af, #f9a8d4, #ddd6fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Silk Stories
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Content -->
+    <tr>
+      <td style="padding: 40px 30px; background-color: #111827;">
+        <h2 style="margin: 0 0 20px 0; font-size: 28px; color: #fda4af; font-weight: bold;">
+          Reset Your Password
+        </h2>
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; color: #d1d5db;">
+          Hi ${userName}, we received a request to reset your password. Click the button below to create a new password.
+        </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+          <tr>
+            <td align="center">
+              <a href="${resetUrl}" style="display: inline-block; padding: 16px 32px; background: linear-gradient(to right, #be123c, #7c2d12); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);">
+                Reset Password
+              </a>
+            </td>
+          </tr>
+        </table>
+
+        <div style="background: #1f2937; border: 1px solid #374151; border-radius: 8px; padding: 16px; margin: 30px 0;">
+          <p style="margin: 0; font-size: 14px; color: #9ca3af; line-height: 1.6;">
+            This link will expire in <strong style="color: #fda4af;">1 hour</strong>. If you didn't request a password reset, you can safely ignore this email.
+          </p>
+        </div>
+
+        <p style="margin: 30px 0 0 0; font-size: 14px; line-height: 1.6; color: #6b7280;">
+          If the button doesn't work, copy and paste this link into your browser:<br>
+          <a href="${resetUrl}" style="color: #fb7185; word-break: break-all;">${resetUrl}</a>
+        </p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding: 30px; text-align: center; background-color: #000000; border-top: 1px solid #374151;">
+        <p style="margin: 0; font-size: 12px; color: #4b5563;">
+          <a href="${baseUrl}" style="color: #fb7185; text-decoration: none;">Visit Silk Stories</a>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+      `,
+    })
+
+    if (error) {
+      console.error('Error sending password reset email:', error)
+      return { success: false, error }
+    }
+
+    console.log('Password reset email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error sending password reset email:', error)
     return { success: false, error }
   }
 }

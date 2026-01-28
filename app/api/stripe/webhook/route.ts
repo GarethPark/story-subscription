@@ -4,6 +4,8 @@ import { stripe, getTierFromPriceId, TIER_CREDITS } from '@/lib/stripe'
 import { prisma } from '@/lib/db'
 import {
   notifyAdminPaymentFailed,
+  notifyAdminError,
+  notifyAdminSubscriptionCancelled,
   sendSubscriptionConfirmationEmail,
   sendCreditsRenewedEmail,
   sendSubscriptionCancelledEmail,
@@ -65,6 +67,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   } catch (error) {
     console.error('Webhook handler error:', error)
+
+    // Notify admin of webhook error
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
+      try {
+        await notifyAdminError({
+          context: `Stripe Webhook: ${event.type}`,
+          error: error instanceof Error ? error.message : String(error),
+        })
+      } catch (notifyError) {
+        console.error('Failed to notify admin of webhook error:', notifyError)
+      }
+    }
+
     return NextResponse.json(
       { error: 'Webhook handler failed' },
       { status: 500 }
@@ -222,7 +237,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
   console.log('User downgraded to FREE tier')
 
-  // Send subscription cancelled email
+  // Send subscription cancelled email and notify admin
   if (user && process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== 'your-resend-api-key-here') {
     try {
       await sendSubscriptionCancelledEmail({
@@ -233,6 +248,17 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
       console.log(`Subscription cancelled email sent to ${user.email}`)
     } catch (emailError) {
       console.error('Failed to send subscription cancelled email:', emailError)
+    }
+
+    // Notify admin of cancellation
+    try {
+      await notifyAdminSubscriptionCancelled({
+        userName: user.name || 'Anonymous',
+        userEmail: user.email,
+        tier: user.subscriptionTier,
+      })
+    } catch (notifyError) {
+      console.error('Failed to notify admin of cancellation:', notifyError)
     }
   }
 }
