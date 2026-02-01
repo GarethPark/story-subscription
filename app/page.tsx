@@ -20,12 +20,12 @@ export default function Home() {
 
       <main className="flex-1">
         <Hero
-          title="Surrender to Desire"
-          subtitle="Indulge in stories where passion ignites, boundaries blur, and every moment leaves you craving more."
-          ctaText="Start Reading Free"
-          ctaLink="/stories"
-          secondaryCtaText="Create Your Fantasy"
-          secondaryCtaLink="/signup"
+          title="Your Story. Your Fantasy."
+          subtitle="AI creates personalized romance stories with your name, your perfect love interest, and exactly the tropes you crave."
+          ctaText="Start Free — 3 Stories"
+          ctaLink="/signup"
+          secondaryCtaText="Browse Library"
+          secondaryCtaLink="/stories"
         />
 
         <Features

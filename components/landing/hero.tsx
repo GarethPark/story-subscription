@@ -42,7 +42,7 @@ export function Hero({
           <div className="space-y-9">
             <div className="inline-flex items-center gap-2 px-6 py-3 bg-red-950/50 backdrop-blur-md rounded-full border border-red-800/60 shadow-2xl">
               <Sparkles className="h-4 w-4 text-red-400" />
-              <span className="text-sm font-black text-red-100 tracking-widest uppercase">Forbidden. Passionate. Yours.</span>
+              <span className="text-sm font-black text-red-100 tracking-widest uppercase">Personalized Romance Stories</span>
             </div>
 
             <h1 className="text-6xl font-black tracking-tight sm:text-7xl md:text-8xl lg:text-[10rem] font-['Playfair_Display'] text-white leading-[0.95] drop-shadow-[0_0_30px_rgba(0,0,0,0.9)]">
@@ -54,7 +54,7 @@ export function Hero({
             </p>
 
             <p className="mx-auto max-w-[700px] text-red-200/80 text-lg md:text-xl leading-relaxed font-light drop-shadow-xl">
-              Dangerously addictive stories. Unforgettable characters. Unputdownable romance.
+              Enemies to lovers? Grumpy sunshine? Sweet or scorching? You choose everything.
             </p>
           </div>
 
