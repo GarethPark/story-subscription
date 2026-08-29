@@ -79,9 +79,10 @@ Write Chapter ${nextChapterNumber} that:
 Write ONLY the story content for Chapter ${nextChapterNumber}. Do not include "Chapter ${nextChapterNumber}" as a heading.`
 
       const message = await anthropic.messages.create({
-        model: 'claude-opus-4-20250514',
+        model: 'claude-opus-5',
         max_tokens: 16000,
         temperature: 1,
+        thinking: { type: 'disabled' },
         messages: [
           {
             role: 'user',

@@ -16,8 +16,9 @@ async function testKey() {
   // Try simplest possible request with Haiku (cheapest, most available)
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-3-haiku-20240307',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 50,
+      thinking: { type: 'disabled' },
       messages: [{ role: 'user', content: 'Say hello' }],
     })
 

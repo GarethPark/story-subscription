@@ -41,9 +41,10 @@ Format: Write ONLY the story content. Start directly with the narrative.`
 
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-opus-4-20250514',
+      model: 'claude-opus-5',
       max_tokens: 16000,
       temperature: 1,
+      thinking: { type: 'disabled' },
       messages: [{ role: 'user', content: prompt }]
     })
 

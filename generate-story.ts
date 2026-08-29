@@ -75,9 +75,10 @@ STORY:
 
   // Use streaming to avoid timeouts with long stories
   const stream = await anthropic.messages.stream({
-    model: 'claude-opus-4-20250514', // Opus for maximum quality curated stories
+    model: 'claude-opus-5', // Opus for maximum quality curated stories
     max_tokens: 24000, // Increased for 8,000 word stories
     temperature: 1,
+    thinking: { type: 'disabled' },
     messages: [
       {
         role: 'user',

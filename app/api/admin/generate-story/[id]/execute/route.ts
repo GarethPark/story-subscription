@@ -174,9 +174,10 @@ STORY:
 
   // Use streaming to avoid serverless function timeouts
   const stream = await anthropic.messages.stream({
-    model: 'claude-opus-4-20250514', // Opus for maximum quality admin-curated stories
+    model: 'claude-opus-5', // Opus for maximum quality admin-curated stories
     max_tokens: 24000, // Increased for 8,000 word stories
     temperature: 1,
+    thinking: { type: 'disabled' },
     messages: [
       {
         role: 'user',

@@ -131,9 +131,10 @@ STORY:
 
   // Use streaming to avoid timeouts
   const stream = await anthropic.messages.stream({
-    model: 'claude-opus-4-20250514',
+    model: 'claude-opus-5',
     max_tokens: 24000,
     temperature: 1,
+    thinking: { type: 'disabled' },
     messages: [
       {
         role: 'user',
