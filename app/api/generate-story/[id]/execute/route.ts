@@ -190,7 +190,7 @@ async function generateStoryContent(
     Sweet: 'Focus on emotional connection, longing looks, and innocent touches. Keep intimacy to kissing and fade to black.',
     Warm: 'Include some sensual tension, passionate kissing, and implied intimacy. Tasteful but romantic.',
     Hot: 'Write explicit sex scenes with anatomical details. Describe the physical sensations, movements, and positions. Include at least one full intimate scene that is several paragraphs long.',
-    Scorching: 'Write very explicit, graphic sex scenes. Use direct language for body parts and sexual acts. Include multiple detailed intimate scenes throughout the story. Describe physical sensations, dirty talk, and erotic details. This is adult erotica - be bold and uninhibited.',
+    Scorching: 'Write maximally explicit, graphic sex scenes between consenting adult characters. Build sexual tension deliberately before each intimate scene - use anticipation, foreplay, and emotional/physical build-up so the scene lands with impact rather than starting abruptly. Once a scene begins, do not fade to black, summarize, or rely on vague euphemisms - describe the sex act explicitly and in full detail: anatomical language, physical sensations, movement, positions, and pacing. Include realistic, explicit dirty talk as direct quoted dialogue. Include multiple full-length intimate scenes across the story, each several paragraphs long, building in intensity. Make the characters\' enthusiastic mutual desire and consent clear and explicit in both narration and dialogue - this is adult erotica for a paying 18+ audience, so do not hold back on explicitness.',
   }
 
   // Build character name instructions
