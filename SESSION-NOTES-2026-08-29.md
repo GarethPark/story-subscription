@@ -22,12 +22,13 @@ Story generation was completely broken in production (0 successful generations a
 - Files changed: `app/api/generate-story/[id]/execute/route.ts`, `app/api/admin/generate-story/[id]/execute/route.ts`, `app/api/stories/[id]/extend/route.ts`, `generate-story.ts`, `scripts/generate-50-stories.ts`, `scripts/generate-5-stories.ts`, `scripts/generate-batch-custom.ts`, `scripts/test-api-key.ts`.
 - `tsc --noEmit` passes clean.
 
-**STATUS: Committed + pushed to GitHub, but confirmed NOT live in production as of end of session.** Direct test call to the production execute endpoint still returns the old `claude-sonnet-4-20250514` 404 with a fresh request ID (not a cache — a real failing call). This project's docs say deploys are manual (`vercel --prod`), which lines up — nothing appears to have auto-deployed since the push.
+**STATUS: DEPLOYED AND CONFIRMED WORKING** (deployed via `vercel --prod`, aliased to www.readsilk.com). Verified by calling the production execute endpoint directly for test story `cmtent6ly000310it46kyznhp` — it completed successfully: title "The Orchard We Left Behind", 5,533 characters of real content, generated with `claude-sonnet-5`. DB status is `COMPLETED`.
+
+Note: this test called `/api/generate-story/[id]/execute` directly, bypassing the normal trigger — so it confirms the *model fix* works, but doesn't yet confirm the normal signup→generate flow works end-to-end. See Bug #2.
 
 **TODO tomorrow:**
-1. Deploy — run `vercel --prod`, or use "Redeploy" on the latest commit in the Vercel dashboard.
-2. Re-test: log in as `garethpark@msn.com` / `test1234`, generate a story, confirm it completes (currently only reaches this by directly calling `/api/generate-story/[id]/execute` — see Bug #2 below on why the normal flow doesn't reach it).
-3. Consider a follow-up email to `will.hudson@live.co.uk`.
+1. Re-test the *normal* flow (not a direct `/execute` call) once Bug #2 is fixed, to confirm a real user can generate a story start to finish.
+2. Consider a follow-up email to `will.hudson@live.co.uk` now that generation actually works.
 
 ---
 
