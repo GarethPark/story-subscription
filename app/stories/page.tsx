@@ -17,7 +17,7 @@ const GENRE_MOOD_IMAGES: Record<string, string> = {
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { Heart, LayoutDashboard, Sparkles, BookOpen, Library, Star } from 'lucide-react'
+import { Heart, LayoutDashboard, Sparkles, BookOpen, Library, Star, MessageSquare } from 'lucide-react'
 import { StoryFilters } from '@/components/stories/story-filters'
 
 export const dynamic = 'force-dynamic'
@@ -141,6 +141,10 @@ export default async function StoriesPage({
             <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
               <Heart className="h-4 w-4" />
               Favorites
+            </Link>
+            <Link href="/feedback" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <MessageSquare className="h-4 w-4" />
+              Feedback
             </Link>
           </nav>
 

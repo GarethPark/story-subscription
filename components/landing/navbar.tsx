@@ -38,6 +38,12 @@ export function Navbar({ logo = 'Logo', links = [] }: NavbarProps) {
                 {link.label}
               </a>
             ))}
+            <a
+              href="/feedback"
+              className="transition-colors hover:text-rose-700 text-gray-600 font-semibold"
+            >
+              Feedback
+            </a>
           </nav>
 
           <div className="flex items-center space-x-3">
@@ -77,6 +83,13 @@ export function Navbar({ logo = 'Logo', links = [] }: NavbarProps) {
                 {link.label}
               </a>
             ))}
+            <a
+              href="/feedback"
+              className="block py-3 text-gray-700 hover:text-rose-700 font-medium text-lg transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Feedback
+            </a>
             <div className="pt-4 space-y-3 border-t border-rose-100/50">
               <Button asChild variant="outline" className="w-full" size="lg">
                 <a href="/login">Log in</a>

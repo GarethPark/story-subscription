@@ -3,7 +3,7 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Heart, BookOpen, Sparkles, Star, LayoutDashboard, Library, Clock, ChevronRight } from 'lucide-react'
+import { Heart, BookOpen, Sparkles, Star, LayoutDashboard, Library, Clock, ChevronRight, MessageSquare } from 'lucide-react'
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/db'
 import { Badge } from '@/components/ui/badge'
@@ -90,6 +90,10 @@ export default async function DashboardPage() {
           <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
             <Heart className="h-4 w-4" />
             Favorites
+          </Link>
+          <Link href="/feedback" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+            <MessageSquare className="h-4 w-4" />
+            Feedback
           </Link>
         </nav>
 

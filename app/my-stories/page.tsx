@@ -2,7 +2,7 @@ import { getCurrentUser } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import Link from 'next/link'
-import { Clock, BookOpen, Sparkles, AlertCircle, Loader2, LayoutDashboard, Heart, Library } from 'lucide-react'
+import { Clock, BookOpen, Sparkles, AlertCircle, Loader2, LayoutDashboard, Heart, Library, MessageSquare } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -74,6 +74,10 @@ export default async function MyStoriesPage() {
             <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
               <Heart className="h-4 w-4" />
               Favorites
+            </Link>
+            <Link href="/feedback" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <MessageSquare className="h-4 w-4" />
+              Feedback
             </Link>
           </nav>
 

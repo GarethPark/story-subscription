@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { CustomStoryGenerationForm } from '@/components/generate/custom-story-form'
-import { Sparkles, Coins, LayoutDashboard, BookOpen, Heart, Library } from 'lucide-react'
+import { Sparkles, Coins, LayoutDashboard, BookOpen, Heart, Library, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -44,6 +44,10 @@ export default async function GeneratePage() {
             <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
               <Heart className="h-4 w-4" />
               Favorites
+            </Link>
+            <Link href="/feedback" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <MessageSquare className="h-4 w-4" />
+              Feedback
             </Link>
           </nav>
 

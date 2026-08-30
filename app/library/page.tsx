@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
-import { Heart, LayoutDashboard, Sparkles, BookOpen, Library } from 'lucide-react'
+import { Heart, LayoutDashboard, Sparkles, BookOpen, Library, MessageSquare } from 'lucide-react'
 
 export default async function LibraryPage() {
   const user = await getCurrentUser()
@@ -53,6 +53,10 @@ export default async function LibraryPage() {
             <Link href="/library" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-rose-700 to-violet-700 text-white rounded-lg">
               <Heart className="h-4 w-4" />
               Favorites
+            </Link>
+            <Link href="/feedback" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors">
+              <MessageSquare className="h-4 w-4" />
+              Feedback
             </Link>
           </nav>
 
