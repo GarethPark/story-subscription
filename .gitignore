@@ -6,6 +6,9 @@ node_modules/
 # Testing
 coverage/
 
+# Local script output (may contain generated story drafts)
+scripts/output/
+
 # Next.js
 .next/
 out/
