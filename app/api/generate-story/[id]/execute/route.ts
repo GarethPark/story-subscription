@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { prisma } from '@/lib/db'
 import { sendStoryReadyEmail, notifyAdminError } from '@/lib/email'
+import { generateScorchingStoryViaOpenRouter } from '@/lib/generate-scorching-story'
 
 
 interface StoryConfig {
@@ -183,6 +184,21 @@ async function generateStoryContent(
   anthropic: Anthropic,
   config: StoryConfig
 ): Promise<{ title: string; summary: string; content: string; author: string; tags: string }> {
+  if (config.heatLevel === 'Scorching') {
+    const openRouterStory = await generateScorchingStoryViaOpenRouter(anthropic, {
+      genre: config.genre,
+      tropes: config.tropes,
+      wordCount: config.wordCount,
+      protagonistName: config.protagonistName,
+      loveInterestName: config.loveInterestName,
+      customScenario: config.customScenario,
+    })
+    if (openRouterStory) {
+      return openRouterStory
+    }
+    console.error('OpenRouter Scorching generation failed validation twice - falling back to Claude')
+  }
+
   const tropesText = config.tropes.join(', ')
   const wordCount = config.wordCount || 3500
 
