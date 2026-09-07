@@ -19,7 +19,11 @@ export interface ParsedStory {
 }
 
 const OPENROUTER_MODEL = 'anthracite-org/magnum-v4-72b'
-const MAX_OPENROUTER_ATTEMPTS = 2
+// Only 1 attempt: OpenRouter generation + validation must leave enough of the
+// route's maxDuration budget for a Claude fallback to still complete.
+const MAX_OPENROUTER_ATTEMPTS = 1
+const OPENROUTER_TIMEOUT_MS = 120_000
+const VALIDATION_TIMEOUT_MS = 30_000
 
 const SCORCHING_GUIDANCE =
   'Write maximally explicit, graphic sex scenes between consenting adult characters. Build sexual tension deliberately before each intimate scene - use anticipation, foreplay, and emotional/physical build-up so the scene lands with impact rather than starting abruptly. Once a scene begins, do NOT stop, wrap up, fade to black, summarize, or rely on vague euphemisms - continue writing through the entire act in full explicit detail: anatomical language, physical sensations, movement, positions, and pacing, until it reaches its natural climax and aftermath. Include realistic, explicit dirty talk as direct quoted dialogue. Include multiple full-length intimate scenes across the story, each several paragraphs long, building in intensity. Make the characters\' enthusiastic mutual desire and consent clear and explicit in both narration and dialogue - this is adult erotica for a paying 18+ audience, so do not hold back on explicitness, and do not end the story or a scene early.'
@@ -98,12 +102,15 @@ async function generateOnceWithOpenRouter(
   openrouter: OpenAI,
   config: ScorchingStoryConfig
 ): Promise<ParsedStory | null> {
-  const completion = await openrouter.chat.completions.create({
-    model: OPENROUTER_MODEL,
-    max_tokens: 9000,
-    temperature: 0.9,
-    messages: [{ role: 'user', content: buildPrompt(config) }],
-  })
+  const completion = await openrouter.chat.completions.create(
+    {
+      model: OPENROUTER_MODEL,
+      max_tokens: 9000,
+      temperature: 0.9,
+      messages: [{ role: 'user', content: buildPrompt(config) }],
+    },
+    { timeout: OPENROUTER_TIMEOUT_MS }
+  )
 
   const text = completion.choices[0]?.message?.content ?? ''
   if (!text) return null
@@ -131,12 +138,15 @@ ${story.content}
 Respond with ONLY a single JSON object, no other text, no markdown code fences, in exactly this shape:
 {"has_resolved_happy_ending": boolean, "has_explicit_content": boolean, "is_clean_prose": boolean, "reason": "one sentence explaining any false value, or empty string if all true"}`
 
-  const response = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 500,
-    thinking: { type: 'disabled' },
-    messages: [{ role: 'user', content: prompt }],
-  })
+  const response = await anthropic.messages.create(
+    {
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 500,
+      thinking: { type: 'disabled' },
+      messages: [{ role: 'user', content: prompt }],
+    },
+    { timeout: VALIDATION_TIMEOUT_MS }
+  )
 
   const block = response.content[0]
   const text = block?.type === 'text' ? block.text : ''

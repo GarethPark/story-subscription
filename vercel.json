@@ -2,6 +2,12 @@
   "functions": {
     "app/api/admin/generate-story/route.ts": {
       "maxDuration": 60
+    },
+    "app/api/generate-story/[id]/execute/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/admin/generate-story/[id]/execute/route.ts": {
+      "maxDuration": 300
     }
   },
   "cleanUrls": true,
