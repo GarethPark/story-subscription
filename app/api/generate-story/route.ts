@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, after } from 'next/server'
 import { getCurrentUser } from '@/lib/auth/session'
 import { prisma } from '@/lib/db'
 import { canGenerateStory, useCredit, getUserCredits } from '@/lib/credits'
@@ -101,41 +101,53 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Trigger async generation (fire and forget)
+    // Trigger async generation in the background. `after()` keeps this
+    // function's execution context alive until the promise settles, even
+    // though the response has already been sent - without it, Vercel can
+    // freeze/terminate the runtime before a bare un-awaited fetch() ever
+    // reaches the execute route, leaving the story stuck at PENDING forever.
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
-    // Don't await this - let it run in background
-    fetch(`${baseUrl}/api/generate-story/${story.id}/execute`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(config),
-    }).catch((error) => {
-      console.error('Failed to trigger generation:', error)
-      // Update story with error AND refund credit
-      prisma.story.update({
-        where: { id: story.id },
-        data: {
-          generationStatus: 'FAILED',
-          generationError: 'Failed to start generation',
-        },
-      }).then(async () => {
-        // Refund the credit with transaction log
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { credits: { increment: 1 } },
-        })
-        await prisma.creditTransaction.create({
-          data: {
-            userId: user.id,
-            storyId: story.id,
-            amount: 1,
-            type: 'REFUND',
-            description: 'Story generation failed - credit refunded',
+    after(async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/generate-story/${story.id}/execute`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify(config),
         })
-      }).catch(console.error)
+        if (!res.ok) {
+          throw new Error(`Execute route responded with ${res.status}`)
+        }
+      } catch (error) {
+        console.error('Failed to trigger generation:', error)
+        // Update story with error AND refund credit
+        try {
+          await prisma.story.update({
+            where: { id: story.id },
+            data: {
+              generationStatus: 'FAILED',
+              generationError: 'Failed to start generation',
+            },
+          })
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { credits: { increment: 1 } },
+          })
+          await prisma.creditTransaction.create({
+            data: {
+              userId: user.id,
+              storyId: story.id,
+              amount: 1,
+              type: 'REFUND',
+              description: 'Story generation failed - credit refunded',
+            },
+          })
+        } catch (refundError) {
+          console.error('Failed to record generation failure/refund:', refundError)
+        }
+      }
     })
 
     // Get updated credit balance

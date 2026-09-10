@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, after } from 'next/server'
 import { getCurrentUser } from '@/lib/auth/session'
 import { prisma } from '@/lib/db'
 
@@ -67,26 +67,35 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Trigger async generation (fire and forget)
+    // Trigger async generation in the background. `after()` keeps this
+    // function's execution context alive until the promise settles, even
+    // though the response has already been sent - without it, Vercel can
+    // freeze/terminate the runtime before a bare un-awaited fetch() ever
+    // reaches the execute route, leaving the story stuck at PENDING forever.
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
-    // Don't await this - let it run in background
-    fetch(`${baseUrl}/api/admin/generate-story/${story.id}/execute`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(config),
-    }).catch((error) => {
-      console.error('Failed to trigger generation:', error)
-      // Update story with error
-      prisma.story.update({
-        where: { id: story.id },
-        data: {
-          generationStatus: 'FAILED',
-          generationError: 'Failed to start generation',
-        },
-      }).catch(console.error)
+    after(async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/admin/generate-story/${story.id}/execute`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(config),
+        })
+        if (!res.ok) {
+          throw new Error(`Execute route responded with ${res.status}`)
+        }
+      } catch (error) {
+        console.error('Failed to trigger generation:', error)
+        await prisma.story.update({
+          where: { id: story.id },
+          data: {
+            generationStatus: 'FAILED',
+            generationError: 'Failed to start generation',
+          },
+        }).catch(console.error)
+      }
     })
 
     return NextResponse.json({
