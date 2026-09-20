@@ -19,11 +19,16 @@ export interface ParsedStory {
 }
 
 const OPENROUTER_MODEL = 'anthracite-org/magnum-v4-72b'
-// Only 1 attempt: OpenRouter generation + validation must leave enough of the
-// route's maxDuration budget for a Claude fallback to still complete.
-const MAX_OPENROUTER_ATTEMPTS = 1
-const OPENROUTER_TIMEOUT_MS = 120_000
-const VALIDATION_TIMEOUT_MS = 30_000
+// 3 attempts: there is no Claude fallback for Scorching content anymore (a
+// self-moderated Claude story doesn't meet the Scorching content promise), so
+// the full maxDuration budget goes toward giving Magnum multiple tries at
+// passing validation instead of reserving time for a fallback generation.
+// Per-attempt timeouts are tighter than before (was 120s/30s for a single
+// attempt) so 3 attempts' worst case (255s) still fits inside the existing
+// 300s route maxDuration with room for the surrounding DB writes/email/cover.
+const MAX_OPENROUTER_ATTEMPTS = 3
+const OPENROUTER_TIMEOUT_MS = 70_000
+const VALIDATION_TIMEOUT_MS = 15_000
 
 const SCORCHING_GUIDANCE =
   'Write maximally explicit, graphic sex scenes between consenting adult characters. Build sexual tension deliberately before each intimate scene - use anticipation, foreplay, and emotional/physical build-up so the scene lands with impact rather than starting abruptly. Once a scene begins, do NOT stop, wrap up, fade to black, summarize, or rely on vague euphemisms - continue writing through the entire act in full explicit detail: anatomical language, physical sensations, movement, positions, and pacing, until it reaches its natural climax and aftermath. Include realistic, explicit dirty talk as direct quoted dialogue. Include multiple full-length intimate scenes across the story, each several paragraphs long, building in intensity. Make the characters\' enthusiastic mutual desire and consent clear and explicit in both narration and dialogue - this is adult erotica for a paying 18+ audience, so do not hold back on explicitness, and do not end the story or a scene early.'
@@ -167,9 +172,11 @@ Respond with ONLY a single JSON object, no other text, no markdown code fences, 
 
 /**
  * Attempts to generate a Scorching-tier story via OpenRouter, validating each
- * attempt with a Claude Haiku judge. Returns null if OPENROUTER_API_KEY is
- * unset, or if every attempt fails validation - callers should fall back to
- * their normal Claude generation path in either case.
+ * attempt with a Claude Haiku judge, retrying up to MAX_OPENROUTER_ATTEMPTS
+ * times. Returns null if OPENROUTER_API_KEY is unset, or if every attempt
+ * fails validation - callers should treat either case as a hard failure
+ * (there is no tame Claude fallback: self-moderated content doesn't meet the
+ * Scorching content promise).
  */
 export async function generateScorchingStoryViaOpenRouter(
   anthropic: Anthropic,

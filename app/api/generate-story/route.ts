@@ -118,11 +118,15 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify(config),
         })
         if (!res.ok) {
-          throw new Error(`Execute route responded with ${res.status}`)
+          // The execute route reached its own catch block for this, which
+          // already marked the story FAILED and refunded the credit - don't
+          // do either again here, or the user gets refunded twice.
+          console.error(`Execute route responded with ${res.status} for story ${story.id}`)
         }
       } catch (error) {
+        // fetch() itself failed (network error, execute route unreachable) -
+        // execute never got a chance to run or refund, so we must here.
         console.error('Failed to trigger generation:', error)
-        // Update story with error AND refund credit
         try {
           await prisma.story.update({
             where: { id: story.id },

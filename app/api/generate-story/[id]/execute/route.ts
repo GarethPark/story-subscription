@@ -196,7 +196,7 @@ async function generateStoryContent(
     if (openRouterStory) {
       return openRouterStory
     }
-    console.error('OpenRouter Scorching generation failed validation twice - falling back to Claude')
+    throw new Error('Scorching generation failed: OpenRouter did not produce a story that passed content validation after multiple attempts')
   }
 
   const tropesText = config.tropes.join(', ')
