@@ -13,7 +13,7 @@
   "crons": [
     {
       "path": "/api/cron/reap-stuck-generations",
-      "schedule": "0 * * * *"
+      "schedule": "0 3 * * *"
     }
   ],
   "cleanUrls": true,
