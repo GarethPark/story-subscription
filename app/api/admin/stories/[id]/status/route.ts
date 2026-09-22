@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentUser } from '@/lib/auth/session'
 import { prisma } from '@/lib/db'
+import { reapStuckGenerations } from '@/lib/generation-watchdog'
 
 export async function GET(
   request: NextRequest,
@@ -14,6 +15,8 @@ export async function GET(
     }
 
     const { id } = await params
+
+    await reapStuckGenerations()
 
     const story = await prisma.story.findUnique({
       where: { id },

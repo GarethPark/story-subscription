@@ -1,6 +1,7 @@
 import { getCurrentUser } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
+import { reapStuckGenerations } from '@/lib/generation-watchdog'
 import Link from 'next/link'
 import { Clock, BookOpen, Sparkles, AlertCircle, Loader2, LayoutDashboard, Heart, Library, MessageSquare } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -16,6 +17,10 @@ export default async function MyStoriesPage() {
   if (!user) {
     redirect('/login?redirect=/my-stories')
   }
+
+  // Self-heal any of this user's generations that have been stuck past
+  // the execute route's maxDuration before rendering their story list.
+  await reapStuckGenerations(user.id)
 
   // Fetch user's custom stories
   const stories = await prisma.story.findMany({
